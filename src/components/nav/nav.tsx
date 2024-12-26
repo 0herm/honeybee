@@ -14,11 +14,11 @@ export default function NavBar() {
 	const { theme, setTheme } = useTheme()
 
 	return (
-		<div className="flex flex-row justify-between items-center w-full h-10">
+		<div className="flex flex-row justify-between items-center w-full h-8">
 				
-			<Logo className="h-10" fill="fill-primary" />
+			<Logo className="h-full p-1" fill="fill-primary" />
 			
-			<div className="flex flex-row gap-6 text-lg">
+			<div className="flex flex-row gap-6">
 				<Link href={"/recepies"}>Oppskrifter</Link>
 				<Link href={"/about"}>Om oss</Link>
 			</div>
