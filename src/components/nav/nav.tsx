@@ -16,10 +16,12 @@ export default function NavBar() {
 	return (
 		<div className="flex flex-row justify-between items-center w-full h-8">
 				
-			<Logo className="h-full p-1" fill="fill-primary" />
+			<Link href={"/"} className="h-full"> 
+				<Logo className="h-full p-1" fill="fill-primary"/>
+			</Link>
 			
 			<div className="flex flex-row gap-6">
-				<Link href={"/recepies"}>Oppskrifter</Link>
+				<Link href={"/recipes"}>Oppskrifter</Link>
 				<Link href={"/about"}>Om oss</Link>
 			</div>
 
