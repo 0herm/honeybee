@@ -21,7 +21,7 @@ export default function RootLayout({ children }: Readonly<{children: React.React
 				defaultTheme="dark"
 			  >
 				<div className="flex flex-col w-full min-h-screen">
-					<nav className="fixed w-full border-solid border-b border-accent backdrop-blur-sm z-50">
+					<nav className="fixed top-[-10px] pt-[10px] w-full border-solid border-b border-accent backdrop-blur-md z-50">
 						<NavBar />
 					</nav>
 					<main className="w-full bg-background flex flex-grow p-5 pt-20">
