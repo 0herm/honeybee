@@ -8,7 +8,7 @@ export type RecipePart = {
     ingredients: Ingredient[]
 }
   
-export type Recipe = {
+export type RecipeProp = {
     id: number
     title: string
     image: string
@@ -19,9 +19,9 @@ export type Recipe = {
     instructions: string
 }
 
-export type Recipes = Recipe[];
+export type Recipes = RecipeProp[]
 
-export async function featchByTitle(q:string):Promise<Recipes | null> {
+export async function fetchByTitle(q:string):Promise<Recipes | null> {
     try {
         const res = await fetch(`/api/recipesByTitle?title=${q}`,{
             next: { revalidate: 3600 },
@@ -44,4 +44,27 @@ export async function featchByTitle(q:string):Promise<Recipes | null> {
         return null
     }
 }
+
+export async function fetchById(q:string):Promise<RecipeProp | null> {
+    try {
+        const res = await fetch(`/api/recipeById?id=${q}`,{
+            next: { revalidate: 3600 },
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+      
+        if (!res.ok) {
+            throw new Error('Failed to fetch recipe data')
+        }
   
+        const data: Recipes = await res.json()
+      
+        return data[0]
+
+    } catch (error) {
+        console.error('Error fetching recipe data:', error)
+        return null
+    }
+}
