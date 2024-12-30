@@ -28,7 +28,20 @@ export async function GET(req: Request) {
 			);
 		  }
 		
-		const recipe = await db.all(`SELECT * FROM recipes WHERE title LIKE ? LIMIT 8`, queryTitle)
+		const recipe = await db.all(`
+			SELECT id,title,image FROM recipes 
+			WHERE title LIKE ? 
+			ORDER BY 
+				CASE 
+					WHEN type = 'middag' THEN 1
+					WHEN type = 'bakst'  THEN 2
+					WHEN type = 'drikke' THEN 3
+					ELSE 4
+				END, 
+				title
+			LIMIT 8`
+			, queryTitle
+		)
 
 		return NextResponse.json(recipe)
 	} catch (error) {
