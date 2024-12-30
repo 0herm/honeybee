@@ -17,8 +17,8 @@ export default function Recipe({ id }: { id: string }) {
                 } else {
                     setRecipe(fetchedRecipe as RecipeProp)
                 }
-            } catch (err) {
-                setError('Error fetching data')
+            } catch (error) {
+                setError(`Error fetching data: ${error}`)
             }
         }
 
