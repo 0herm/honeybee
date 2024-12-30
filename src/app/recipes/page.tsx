@@ -16,7 +16,7 @@ export default function RecipesPage(){
 
     useEffect(() => {
         const fetchData = async () => {
-        const fetchedRecipes = await featchByTitle('')
+        const fetchedRecipes = await featchByTitle('?')
         
         if (!fetchedRecipes) {
             setError('No recipe data found')

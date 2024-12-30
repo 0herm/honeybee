@@ -17,11 +17,18 @@ export async function GET(req: Request) {
     	db = await openDb()
 
 		const url = new URL(req.url)
-		const title = url.searchParams.get('title')
+		const title = url.searchParams.get('title')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
 		
 		const queryTitle = `%${title}%`
+
+		if (typeof title !== 'string' || title.length > 30) {
+			return NextResponse.json(
+			  { error: 'Invalid title parameter' },
+			  { status: 400 }
+			);
+		  }
 		
-		const recipe = await db.all(`SELECT * FROM recipes WHERE title LIKE ?`, queryTitle)
+		const recipe = await db.all(`SELECT * FROM recipes WHERE title LIKE ? LIMIT 8`, queryTitle)
 
 		return NextResponse.json(recipe)
 	} catch (error) {
