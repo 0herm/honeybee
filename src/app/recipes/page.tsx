@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image  from "next/image";
 import { featchByTitle, Recipes } from '@/utils/fetch'
 
 import {
@@ -43,7 +42,7 @@ export default function RecipesPage(){
                 {recipes.map((recipe) => (
                     <Link href={`../recipe/${recipe.id}`} key={recipe.id}>
                         <Card>
-                                <Image
+                                <img
                                     src={`data:image/webp;base64,${recipe.image}`}
                                     alt="bilde"
                                     width={7952}
