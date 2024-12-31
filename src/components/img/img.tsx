@@ -1,17 +1,19 @@
-import Image from "next/image";
+'use client'
 
 type imgProp = {
     base64: string
+    style: string
 }
 
-export default function Img({base64}:imgProp){
+export default function LoadImage({base64, style}:imgProp){
     return(
-        <Image
-            src={`data:image/jpeg;base64,${base64}`}
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+            src={`data:image/webp;base64,${base64}`}
             alt="bilde"
             width={7952}
             height={5304}
-            className="flex w-full max-h-48 items-center justify-center pt-4"
-        />
+            className={style}
+        ></img>
     )
 }

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import LoadImage from '@/components/img/img'
 import { fetchByTitle, Recipes } from '@/utils/fetch'
-import Img from '@/components/img/img'
 
 import {
     Card,
@@ -44,7 +44,7 @@ export default function RecipesPage(){
                 {recipes.map((recipe) => (
                     <Link href={`../recipe/${recipe.id}`} key={recipe.id} className='w-[15rem]'>
                         <Card className=''>
-                            <Img base64={recipe.image}/>
+                            <LoadImage base64={recipe.image} style='flex w-full max-h-48 items-center justify-center pt-4' />
                             <CardTitle className='text-center text-lg capitalize p-6'>{recipe.title}</CardTitle>
                         </Card>
                     </Link>
