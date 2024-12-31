@@ -68,3 +68,27 @@ export async function fetchById(q:string):Promise<RecipeProp | null> {
         return null
     }
 }
+
+export async function fetchByType(q:string):Promise<Recipes | null> {
+    try {
+        const res = await fetch(`/api/recipesByType?type=${q}`,{
+            next: { revalidate: 3600 },
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+      
+        if (!res.ok) {
+            throw new Error('Failed to fetch recipe data')
+        }
+  
+        const data: Recipes = await res.json()
+      
+        return data.length > 0 ? data : null
+
+    } catch (error) {
+        console.error('Error fetching recipe data:', error)
+        return null
+    }
+}
