@@ -21,13 +21,13 @@ export default function RootLayout({ children }: Readonly<{children: React.React
 				defaultTheme="dark"
 			  >
 				<div className="flex flex-col w-full min-h-screen">
-					<nav className="fixed top-[-10px] pt-[10px] w-full border-solid border-b border-accent backdrop-blur-md z-50">
+					<nav className="fixed top-[-10px] pt-[10px] w-full border-solid border-b border-accent backdrop-blur-md z-50 print:hidden">
 						<NavBar />
 					</nav>
-					<main className="w-full bg-background flex flex-grow p-5 pt-20">
+					<main className="w-full bg-background flex flex-grow p-5 pt-20 print:pt-0">
 						{children}
 					</main>
-					<footer className="mt-10 border-solid border-t border-accent">
+					<footer className="mt-10 border-solid border-t border-accent print:hidden">
 						<Footer />
 					</footer>
 				</div>

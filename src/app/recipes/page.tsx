@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { fetchByTitle, Recipes } from '@/utils/fetch'
 
 import {
@@ -38,16 +39,17 @@ export default function RecipesPage(){
 
     return (
         <div className='w-full flex items-center justify-center flex-col'>
-            <div className='grid grid-cols-1 grid-rows-8 gap-4 lg:grid-cols-4 lg:grid-rows-2 sm:grid-cols-2 sm:grid-rows-4'>
+            {/* REMOVE ON LATE POINT WHEN RECIPES.LENGTH >= 8*/}
+            <div className={`grid grid-cols-1 grid-rows-${recipes.length<8?recipes.length:"8"} gap-4 lg:grid-cols-4 lg:grid-rows-2 sm:grid-cols-2 sm:grid-rows-${recipes.length<8?Math.ceil(recipes.length/2):"4"}`}>
                 {recipes.map((recipe) => (
-                    <Link href={`../recipe/${recipe.id}`} key={recipe.id}>
-                        <Card>
-                            <img
+                    <Link href={`../recipe/${recipe.id}`} key={recipe.id} className='w-[15rem]'>
+                        <Card className=''>
+                            <Image
                                 src={`data:image/jpeg;base64,${recipe.image}`}
                                 alt="bilde"
                                 width={7952}
                                 height={5304}
-                                className="flex w-full h-48 object-cover items-center justify-center pt-4"
+                                className="flex w-full max-h-48 items-center justify-center pt-4"
                             />
                             <CardTitle className='text-center text-lg capitalize p-6'>{recipe.title}</CardTitle>
                         </Card>

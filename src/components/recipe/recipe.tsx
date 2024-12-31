@@ -15,7 +15,10 @@ export default function Recipe({ id }: { id: string }) {
                 if (!fetchedRecipe) {
                     setError('No recipe data found')
                 } else {
-                    setRecipe(fetchedRecipe as RecipeProp)
+                    if (typeof fetchedRecipe.ingredients === "string") {
+                        fetchedRecipe.ingredients = JSON.parse(fetchedRecipe.ingredients);
+                    }
+                    setRecipe(fetchedRecipe)
                 }
             } catch (error) {
                 setError(`Error fetching data: ${error}`)
@@ -34,16 +37,28 @@ export default function Recipe({ id }: { id: string }) {
     }
 
     return (
-        <div className="w-[700px]">
-            <h1 className="capitalize text-2xl">{recipe.title}</h1>
+        <div className="w-full max-w-[40rem]">
+            <h1 className="capitalize text-2xl font-semibold">{recipe.title}</h1>
             <Image
                 src={`data:image/jpeg;base64,${recipe.image}`}
                 alt="bilde"
                 width={7952}
                 height={5304}
-                className="flex w-[300px] object-cover items-center justify-center pt-4"
+                className="flex w-[300px] object-cover items-center justify-center pt-4 print:hidden"
             />
-            <p>{recipe.instructions}</p>
+            {recipe.ingredients.map((section, index) => (
+                <div key={index} className="mt-4">
+                    <h1 className="capitalize font-semibold">{section.title ?`${section.title}:`:''}</h1>
+                    <ul>
+                        {section.ingredients.map((item, idx) => (
+                            <li key={idx}>
+                                {item.quantity} {item.ingredient}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ))}
+            <p className="pt-4">{recipe.instructions}</p>
         </div>
     )
 }
