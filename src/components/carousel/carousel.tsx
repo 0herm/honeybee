@@ -32,7 +32,10 @@ export default function CarouselComponent({data}:CarouselProp) {
 				<Link href={`recipe/${recipe.id}`}>
 				<div className="p-1">
 					<Card>
-                        <LoadImage base64={recipe.image} style='flex w-full max-h-48 items-center justify-center pt-4' />
+						{recipe.image ? 
+                        <LoadImage base64={recipe.image} style='flex w-full max-h-48 items-center justify-center pt-4 aspect-[4/3]' /> : 
+						<img src='file.svg' className='flex w-full max-h-48 items-center justify-center pt-4 aspect-[4/3]' />
+						}
                         <CardTitle className='text-center text-lg capitalize p-6'>{recipe.title}</CardTitle>
 					</Card>
 				</div>

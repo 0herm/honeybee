@@ -44,7 +44,10 @@ export default function RecipesPage(){
                 {recipes.map((recipe) => (
                     <Link href={`../recipe/${recipe.id}`} key={recipe.id} className='w-[15rem]'>
                         <Card className=''>
-                            <LoadImage base64={recipe.image} style='flex w-full max-h-48 items-center justify-center pt-4' />
+                            {recipe.image ? 
+                                <LoadImage base64={recipe.image} style='flex w-full max-h-48 items-center justify-center pt-4 aspect-[4/3]' /> : 
+                                <img src='file.svg' className='flex w-full max-h-48 items-center justify-center pt-4 aspect-[4/3]' />
+                            }
                             <CardTitle className='text-center text-lg capitalize p-6'>{recipe.title}</CardTitle>
                         </Card>
                     </Link>
