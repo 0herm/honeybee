@@ -1,6 +1,10 @@
 'use client'
 
+
+import Link from 'next/link'
+
 import { useState, useEffect } from 'react'
+
 import LoadImage from '@/components/img/img'
 import { fetchByTitle, Recipes } from '@/utils/fetch'
 
@@ -8,16 +12,19 @@ import {
     Card,
     CardTitle
 } from "@/components/ui/card"
-import Link from 'next/link'
+import { Input } from "@/components/ui/input"
+import { Button } from '@/components/ui/button'
 
 export default function RecipesPage(){
 
+    const [input, setInput] = useState<string>('')
+    const [search, setSearch] = useState<string>('')
     const [recipes, setRecipes] = useState<Recipes | null>(null)
     const [error, setError]   = useState<string | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
-        const fetchedRecipes = await fetchByTitle('')
+        const fetchedRecipes = await fetchByTitle(search)
         
         if (!fetchedRecipes) {
             setError('No recipe data found')
@@ -27,7 +34,7 @@ export default function RecipesPage(){
         }
 
         fetchData()
-    }, [])
+    }, [search])
 
     if (error) {
         return <div>Error: {error}</div>
@@ -39,8 +46,9 @@ export default function RecipesPage(){
 
     return (
         <div className='w-full flex items-center justify-center flex-col'>
+            <Input placeholder='Søk' value={input} onChange={(e)=>setInput(e.target.value)} onKeyDown={(e)=>{if(e.key=='Enter')setSearch(input)}} className='w-80' />
             {/* REMOVE ON LATE POINT WHEN RECIPES.LENGTH >= 8*/}
-            <div className={`grid grid-cols-1 grid-rows-${recipes.length<8?recipes.length:"8"} gap-4 lg:grid-cols-4 lg:grid-rows-2 sm:grid-cols-2 sm:grid-rows-${recipes.length<8?Math.ceil(recipes.length/2):"4"}`}>
+            <div className={`pt-6 grid grid-cols-1 grid-rows-${recipes.length<8?recipes.length:"8"} gap-4 lg:grid-cols-4 lg:grid-rows-2 sm:grid-cols-2 sm:grid-rows-${recipes.length<8?Math.ceil(recipes.length/2):"4"}`}>
                 {recipes.map((recipe) => (
                     <Link href={`../recipe/${recipe.id}`} key={recipe.id} className='w-[15rem]'>
                         <Card className=''>
