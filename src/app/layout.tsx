@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import type { Viewport } from 'next'
 import { ThemeProvider } from "@/components/theme-provider"
 import './globals.css'
 
@@ -8,6 +9,10 @@ import Footer from "@/components/footer/footer"
 export const metadata: Metadata = {
   	title: "Herbivorene",
   	description: "A vegan recipe website",
+}
+
+export const viewport: Viewport = {
+	themeColor: 'background',
 }
 
 export default function RootLayout({ children }: Readonly<{children: React.ReactNode;}>) {
