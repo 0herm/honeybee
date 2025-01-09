@@ -1,19 +1,25 @@
 'use client'
 
+import Image from "next/image"
+import { useState } from "react"
+
 type imgProp = {
-    base64: string
+    id: number
     style: string
 }
 
-export default function LoadImage({base64, style}:imgProp){
+export default function LoadImage({id, style}:imgProp){
+
+    const [imgSrc, setImgSrc] = useState(`/imgs/${id}.webp`);
+
     return(
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-            src={`data:image/webp;base64,${base64}`}
+        <Image
+            src={imgSrc}
             alt="bilde"
-            width={7952}
-            height={5304}
+            width={3840}
+            height={2880}
             className={style}
-        ></img>
+            onError={() =>setImgSrc('/fallback.svg')}
+        />
     )
 }

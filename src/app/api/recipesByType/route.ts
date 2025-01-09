@@ -27,7 +27,7 @@ export async function GET(req: Request) {
 		  }
 		
 		const recipe = await db.all(`
-			SELECT id,title,image FROM recipes 
+			SELECT id,title FROM recipes 
 			WHERE type = ? 
 			ORDER BY id
 			LIMIT 6`, type

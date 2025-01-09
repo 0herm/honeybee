@@ -39,7 +39,7 @@ export default function Recipe({ id }: { id: string }) {
     return (
         <div className="w-full max-w-[40rem]">
             <h1 className="capitalize text-2xl font-semibold">{recipe.title}</h1>
-            <LoadImage base64={recipe.image} style="flex w-[300px] object-cover items-center justify-center pt-4 print:hidden" />
+            <LoadImage id={recipe.id} style="flex w-[300px] object-cover items-center justify-center pt-4 print:hidden" />
             {recipe.ingredients.map((section, index) => (
                 <div key={index} className="mt-4">
                     <h1 className="capitalize font-semibold">{section.title ?`${section.title}:`:''}</h1>

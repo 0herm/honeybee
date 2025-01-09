@@ -50,11 +50,8 @@ export default function RecipesPage(){
             <div className={`pt-6 grid grid-cols-1 grid-rows-${recipes.length<8?recipes.length:"8"} gap-4 lg:grid-cols-4 lg:grid-rows-2 sm:grid-cols-2 sm:grid-rows-${recipes.length<8?Math.ceil(recipes.length/2):"4"}`}>
                 {recipes.map((recipe) => (
                     <Link href={`../recipe/${recipe.id}`} key={recipe.id} className='w-[15rem]'>
-                        <Card className=''>
-                            {recipe.image ? 
-                                <LoadImage base64={recipe.image} style='flex w-full max-h-48 items-center justify-center pt-4 aspect-[4/3]' /> : 
-                                <img src='file.svg' className='flex w-full max-h-48 items-center justify-center pt-4 aspect-[4/3]' />
-                            }
+                        <Card className=''> 
+                            <LoadImage id={recipe.id} style='flex w-full max-h-48 items-center justify-center pt-4 aspect-[4/3]' /> 
                             <CardTitle className='text-center text-lg capitalize p-6'>{recipe.title}</CardTitle>
                         </Card>
                     </Link>

@@ -11,7 +11,6 @@ export type RecipePart = {
 export type RecipeProp = {
     id: number
     title: string
-    image: string
     type: string
     quantity: string
     time: number
