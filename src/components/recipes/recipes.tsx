@@ -28,24 +28,23 @@ export default function RecipesPage({slug}:{slug:string}){
             setError('No recipe data found')
         } else {
             setRecipes(fetchedRecipes)
+            setError(null)
         }
         }
 
         fetchData()
     }, [search,slug])
-
-    if (error) {
-        return <div>Error: {error}</div>
-    }
-
+ 
     if (!recipes) {
         return <div>Loading...</div>
     }
 
     return (
-        <div className='w-full flex items-center justify-center flex-col'>
+        <div className='w-full flex items-center flex-col'>
             <Input placeholder='Søk' value={input} onChange={(e)=>setInput(e.target.value)} onKeyDown={(e)=>{if(e.key=='Enter')setSearch(input)}} className='w-80' />
             {/* REMOVE ON LATE POINT WHEN RECIPES.LENGTH >= 8*/}
+            {error && <div className='p-5'>Feil: ingen oppskrifter lik {`'${search}'`}</div> }
+            { !error &&
             <div className={`pt-6 grid grid-cols-1 grid-rows-${recipes.length<8?recipes.length:"8"} gap-4 lg:grid-cols-4 lg:grid-rows-2 sm:grid-cols-2 sm:grid-rows-${recipes.length<8?Math.ceil(recipes.length/2):"4"}`}>
                 {recipes.map((recipe) => (
                     <Link href={`../recipe/${recipe.id}`} key={recipe.id} className='w-[15rem]'>
@@ -56,6 +55,7 @@ export default function RecipesPage({slug}:{slug:string}){
                     </Link>
                 ))}
             </div>
+            }
         </div>
     )
 }
