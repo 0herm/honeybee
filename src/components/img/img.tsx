@@ -1,7 +1,6 @@
 'use client'
 
-import Image from "next/image"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 type imgProp = {
     id: number
@@ -10,16 +9,35 @@ type imgProp = {
 
 export default function LoadImage({id, style}:imgProp){
 
-    const [imgSrc, setImgSrc] = useState(`/imgs/${id}.webp`);
+    const [imgSrc, setImgSrc] = useState(`/imgs/fallback.svg`)
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                const response = await fetch(`/imgs/${id}.webp`)
+    
+                if (response.ok) {
+                    setImgSrc(`/imgs/${id}.webp`) 
+                }else{
+                    setImgSrc('/imgs/fallback.svg')
+                }
+            } catch (error) {
+                console.error('Error fetching image:', error)
+                setImgSrc('/imgs/fallback.svg')
+            }
+        }
+    
+        fetchImage()
+      }, [id])
 
     return(
-        <Image
+        <img
             src={imgSrc}
             alt="bilde"
             width={3840}
             height={2880}
             className={style}
-            onError={() =>setImgSrc('/fallback.svg')}
+            onError={() =>setImgSrc('/imgs/fallback.svg')}
         />
     )
 }
