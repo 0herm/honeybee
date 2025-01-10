@@ -1,6 +1,5 @@
 'use client'
 
-
 import Link from 'next/link'
 
 import { useState, useEffect } from 'react'
@@ -14,7 +13,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 
-export default function RecipesPage(){
+export default function RecipesPage({slug}:{slug:string}){
 
     const [input, setInput] = useState<string>('')
     const [search, setSearch] = useState<string>('')
@@ -23,7 +22,7 @@ export default function RecipesPage(){
 
     useEffect(() => {
         const fetchData = async () => {
-        const fetchedRecipes = await fetchByTitle(search)
+        const fetchedRecipes = await fetchByTitle(search,slug)
         
         if (!fetchedRecipes) {
             setError('No recipe data found')
@@ -33,7 +32,7 @@ export default function RecipesPage(){
         }
 
         fetchData()
-    }, [search])
+    }, [search,slug])
 
     if (error) {
         return <div>Error: {error}</div>

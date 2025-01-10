@@ -20,9 +20,9 @@ export type RecipeProp = {
 
 export type Recipes = RecipeProp[]
 
-export async function fetchByTitle(q:string):Promise<Recipes | null> {
+export async function fetchByTitle(title:string,type:string):Promise<Recipes | null> {
     try {
-        const res = await fetch(`/api/recipesByTitle?title=${q}`,{
+        const res = await fetch(`/api/recipesByTitle?title=${title}&type=${type}`,{
             next: { revalidate: 3600 },
             method: 'GET',
             headers: {

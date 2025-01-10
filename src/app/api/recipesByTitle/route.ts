@@ -18,19 +18,30 @@ export async function GET(req: Request) {
 
 		const url = new URL(req.url)
 		const title = url.searchParams.get('title')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
-		
-		const queryTitle = `%${title}%`
+		const type = url.searchParams.get('type')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
 
-		if (typeof title !== 'string' || title.length > 30) {
+		if (typeof title !== 'string' || title.length > 30 || typeof type !== 'string' || type.length > 30) {
 			return NextResponse.json(
 			  	{ error: 'Invalid title parameter' },
 			  	{ status: 400 }
 			)
-		  }
+		}
+
+		const queryTitle = `%${title}%`
+
+		const conditions = ['title LIKE ?']
+		const params = [queryTitle]
+
+		if (type && type !== 'undefined') {
+			conditions.push('type = ?')
+			params.push(type)
+		}
+
+		const whereClause = conditions.join(' AND ')
 		
 		const recipe = await db.all(`
 			SELECT id,title FROM recipes 
-			WHERE title LIKE ? 
+			WHERE ${whereClause}
 			ORDER BY 
 				CASE 
 					WHEN type = 'middag' THEN 1
@@ -40,7 +51,7 @@ export async function GET(req: Request) {
 				END, 
 				title
 			LIMIT 8`
-			, queryTitle
+			, ...params 
 		)
 
 		return NextResponse.json(recipe)

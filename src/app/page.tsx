@@ -33,7 +33,7 @@ export default function Home() {
 	)
 }
 
-function ContentType({type, typeNB}:ContentTypeProp){
+function ContentType({typeNB}:ContentTypeProp){
 	const [recipes, setRecipes] = useState<Recipes | null>(null)
 	const [error, setError]   = useState<string | null>(null)
 	
@@ -61,7 +61,7 @@ function ContentType({type, typeNB}:ContentTypeProp){
 
 	return (
 		<div className={`flex flex-col gap-2 w-[12rem] ${recipes.length>=2?'md:w-[25rem]':''} ${recipes.length>=4?'lg:w-[51rem]':''} `}>
-			<Link href={`/${type}`} className="flex flex-row justify-start items-center gap-1">
+			<Link href={`/recipes/${typeNB}`} className="flex flex-row justify-start items-center gap-1">
 				<h1 className="capitalize">{typeNB}</h1>
 				<ArrowRight width={20} height={20} />
 			</Link>

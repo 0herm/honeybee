@@ -27,15 +27,15 @@ const components: { title: string, href: string }[] = [
 	},
 	{
 		title: "Middag",
-		href: "/dinner"
+		href: "/recipes/middag"
 	},
 	{
 		title: "Bakst",
-		href: "/baking"
+		href: "/recipes/bakst"
 	},
 	{
 		title: "Drikke",
-		href: "/drink"
+		href: "/recipes/drikke"
 	}
 ]
 
