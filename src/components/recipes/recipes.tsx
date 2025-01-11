@@ -21,7 +21,7 @@ export default function RecipesPage({slug}:{slug:string}){
     const [error, setError]   = useState<string | null>(null)
 
     useEffect(() => {
-        const fetchData = async () => {
+        async function fetchData() {
         const fetchedRecipes = await fetchByTitle(search,slug)
         
         if (!fetchedRecipes) {

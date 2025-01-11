@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useEffect, useState } from "react"
 
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
@@ -19,28 +19,31 @@ import {
 import { Button } from "@/components/ui/button"
 
 import Logo from "@/components/svg/logo"
-
-const components: { title: string, href: string }[] = [
-	{
-		title: "Alle",
-		href: "/recipes",
-	},
-	{
-		title: "Middag",
-		href: "/recipes/middag"
-	},
-	{
-		title: "Bakst",
-		href: "/recipes/bakst"
-	},
-	{
-		title: "Drikke",
-		href: "/recipes/drikke"
-	}
-]
+import { fetchTypes } from "@/utils/fetch"
 
 export default function NavBar() {
 	const { theme, setTheme } = useTheme()
+	const [components, setComponents] = useState<{ title: string, href: string }[]>([
+		{ title: "alle", href: "/recipes" }
+	])
+
+	useEffect(() => {
+		async function fetchData() {
+			const fetchedTypes = await fetchTypes()		  
+			if (fetchedTypes) {
+				setComponents((prevComponents) => [
+				...prevComponents,
+				...fetchedTypes.map((component) => ({
+					title: component.typeNO,
+					href: `/recipes/${component.type}`
+				}))
+				])
+			}
+		}
+	
+		fetchData()
+	}, [])
+
 
 	return (
 		<div className="flex flex-row justify-between items-center w-full h-full pr-1">
@@ -59,7 +62,7 @@ export default function NavBar() {
 								<NavigationMenuLink asChild key={component.title}>
 									<Link 
 										href={component.href}
-										className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center"
+										className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize"
 									>
 									{component.title}
 									</Link>

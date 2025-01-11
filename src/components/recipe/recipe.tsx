@@ -9,7 +9,7 @@ export default function Recipe({ id }: { id: string }) {
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-        const fetchData = async () => {
+        async function fetchData() {
             try {
                 const fetchedRecipe = await fetchById(id)
                 if (!fetchedRecipe) {

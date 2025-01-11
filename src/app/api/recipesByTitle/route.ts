@@ -44,9 +44,9 @@ export async function GET(req: Request) {
 			WHERE ${whereClause}
 			ORDER BY 
 				CASE 
-					WHEN type = 'middag' THEN 1
-					WHEN type = 'bakst'  THEN 2
-					WHEN type = 'drikke' THEN 3
+					WHEN type = 'dinner' THEN 1
+					WHEN type = 'baking' THEN 2
+					WHEN type = 'drink'  THEN 3
 					ELSE 4
 				END, 
 				title

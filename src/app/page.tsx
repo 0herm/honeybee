@@ -8,38 +8,57 @@ import { ArrowRight } from "lucide-react"
 
 import CarouselComponent from "@/components/carousel/carousel"
 
-import { fetchByType, Recipes } from "@/utils/fetch"
+import { fetchByType, fetchTypes, Recipes, Types } from "@/utils/fetch"
 
 type ContentTypeProp = {
 	type: string
-	typeNB: string
+	typeNO: string
 }
 
 export default function Home() {
+
+	const [types, setTypes] = useState<Types[] | null>(null)
+	const [error, setError] = useState<string  | null>(null)
+
+
+	useEffect(() => {
+		async function fetchData() {
+		const fetchedTypes = await fetchTypes()
+		
+		if (!fetchedTypes) {
+			setError('No types found')
+		} else {
+			setTypes(fetchedTypes)
+		}
+		}
+
+		fetchData()
+	}, [])
+
+	if(error){
+		return ( <div className="w-full text-center">Feil ved henting av kategorier</div>)
+	}
 
 	return (
 		<div className="w-full flex justify-center">
 			<div className='flex flex-col items-center gap-10 px-20 lg:w-[61rem] md:w-[35rem] w-[22rem]'>
 				
-				<ContentType type='dinner' typeNB='middag'/>
-
-				<ContentType type='baking' typeNB='bakst'/>
-
-				<ContentType type='drink'  typeNB='drikke'/>
-
+				{types?.map((content) => (
+					<ContentType key={content.type} type={content.type} typeNO={content.typeNO}/>
+				))}
 				
 			</div>
 		</div>
 	)
 }
 
-function ContentType({typeNB}:ContentTypeProp){
+function ContentType({type,typeNO}:ContentTypeProp){
 	const [recipes, setRecipes] = useState<Recipes | null>(null)
 	const [error, setError]   = useState<string | null>(null)
 	
 	useEffect(() => {
-		const fetchData = async () => {
-		const fetchedRecipes = await fetchByType(typeNB)
+		async function fetchData() {
+		const fetchedRecipes = await fetchByType(type)
 		
 		if (!fetchedRecipes) {
 			setError('No recipe data found')
@@ -49,7 +68,7 @@ function ContentType({typeNB}:ContentTypeProp){
 		}
 
 		fetchData()
-	}, [])
+	}, [type])
 
 	if (error) {
         return <div>Error: {error}</div>
@@ -61,8 +80,8 @@ function ContentType({typeNB}:ContentTypeProp){
 
 	return (
 		<div className={`flex flex-col gap-2 w-[12rem] ${recipes.length>=2?'md:w-[25rem]':''} ${recipes.length>=4?'lg:w-[51rem]':''} `}>
-			<Link href={`/recipes/${typeNB}`} className="flex flex-row justify-start items-center gap-1">
-				<h1 className="capitalize">{typeNB}</h1>
+			<Link href={`/recipes/${type}`} className="flex flex-row justify-start items-center gap-1">
+				<h1 className="capitalize">{typeNO}</h1>
 				<ArrowRight width={20} height={20} />
 			</Link>
 			<CarouselComponent data={recipes}/>

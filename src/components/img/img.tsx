@@ -12,7 +12,7 @@ export default function LoadImage({id, style}:imgProp){
     const [imgSrc, setImgSrc] = useState(`/imgs/fallback.svg`)
 
     useEffect(() => {
-        const fetchImage = async () => {
+        async function fetchImage() {
             try {
                 const response = await fetch(`/imgs/${id}.webp`)
     

@@ -18,6 +18,11 @@ export type RecipeProp = {
     instructions: string
 }
 
+export type Types = {
+	type: string
+	typeNO: string
+}
+
 export type Recipes = RecipeProp[]
 
 export async function fetchByTitle(title:string,type:string):Promise<Recipes | null> {
@@ -83,6 +88,30 @@ export async function fetchByType(q:string):Promise<Recipes | null> {
         }
   
         const data: Recipes = await res.json()
+      
+        return data.length > 0 ? data : null
+
+    } catch (error) {
+        console.error('Error fetching recipe data:', error)
+        return null
+    }
+}
+
+export async function fetchTypes():Promise<Types[] | null> {
+    try {
+        const res = await fetch(`/api/recipeTypes`,{
+            next: { revalidate: 3600 },
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+      
+        if (!res.ok) {
+            throw new Error('Failed to fetch recipe data')
+        }
+  
+        const data: Types[] = await res.json()
       
         return data.length > 0 ? data : null
 
