@@ -8,9 +8,9 @@ import { ArrowRight } from "lucide-react"
 
 import CarouselComponent from "@/components/carousel/carousel"
 
-import { fetchByType, fetchTypes } from "@/utils/fetch"
+import { fetchByType } from "@/utils/fetch"
 
-import { Recipes, Types } from "@parent/constants"
+import { Recipes, recipeTypes } from "@parent/constants"
 
 type ContentTypeProp = {
 	type: string
@@ -19,25 +19,7 @@ type ContentTypeProp = {
 
 export default function Home() {
 
-	const [types, setTypes] = useState<Types[] | null>(null)
-	const [error, setError] = useState<string  | null>(null)
-
-
-	useEffect(() => {
-		async function fetchData() {
-		const fetchedTypes = await fetchTypes()
-		
-		if (!fetchedTypes) {
-			setError('No types found')
-		} else {
-			setTypes(fetchedTypes)
-		}
-		}
-
-		fetchData()
-	}, [])
-
-	if(error){
+	if(!recipeTypes){
 		return ( <div className="w-full text-center">Feil ved henting av kategorier</div>)
 	}
 
@@ -45,9 +27,9 @@ export default function Home() {
 		<div className="w-full flex justify-center">
 			<div className='flex flex-col items-center gap-10 px-20 lg:w-[61rem] md:w-[35rem] w-[22rem]'>
 				
-				{types?.map((content) => (
-					<ContentType key={content.type} type={content.type} typeNO={content.typeNO}/>
-				))}
+				{Object.entries(recipeTypes).map(([key, value]) => {
+					return <ContentType key={key} type={key} typeNO={value}/>
+				})}
 				
 			</div>
 		</div>

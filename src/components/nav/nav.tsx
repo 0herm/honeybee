@@ -1,7 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
-
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import Link from "next/link"
@@ -15,35 +13,14 @@ import {
 	NavigationMenuList,
 	NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
-
 import { Button } from "@/components/ui/button"
 
 import Logo from "@/components/svg/logo"
-import { fetchTypes } from "@/utils/fetch"
+
+import { recipeTypes } from "@parent/constants" 
 
 export default function NavBar() {
 	const { theme, setTheme } = useTheme()
-	const [components, setComponents] = useState<{ title: string, href: string }[]>([
-		{ title: "alle", href: "/recipes" }
-	])
-
-	useEffect(() => {
-		async function fetchData() {
-			const fetchedTypes = await fetchTypes()		  
-			if (fetchedTypes) {
-				setComponents((prevComponents) => [
-				...prevComponents,
-				...fetchedTypes.map((component) => ({
-					title: component.typeNO,
-					href: `/recipes/${component.type}`
-				}))
-				])
-			}
-		}
-	
-		fetchData()
-	}, [])
-
 
 	return (
 		<div className="flex flex-row justify-between items-center w-full h-full pr-1">
@@ -58,16 +35,26 @@ export default function NavBar() {
 						<NavigationMenuTrigger>Oppskrifter</NavigationMenuTrigger>
 						<NavigationMenuContent>
 							<ul className="flex flex-col w-[100px] p-2 gap-2">
-							{components.map((component) => (
-								<NavigationMenuLink asChild key={component.title}>
-									<Link 
-										href={component.href}
-										className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize"
-									>
-									{component.title}
-									</Link>
-								</NavigationMenuLink>
-							))}
+								<NavigationMenuLink asChild>
+										<Link 
+											href={`/recipes/`}
+											className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize"
+										>
+										Alle
+										</Link>
+									</NavigationMenuLink>
+								{Object.entries(recipeTypes).map(([key, value]) => {
+									return ( 
+									<NavigationMenuLink asChild key={key}>
+										<Link 
+											href={`/recipes/${key}`}
+											className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize"
+										>
+										{value}
+										</Link>
+									</NavigationMenuLink>
+									)
+								})}
 							</ul>
 						</NavigationMenuContent>
 					</NavigationMenuItem>

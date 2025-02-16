@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
+import Image from 'next/image'
 
 type imgProp = {
     id: number
@@ -31,7 +32,7 @@ export default function LoadImage({id, style}:imgProp){
       }, [id])
 
     return(
-        <img
+        <Image
             src={imgSrc}
             alt="bilde"
             width={3840}

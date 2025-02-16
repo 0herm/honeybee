@@ -1,6 +1,6 @@
 'use server'
 
-import { queryBodyProp, RecipeProp, Recipes, Types } from "@parent/constants"
+import { queryBodyProp, RecipeProp, Recipes } from "@parent/constants"
 
 export async function fetchByTitle(title:string,type:string):Promise<Recipes | null> {
     try {
@@ -68,31 +68,6 @@ export async function fetchByType(q:string):Promise<Recipes | null> {
         }
   
         const data: Recipes = await res.json()
-      
-        return data.length > 0 ? data : null
-
-    } catch (error) {
-        console.error('Error fetching recipe data:', error)
-        return null
-    }
-}
-
-export async function fetchTypes():Promise<Types[] | null> {
-    try {
-        const res = await fetch(`http://localhost:3000/api/recipeTypes`,{
-            next: { revalidate: 3600 },
-            cache: 'no-store',
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-      
-        if (!res.ok) {
-            throw new Error('Failed to fetch recipe data')
-        }
-  
-        const data: Types[] = await res.json()
       
         return data.length > 0 ? data : null
 
