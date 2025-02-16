@@ -1,9 +1,10 @@
 "use client"
 
-import EditPage, { FormValues } from "@/components/form/form"
+import EditPage, { FormValues } from "@/components/editPage/editPage"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { fetchById, fetchByTitle, Recipes } from "@/utils/fetch"
+import { fetchById, fetchByTitle } from "@/utils/fetch"
+import { Recipes } from "@parent/constants"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
@@ -14,44 +15,45 @@ export default function Page() {
 	const [recipes, setRecipes] = useState<Recipes>()
 	const [values, setValues] = useState<FormValues|null>(null)
 
+	function resetStates() {setValues(null)}
+
 	useEffect(() => {
 		async function fetchData() {
-		const fetchedRecipes = await fetchByTitle(search,"")
-		
-		if (!fetchedRecipes) {
-			setError('No recipe data found')
-		} else {
-			setRecipes(fetchedRecipes)
-			setError(null)
+			const fetchedRecipes = await fetchByTitle(search,"")
+			if (!fetchedRecipes) {
+				setError('No recipe data found')
+			} else {
+				setRecipes(fetchedRecipes)
+				setError(null)
+			}
 		}
-		}
-
 		fetchData()
 	}, [search])
 	
-	if(values) return (<EditPage values={values} setValues={setValues} />)
+	if(values) return (<EditPage isNew={false} values={values} resetStates={resetStates} />)
 
 	function handleClick(id:string) {
-
 		async function fetchData() {
 		const fetchedRecipe = await fetchById(id)
-		
 		if (!fetchedRecipe) {
 			setError('No recipe data found')
 		} else {
 			setValues(
-			{
-				title: fetchedRecipe.title,
-				image: `/imgs/${fetchedRecipe.id}.webp`,
-				sections: JSON.parse(String(fetchedRecipe.ingredients)),
-				instructions: fetchedRecipe.instructions,
-			})
+				{
+					title: 			fetchedRecipe.title,
+					date: 			new Date(fetchedRecipe.date),
+					type: 			fetchedRecipe.type,
+					quantity: 		fetchedRecipe.quantity,
+					time: 			String(fetchedRecipe.time),
+					image: 			`/imgs/${fetchedRecipe.id}.webp`,
+					sections: 		JSON.parse(String(fetchedRecipe.ingredients)),
+					instructions: 	fetchedRecipe.instructions,
+				}
+			)
 			setError(null)
 		}
 		}
-
 		fetchData()
-		
 	}
 
 	return(

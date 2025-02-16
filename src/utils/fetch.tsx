@@ -1,33 +1,10 @@
-export type Ingredient = {
-    ingredient: string
-    quantity: string
-}
-  
-export type RecipePart = {
-    title: string
-    ingredients: Ingredient[]
-}
-  
-export type RecipeProp = {
-    id: number
-    title: string
-    type: string
-    quantity: string
-    time: number
-    ingredients: RecipePart[]
-    instructions: string
-}
+'use server'
 
-export type Types = {
-	type: string
-	typeNO: string
-}
-
-export type Recipes = RecipeProp[]
+import { queryBodyProp, RecipeProp, Recipes, Types } from "@parent/constants"
 
 export async function fetchByTitle(title:string,type:string):Promise<Recipes | null> {
     try {
-        const res = await fetch(`/api/recipesByTitle?title=${title}&type=${type}`,{
+        const res = await fetch(`http://localhost:3000/api/recipesByTitle?title=${title}&type=${type}`,{
             next: { revalidate: 3600 },
             method: 'GET',
             headers: {
@@ -51,7 +28,7 @@ export async function fetchByTitle(title:string,type:string):Promise<Recipes | n
 
 export async function fetchById(q:string):Promise<RecipeProp | null> {
     try {
-        const res = await fetch(`/api/recipeById?id=${q}`,{
+        const res = await fetch(`http://localhost:3000/api/recipeById?id=${q}`,{
             next: { revalidate: 3600 },
             method: 'GET',
             headers: {
@@ -75,7 +52,7 @@ export async function fetchById(q:string):Promise<RecipeProp | null> {
 
 export async function fetchByType(q:string):Promise<Recipes | null> {
     try {
-        const res = await fetch(`/api/recipesByType?type=${q}`,{
+        const res = await fetch(`http://localhost:3000/api/recipesByType?type=${q}`,{
             next: { revalidate: 3600 },
             method: 'GET',
             headers: {
@@ -99,7 +76,7 @@ export async function fetchByType(q:string):Promise<Recipes | null> {
 
 export async function fetchTypes():Promise<Types[] | null> {
     try {
-        const res = await fetch(`/api/recipeTypes`,{
+        const res = await fetch(`http://localhost:3000/api/recipeTypes`,{
             next: { revalidate: 3600 },
             method: 'GET',
             headers: {
@@ -117,6 +94,58 @@ export async function fetchTypes():Promise<Types[] | null> {
 
     } catch (error) {
         console.error('Error fetching recipe data:', error)
+        return null
+    }
+}
+
+export async function addRecipe({queryBody}:{queryBody:queryBodyProp}):Promise<string|null> {
+    try {
+        const res = await fetch(`http://localhost:3000/api/addRecipe`,{
+            next: { revalidate: 3600 },
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.API_TOKEN}`
+            },
+            body: JSON.stringify(queryBody)
+        })
+
+        const data = await res.json()
+      
+        if (!res.ok) {
+            throw new Error('Failed to add recipe')
+        }
+  
+        return data 
+
+    } catch (error) {
+        console.error('Error adding recipe:', error)
+        return null
+    }
+}
+
+export async function editRecipe({queryBody}:{queryBody:queryBodyProp}):Promise<string|null> {
+    try {
+        const res = await fetch(`http://localhost:3000/api/editRecipe`,{
+            next: { revalidate: 3600 },
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.API_TOKEN}`
+            },
+            body: JSON.stringify(queryBody)
+        })
+
+        const data = await res.json()
+      
+        if (!res.ok) {
+            throw new Error('Failed to add recipe')
+        }
+  
+        return data 
+
+    } catch (error) {
+        console.error('Error adding recipe:', error)
         return null
     }
 }

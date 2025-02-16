@@ -1,19 +1,43 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { recipeTypes } from "@parent/constants"
+
+import { addRecipe, editRecipe } from "@/utils/fetch"
+
+import Link from "next/link"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+
 import { useForm, useFieldArray, type Control } from "react-hook-form"
+
 import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import Image from "next/image"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+
+import { Calendar as CalendarIcon } from "lucide-react"
 import { Plus, Minus } from "lucide-react"
-import Link from "next/link"
+
+import { cn } from "@/lib/utils"
+
+import { format } from "date-fns"
+
+
+
 
 const formSchema = z.object({
-	title: z.string(),
-	image: z.instanceof(File).optional().or(z.string().optional()),
+	title: z.string().min(1,{message:"Required"}),
+	date: z.date(),
+	type: z.string().min(1,{message:"Required"}),
+	quantity: z.string().min(1,{message:"Required"}),
+	time: z.string().min(1,{message:"Required"}),
+	image: z.instanceof(File).or(z.string()),
 	sections: z.array(
 		z.object({
 			title: z.string().optional(),
@@ -25,50 +49,65 @@ const formSchema = z.object({
 			),
 		}),
 	),
-	instructions: z.string(),
+	instructions: z.string().min(1,{message:"Required"}),
 })
-
 export type FormValues = z.infer<typeof formSchema>;
 
-export default function EditPage({ values, setValues }: { values?: FormValues, setValues?: React.Dispatch<React.SetStateAction<FormValues | null>> }) {
+
+export default function EditPage({ isNew, values, resetStates }:{ isNew: boolean, values?: FormValues, resetStates?: () => void }) {
     
+	const router = useRouter()
+
     const defaultValues = values ? values :
     {
-        title: "",
-        image: undefined,
-        sections: [{ title: "", ingredients: [{ quantity: "", ingredient: "" }] }],
-        instructions: "",
+	    title: 			'',
+		date: 			new Date,
+		type: 			'',
+		quantity: 		'',
+		time: 			'',
+        image: 			undefined,
+        sections: 		[{ title: "", ingredients: [{ quantity: "", ingredient: "" }] }],
+        instructions: 	'',
     }
-
-	const [imageUrl, setImageUrl] = useState<string | undefined>(typeof defaultValues.image === "string" ? defaultValues.image : undefined);
-
   	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 			defaultValues: defaultValues
   	})
 
-	const {
-		fields: sectionFields,
-		append: appendSection,
-		remove: removeSection,
-	} = useFieldArray({
-		control: form.control,
-		name: "sections",
-	})
+	const { fields: sectionFields, append: appendSection, remove: removeSection, } = useFieldArray({ control: form.control, name: "sections", })
 
+	
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		console.log(values)
+		const query = {
+			queryBody: {
+				title: 			values.title,
+				date: 			values.date.toISOString().split("T")[0],
+				type: 			values.type,
+				quantity: 		values.quantity,
+				time: 			Number(values.time),
+				ingredients: 	JSON.stringify(values.sections),
+				instructions: 	values.instructions
+			}
+		}
+
+		if(isNew)		addRecipe(query)
+		else if(!isNew) editRecipe(query)
+		router.push('/protected')
 	}
 
 	return (
 		<div className="flex flex-col">
-		{setValues && <Button className="w-[4rem] mb-[2rem]" type="button" variant="outline" onClick={() =>setValues(null)}>
-			Back
+
+		{!isNew && <Button className="w-[4rem] mb-[2rem]" variant="outline" asChild onClick={() => resetStates && resetStates()}>
+			<Link href="/protected/edit">Back</Link>
 		</Button>}
-		{!setValues && <Button className="w-[4rem] mb-[2rem]" variant="outline" asChild>
+		{isNew && <Button className="w-[4rem] mb-[2rem]" variant="outline" asChild>
             <Link href="/protected">Back</Link>
 		</Button>}
+
 		<div className="flex flex-row *:min-w-[45vw]">
+
+			{/* FORM: */}
 			<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 				<div className="max-w-[20rem] p-2 flex flex-col gap-[1rem]">
@@ -78,9 +117,104 @@ export default function EditPage({ values, setValues }: { values?: FormValues, s
 						name="title"
 						render={({ field }) => (
 							<FormItem>
-							<FormLabel>Title</FormLabel>
+								<FormLabel>Title</FormLabel>
+								<FormControl>
+									<Input placeholder="Title" {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="date"
+						render={({ field }) => (
+							<FormItem className="flex flex-col">
+							<FormLabel>Date</FormLabel>
+							<Popover>
+								<PopoverTrigger asChild>
+								<FormControl>
+									<Button
+									variant={"outline"}
+									className={cn(
+										"w-[240px] pl-3 text-left font-normal",
+										!field.value && "text-muted-foreground"
+									)}
+									>
+									{field.value ? (
+										format(field.value, "PPP")
+									) : (
+										<span>Pick a date</span>
+									)}
+									<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+									</Button>
+								</FormControl>
+								</PopoverTrigger>
+								<PopoverContent className="w-auto p-0" align="start">
+								<Calendar
+									mode="single"
+									selected={field.value ? new Date(field.value) : undefined}
+									onSelect={field.onChange}
+									disabled={(date) =>
+										date > new Date() || date < new Date("1900-01-01")
+									}
+									initialFocus
+								/>
+								</PopoverContent>
+							</Popover>
+							<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="type"
+						render={({ field }) => (
+							<FormItem>
+							<FormLabel>Type</FormLabel>
+							<Select onValueChange={field.onChange} defaultValue={field.value}>
+								<FormControl>
+								<SelectTrigger>
+									<SelectValue placeholder="Select type" />
+								</SelectTrigger>
+								</FormControl>
+								<SelectContent>
+								{
+									Object.entries(recipeTypes).map(([key, value]) => {
+										return <SelectItem key={key} value={key}>{value}</SelectItem>
+									})
+								}
+								</SelectContent>
+							</Select>
+							<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="quantity"
+						render={({ field }) => (
+							<FormItem>
+							<FormLabel>Quantity</FormLabel>
 							<FormControl>
-								<Input placeholder="Title" {...field} />
+								<Input placeholder="Quantity" {...field} />
+							</FormControl>
+							<FormMessage />
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						control={form.control}
+						name="time"
+						render={({ field }) => (
+							<FormItem>
+							<FormLabel>Time</FormLabel>
+							<FormControl>
+								<Input placeholder="Time (minutes)" type="number" {...field} />
 							</FormControl>
 							<FormMessage />
 							</FormItem>
@@ -93,16 +227,13 @@ export default function EditPage({ values, setValues }: { values?: FormValues, s
 						render={({ field }) => (
 							<FormItem>
 							<FormLabel>Image</FormLabel>
-							<FormControl>
+							<FormControl> 
 								<Input
 									placeholder="Image"
 									type="file"
 									onChange={(e) => {
 										const file = e.target.files?.[0]
-										if (file) {
-										field.onChange(file)
-										setImageUrl(URL.createObjectURL(file))
-										}
+										if (file) field.onChange(file)
 									}}
 								/>
 								</FormControl>
@@ -111,6 +242,7 @@ export default function EditPage({ values, setValues }: { values?: FormValues, s
 							)}
 					/>
 					
+					<FormLabel>Ingredients</FormLabel>
 					{sectionFields.map((section, sectionIndex) => (
                         <div key={section.id} className="border p-4 rounded-md">
                             <FormField
@@ -150,30 +282,33 @@ export default function EditPage({ values, setValues }: { values?: FormValues, s
 					    Add Section
 					</Button>
 					
-                    <FormField
-                        control={form.control}
-                        name="instructions"
-                        render={({ field }) => (
-                            <FormItem>
-                            <FormLabel>Instructions</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Instructions" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                            </FormItem>
-                        )}
+					<FormField
+						control={form.control}
+						name="instructions"
+						render={({ field }) => (
+							<FormItem>
+							<FormLabel>Instructions</FormLabel>
+							<FormControl>
+								<Textarea placeholder="Instructions" {...field}/>
+							</FormControl>
+							<FormMessage />
+							</FormItem>
+						)}
 					/>
+
 					<Button type="submit">Submit</Button>
 				</div>
 			</form>
 			</Form>
 
+			{/* PREVIEW: */}
+
 			<div className="w-full max-w-[40rem] p-2">
 				<h1>Preview:</h1>
 				<h1 className="capitalize text-2xl font-semibold">{form.watch("title")}</h1>
-				{imageUrl && (
+				{(
 					<Image
-						src={imageUrl || "imgs/placeholder.svg"}
+						src={form.watch("image") instanceof File ? URL.createObjectURL(form.watch("image") as Blob) : typeof form.watch("image") === "string" ? form.watch("image") as string : "/imgs/fallback.svg"}
 						width={500}
 						height={500}
 						alt="Recipe image"
@@ -201,7 +336,7 @@ export default function EditPage({ values, setValues }: { values?: FormValues, s
 	)
 	}
 
-	function IngredientFields({ nestIndex, control }: {nestIndex:number, control:Control<z.infer<typeof formSchema>>}) {
+function IngredientFields({ nestIndex, control }: {nestIndex:number, control:Control<z.infer<typeof formSchema>>}) {
 	const { fields, append, remove } = useFieldArray({
 		control,
 		name: `sections.${nestIndex}.ingredients`,
