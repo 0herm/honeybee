@@ -58,6 +58,6 @@ export async function GET(req: Request) {
 	} catch (error) {
 		return NextResponse.json({ error: `Database error: ${error}` }, { status: 500 })
 	} finally {
-		db?.close()
+		await db?.close()
 	}
 }

@@ -5,13 +5,14 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 import LoadImage from '@/components/img/img'
-import { fetchByTitle, Recipes } from '@/utils/fetch'
+import { fetchByTitle } from '@/utils/fetch'
 
 import {
     Card,
     CardTitle
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Recipes } from '@parent/constants'
 
 export default function RecipesPage({slug}:{slug:string}){
 

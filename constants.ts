@@ -46,4 +46,5 @@ export type queryBodyProp = {
     time: number
     ingredients: string
     instructions: string
+    id?: number
 } 

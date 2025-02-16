@@ -16,9 +16,9 @@ export async function POST(req: Request) {
 
     if (token !== API_TOKEN) return NextResponse.json({ error: 'Forbidden: Invalid' }, { status: 403 })
 
-        const { title, date, type, quantity, time, ingredients, instructions } = await req.json();
+        const { title, date, type, quantity, time, ingredients, instructions, id } = await req.json();
     
-        if (!title || !date || !type || !quantity || !time || !ingredients || !instructions) {
+        if (!title || !date || !type || !quantity || !time || !ingredients || !instructions || !id) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
@@ -28,9 +28,17 @@ export async function POST(req: Request) {
             db = await openDb()
     
             await db.run(`
-                INSERT INTO recipes (typeNO, title, date, type, quantity, time, ingredients, instructions)
-                VALUES ('REMOVE',?, ?, ?, ?, ?, ?, ?);
-              `, title, date, type, quantity, time, ingredients, instructions);
+                UPDATE recipes
+                SET typeNO = 'REMOVE', 
+                    title = ?, 
+                    date = ?, 
+                    type = ?, 
+                    quantity = ?, 
+                    time = ?, 
+                    ingredients = ?, 
+                    instructions = ?
+                WHERE id = ?;
+              `, title, date, type, quantity, time, ingredients, instructions, id);
     
             return NextResponse.json({ message: 'Successfully added Recipe' }, { status: 200 });
         } catch (error) {

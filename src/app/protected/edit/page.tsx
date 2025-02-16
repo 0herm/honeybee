@@ -14,6 +14,7 @@ export default function Page() {
 	const [error, setError] = useState<string|null>('')
 	const [recipes, setRecipes] = useState<Recipes>()
 	const [values, setValues] = useState<FormValues|null>(null)
+	const [id, setId] = useState<number>()
 
 	function resetStates() {setValues(null)}
 
@@ -30,7 +31,7 @@ export default function Page() {
 		fetchData()
 	}, [search])
 	
-	if(values) return (<EditPage isNew={false} values={values} resetStates={resetStates} />)
+	if(values) return (<EditPage isNew={false} values={values} id={id} resetStates={resetStates} />)
 
 	function handleClick(id:string) {
 		async function fetchData() {
@@ -68,7 +69,7 @@ export default function Page() {
 				{!error && recipes && recipes.map((recipe) => (
 					<Button 
 						key={recipe.id}
-						onClick={()=>{handleClick(String(recipe.id))}}
+						onClick={()=>{handleClick(String(recipe.id));setId(recipe.id)}}
 						type="button" 
 						variant="outline"
 						className="mt-2"

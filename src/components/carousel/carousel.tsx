@@ -11,7 +11,8 @@ import {
 	CarouselPrevious,
 } from "@/components/ui/carousel"
 import LoadImage from "@/components/img/img"
-import { Recipes } from "@/utils/fetch"
+
+import { Recipes } from "@parent/constants"
 
 type CarouselProp = {
 	data: Recipes

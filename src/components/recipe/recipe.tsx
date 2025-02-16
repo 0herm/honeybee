@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react"
 import LoadImage from "@/components/img/img"
-import { fetchById, RecipeProp } from "@/utils/fetch"
+import { fetchById } from "@/utils/fetch"
+import { RecipeProp } from "@parent/constants"
 
 export default function Recipe({ id }: { id: string }) {
     const [recipe, setRecipe] = useState<RecipeProp | null>(null)

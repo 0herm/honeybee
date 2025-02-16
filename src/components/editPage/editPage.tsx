@@ -29,8 +29,6 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 
 
-
-
 const formSchema = z.object({
 	title: z.string().min(1,{message:"Required"}),
 	date: z.date(),
@@ -54,7 +52,7 @@ const formSchema = z.object({
 export type FormValues = z.infer<typeof formSchema>;
 
 
-export default function EditPage({ isNew, values, resetStates }:{ isNew: boolean, values?: FormValues, resetStates?: () => void }) {
+export default function EditPage({ isNew, values, id, resetStates }:{ isNew: boolean, values?: FormValues, id?: number, resetStates?: () => void }) {
     
 	const router = useRouter()
 
@@ -78,21 +76,21 @@ export default function EditPage({ isNew, values, resetStates }:{ isNew: boolean
 
 	
 	function onSubmit(values: z.infer<typeof formSchema>) {
-		const query = {
-			queryBody: {
-				title: 			values.title,
-				date: 			values.date.toISOString().split("T")[0],
-				type: 			values.type,
-				quantity: 		values.quantity,
-				time: 			Number(values.time),
-				ingredients: 	JSON.stringify(values.sections),
-				instructions: 	values.instructions
-			}
+		const queryBody = {
+			title: 			values.title,
+			date: 			values.date.toISOString().split("T")[0],
+			type: 			values.type,
+			quantity: 		values.quantity,
+			time: 			Number(values.time),
+			ingredients: 	JSON.stringify(values.sections),
+			instructions: 	values.instructions
 		}
 
-		if(isNew)		addRecipe(query)
-		else if(!isNew) editRecipe(query)
+		if (isNew) addRecipe(queryBody)
+		else if (!isNew) editRecipe({ ...queryBody, id: id })
 		router.push('/protected')
+
+		console.log({ ...queryBody, id: id })
 	}
 
 	return (

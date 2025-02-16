@@ -8,7 +8,9 @@ import { ArrowRight } from "lucide-react"
 
 import CarouselComponent from "@/components/carousel/carousel"
 
-import { fetchByType, fetchTypes, Recipes, Types } from "@/utils/fetch"
+import { fetchByType, fetchTypes } from "@/utils/fetch"
+
+import { Recipes, Types } from "@parent/constants"
 
 type ContentTypeProp = {
 	type: string
