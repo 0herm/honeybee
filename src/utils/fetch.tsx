@@ -2,9 +2,14 @@
 
 import { queryBodyProp, RecipeProp, Recipes } from "@parent/constants"
 
+const port = process.env.port || 8080;
+const url  = `http://localhost:${port}`
+
+console.log("DEV: ", url)
+
 export async function fetchByTitle(title:string,type:string):Promise<Recipes | null> {
     try {
-        const res = await fetch(`http://localhost:8080/api/recipesByTitle?title=${title}&type=${type}`,{
+        const res = await fetch(`${url}/api/recipesByTitle?title=${title}&type=${type}`,{
             next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'GET',
@@ -29,7 +34,7 @@ export async function fetchByTitle(title:string,type:string):Promise<Recipes | n
 
 export async function fetchById(q:string):Promise<RecipeProp | null> {
     try {
-        const res = await fetch(`http://localhost:8080/api/recipeById?id=${q}`,{
+        const res = await fetch(`${url}/api/recipeById?id=${q}`,{
             next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'GET',
@@ -54,7 +59,7 @@ export async function fetchById(q:string):Promise<RecipeProp | null> {
 
 export async function fetchByType(q:string):Promise<Recipes | null> {
     try {
-        const res = await fetch(`http://localhost:8080/api/recipesByType?type=${q}`,{
+        const res = await fetch(`${url}/api/recipesByType?type=${q}`,{
             next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'GET',
@@ -79,7 +84,7 @@ export async function fetchByType(q:string):Promise<Recipes | null> {
 
 export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
     try {
-        const res = await fetch(`http://localhost:8080/api/addRecipe`,{
+        const res = await fetch(`${url}/api/addRecipe`,{
             next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'POST',
@@ -106,7 +111,7 @@ export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
 
 export async function editRecipe(queryBody:queryBodyProp):Promise<string|null> {
     try {
-        const res = await fetch(`http://localhost:8080/api/editRecipe`,{
+        const res = await fetch(`${url}/api/editRecipe`,{
             next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'POST',

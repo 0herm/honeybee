@@ -26,7 +26,6 @@ npm run start
 
 <br>
 
-Open [http://localhost:8080](http://localhost:8080)
-
+Open [http://localhost:8080](http://localhost:8080) or Open [http://localhost:3000](http://localhost:3000)
 <br>
 
