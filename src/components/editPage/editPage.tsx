@@ -89,8 +89,6 @@ export default function EditPage({ isNew, values, id, resetStates }:{ isNew: boo
 		if (isNew) addRecipe(queryBody)
 		else if (!isNew) editRecipe({ ...queryBody, id: id })
 		router.push('/protected')
-
-		console.log({ ...queryBody, id: id })
 	}
 
 	return (

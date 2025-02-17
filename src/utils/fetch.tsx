@@ -2,10 +2,7 @@
 
 import { queryBodyProp, RecipeProp, Recipes } from "@parent/constants"
 
-const port = process.env.port || 8080;
-const url  = `http://localhost:${port}`
-
-console.log("DEV: ", url)
+const url  = `http://localhost:8080`
 
 export async function fetchByTitle(title:string,type:string):Promise<Recipes | null> {
     try {
