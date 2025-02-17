@@ -23,8 +23,8 @@
       }
     ],
     "paths": {
-      "@parent/*": ["./*"],
       "@/*": ["./src/*"],
+      "@parent/*": ["./*"],
       "@components/*": ["./src/components/*"],
       "@utils/*": ["./src/utils/*"],
       "@lib/*": ["./src/lib/*"],
