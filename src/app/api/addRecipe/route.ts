@@ -28,8 +28,8 @@ export async function POST(req: Request) {
             db = await openDb()
     
             await db.run(`
-                INSERT INTO recipes (typeNO, title, date, type, quantity, time, ingredients, instructions)
-                VALUES ('REMOVE',?, ?, ?, ?, ?, ?, ?);
+                INSERT INTO recipes (title, date, type, quantity, time, ingredients, instructions)
+                VALUES (?, ?, ?, ?, ?, ?, ?);
               `, title, date, type, quantity, time, ingredients, instructions);
     
             return NextResponse.json({ message: 'Successfully added Recipe' }, { status: 200 });

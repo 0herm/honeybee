@@ -29,8 +29,7 @@ export async function POST(req: Request) {
     
             await db.run(`
                 UPDATE recipes
-                SET typeNO = 'REMOVE', 
-                    title = ?, 
+                SET title = ?, 
                     date = ?, 
                     type = ?, 
                     quantity = ?, 

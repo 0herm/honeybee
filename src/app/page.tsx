@@ -10,12 +10,7 @@ import CarouselComponent from "@/components/carousel/carousel"
 
 import { fetchByType } from "@/utils/fetch"
 
-import { Recipes, recipeTypes } from "@parent/constants"
-
-type ContentTypeProp = {
-	type: string
-	typeNO: string
-}
+import { Recipes, recipeTypes, Types } from "@parent/constants"
 
 export default function Home() {
 
@@ -36,7 +31,7 @@ export default function Home() {
 	)
 }
 
-function ContentType({type,typeNO}:ContentTypeProp){
+function ContentType({type,typeNO}:Types){
 	const [recipes, setRecipes] = useState<Recipes | null>(null)
 	const [error, setError]   = useState<string | null>(null)
 	
