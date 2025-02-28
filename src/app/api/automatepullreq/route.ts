@@ -22,17 +22,24 @@ export async function POST(request: Request) {
 
 		if (event === "push") {
 			try {
-				const { stdout, stderr } = await execAsync(`cd ${REPO_PATH} && git pull`)
-				console.log("Git pull executed successfully:", stdout)
-
-				if (stderr) {
-					console.warn("Git pull warning:", stderr)
+				const { stderr: pullStderr } = await execAsync(`cd ${REPO_PATH} && git pull`)
+		
+				if (pullStderr) {
+					console.warn("Git pull warning:", pullStderr)
 				}
-
-				return NextResponse.json({ success: true, message: "Repository updated" })
-			} catch (error) {
-				console.error("Git pull failed:", error)
-				return NextResponse.json({ error: "Failed to update repository", details: error }, { status: 500 })
+		
+				const { stderr: dockerStderr } = await execAsync(
+					`cd ${REPO_PATH} && sudo docker compose up --build -d`,
+				)
+		
+				if (dockerStderr) {
+					console.warn("Docker Compose warning:", dockerStderr)
+				}
+		
+				return NextResponse.json({ success: true, message: "Repository updated and Docker containers rebuilt" })
+				} catch (error) {
+					console.error("Command execution failed:", error)
+					return NextResponse.json({ error: "Failed to update repository or rebuild containers", details: error },{ status: 500 },)
 			}
 		}
 		return NextResponse.json({ success: true, message: "Webhook received" })
@@ -52,9 +59,4 @@ function verifySignature(payload: string, signature: string): boolean {
 	const digest = "sha256=" + hmac.update(payload).digest("hex")
 	return crypto.timingSafeEqual(Buffer.from(digest), Buffer.from(signature))
 }
-
-// GET requests for testing purposes
-// export async function GET() {
-// 	return NextResponse.json({ message: "GitHub webhook endpoint is ready" })
-// }
 
