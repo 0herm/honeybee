@@ -32,9 +32,11 @@ export default function CarouselComponent({data}:CarouselProp) {
 			<CarouselItem key={recipe.id} className={`sm:basis-1/1 ${length > 1? "md:basis-1/2" : ""} ${length > 3? "lg:basis-1/4" : ""}`}>
 				<Link href={`recipe/${recipe.id}`}>
 				<div className="p-1">
-					<Card>
-                        <LoadImage id={recipe.id} style='flex w-full max-h-48 items-center justify-center pt-4 aspect-[4/3]' /> 
-                        <CardTitle className='text-center text-lg capitalize p-6'>{recipe.title}</CardTitle>
+					<Card className="relative w-full h-[15rem]">
+						<div className="relative w-full h-[10rem]">
+                        	<LoadImage id={recipe.id} style='flex pt-4' /> 
+						</div>
+                        <CardTitle className='text-center text-md capitalize p-[1rem]'>{recipe.title}</CardTitle>
 					</Card>
 				</div>
 				</Link>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
+import Image from 'next/image'
 
 type imgProp = {
     id: number
@@ -14,10 +15,10 @@ export default function LoadImage({id, style}:imgProp){
     useEffect(() => {
         async function fetchImage() {
             try {
-                const response = await fetch(`/imgs/${id}.webp`)
+                const response = await fetch(`/imgs/${id}.png`)
     
                 if (response.ok) {
-                    setImgSrc(`/imgs/${id}.webp`) 
+                    setImgSrc(`/imgs/${id}.png`) 
                 }else{
                     setImgSrc('/imgs/fallback.svg')
                 }
@@ -31,12 +32,12 @@ export default function LoadImage({id, style}:imgProp){
       }, [id])
 
     return(
-        <img
+        <Image
             src={imgSrc}
             alt="bilde"
-            width={3840}
-            height={2880}
-            className={style}
+            fill={true}
+            priority
+            className={`object-contain ${style}`}
             onError={() =>setImgSrc('/imgs/fallback.svg')}
         />
     )
