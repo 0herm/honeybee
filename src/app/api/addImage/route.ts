@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
   try {
     await writeFile(
-      path.join(process.cwd(), "public/imgs", id+".WEBP"),
+      path.join(process.cwd(), "public/imgs", id+".webp"),
       buffer
     )
     return NextResponse.json({ Message: "Success", status: 201 })
