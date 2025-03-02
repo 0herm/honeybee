@@ -15,10 +15,10 @@ export default function LoadImage({id, style}:imgProp){
     useEffect(() => {
         async function fetchImage() {
             try {
-                const response = await fetch(`/imgs/${id}.webp`)
+                const response = await fetch(`/imgs/${id}.WEBP`)
     
                 if (response.ok) {
-                    setImgSrc(`/imgs/${id}.webp`) 
+                    setImgSrc(`/imgs/${id}.WEBP`) 
                 }else{
                     setImgSrc('/imgs/fallback.svg')
                 }
@@ -37,6 +37,7 @@ export default function LoadImage({id, style}:imgProp){
             alt="bilde"
             fill={true}
             loading="lazy"
+            unoptimized={true}
             className={`object-contain ${style}`}
             onError={() =>setImgSrc('/imgs/fallback.svg')}
         />
