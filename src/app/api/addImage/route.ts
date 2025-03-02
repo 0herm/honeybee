@@ -6,15 +6,17 @@ export async function POST(req: NextRequest) {
   const formData = await req.formData()
 
   const file = formData.get("file") as File
-  if (!file) {
+  const id = formData.get("id") as string
+  
+  if (!file || !id) {
     return NextResponse.json({ error: "No files received." }, { status: 400 })
   }
 
   const buffer = Buffer.from(await file.arrayBuffer())
-  const filename = file.name.replaceAll(" ", "_")
+
   try {
     await writeFile(
-      path.join(process.cwd(), "public/imgs" + filename),
+      path.join(process.cwd(), "public/imgs", id+".webp"),
       buffer
     )
     return NextResponse.json({ Message: "Success", status: 201 })

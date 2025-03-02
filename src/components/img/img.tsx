@@ -36,7 +36,7 @@ export default function LoadImage({id, style}:imgProp){
             src={imgSrc}
             alt="bilde"
             fill={true}
-            priority
+            loading="lazy"
             className={`object-contain ${style}`}
             onError={() =>setImgSrc('/imgs/fallback.svg')}
         />

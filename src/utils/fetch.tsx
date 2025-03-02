@@ -98,7 +98,7 @@ export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
             throw new Error('Failed to add recipe')
         }
   
-        return data 
+        return data.id 
 
     } catch (error) {
         console.error('Error adding recipe:', error)
@@ -129,6 +129,29 @@ export async function editRecipe(queryBody:queryBodyProp):Promise<string|null> {
 
     } catch (error) {
         console.error('Error adding recipe:', error)
+        return null
+    }
+}
+
+export async function addImage(file: File, id: string) {
+    const formData = new FormData()
+    formData.append("file", file)
+    formData.append("id", id)
+
+    try {
+        const response = await fetch(`${url}/api/addImage`, {
+            method: "POST",
+            body: formData,
+        })
+
+        if (!response.ok) {
+            throw new Error("Failed to upload image")
+        }
+
+        const result = await response.json()
+        return result
+    } catch (error) {
+        console.error("Error uploading image:", error)
         return null
     }
 }

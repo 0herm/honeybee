@@ -27,12 +27,12 @@ export async function POST(req: Request) {
         try {
             db = await openDb()
     
-            await db.run(`
+            const result = await db.run(`
                 INSERT INTO recipes (title, date, type, quantity, time, ingredients, instructions)
                 VALUES (?, ?, ?, ?, ?, ?, ?);
               `, title, date, type, quantity, time, ingredients, instructions);
     
-            return NextResponse.json({ message: 'Successfully added Recipe' }, { status: 200 });
+            return NextResponse.json({ id: result.lastID, message: 'Successfully added Recipe' }, { status: 200 });
         } catch (error) {
             console.error('Database error:', error); 
             return NextResponse.json({ error: `Database error: ${error}` }, { status: 500 })

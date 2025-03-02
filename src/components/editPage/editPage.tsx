@@ -2,7 +2,7 @@
 
 import { recipeTypes } from "@parent/constants"
 
-import { addRecipe, editRecipe } from "@/utils/fetch"
+import { addRecipe, editRecipe, addImage } from "@/utils/fetch"
 
 import Link from "next/link"
 import Image from "next/image"
@@ -75,7 +75,7 @@ export default function EditPage({ isNew, values, id, resetStates }:{ isNew: boo
 	const { fields: sectionFields, append: appendSection, remove: removeSection, } = useFieldArray({ control: form.control, name: "sections", })
 
 	
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const queryBody = {
 			title: 			values.title,
 			date: 			values.date.toISOString().split("T")[0],
@@ -86,8 +86,18 @@ export default function EditPage({ isNew, values, id, resetStates }:{ isNew: boo
 			instructions: 	values.instructions
 		}
 
-		if (isNew) addRecipe(queryBody)
-		else if (!isNew) editRecipe({ ...queryBody, id: id })
+		if (isNew){
+			const result = await addRecipe(queryBody)
+			if (values.image instanceof File && result) await addImage(values.image, result)
+		} 
+		else if (!isNew && id){
+			const result = await editRecipe({ ...queryBody, id: id })
+			if (values.image instanceof File && result) await addImage(values.image, id.toString())
+		} 
+
+		
+		
+
 		router.push('/protected')
 	}
 
