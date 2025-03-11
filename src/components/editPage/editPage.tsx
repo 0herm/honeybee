@@ -314,7 +314,7 @@ export default function EditPage({ isNew, values, id, resetStates }:{ isNew: boo
 				<h1 className="capitalize text-2xl font-semibold">{form.watch("title")}</h1>
 				{(
 					<Image
-						src={form.watch("image") instanceof File ? URL.createObjectURL(form.watch("image") as Blob) : typeof form.watch("image") === "string" ? form.watch("image") as string : "/imgs/fallback.svg"}
+						src={form.watch("image") instanceof File ? URL.createObjectURL(form.watch("image") as Blob) : typeof form.watch("image") === "string" ? form.watch("image") as string : "/images/fallback.svg"}
 						width={500}
 						height={500}
 						alt="Recipe image"

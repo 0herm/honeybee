@@ -10,21 +10,21 @@ type imgProp = {
 
 export default function LoadImage({id, style}:imgProp){
 
-    const [imgSrc, setImgSrc] = useState(`/imgs/fallback.svg`)
+    const [imgSrc, setImgSrc] = useState(`/images/fallback.svg`)
 
     useEffect(() => {
         async function fetchImage() {
             try {
-                const response = await fetch(`/imgs/${id}.webp`)
+                const response = await fetch(`/images/${id}.webp`)
     
                 if (response.ok) {
-                    setImgSrc(`/imgs/${id}.webp`) 
+                    setImgSrc(`/images/${id}.webp`) 
                 }else{
-                    setImgSrc('/imgs/fallback.svg')
+                    setImgSrc('/images/fallback.svg')
                 }
             } catch (error) {
                 console.error('Error fetching image:', error)
-                setImgSrc('/imgs/fallback.svg')
+                setImgSrc('/images/fallback.svg')
             }
         }
     
@@ -39,7 +39,7 @@ export default function LoadImage({id, style}:imgProp){
             loading="lazy"
             unoptimized={true}
             className={`object-contain ${style}`}
-            onError={() =>setImgSrc('/imgs/fallback.svg')}
+            onError={() =>setImgSrc('/images/fallback.svg')}
         />
     )
 }
