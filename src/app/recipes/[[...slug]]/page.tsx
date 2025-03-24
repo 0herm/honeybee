@@ -17,6 +17,7 @@ export default async function Page({params, searchParams}: {params: Promise<{ sl
     if(typeof recipes === 'string'){
         return (
             <div className='w-full flex items-center flex-col'>
+                <RecipesInput/>
                 <div className='p-5'>Feil: ingen oppskrifter lik {search}</div>
             </div>
         )
