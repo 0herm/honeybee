@@ -46,7 +46,7 @@ export default function Page() {
 					type: 			fetchedRecipe.type,
 					quantity: 		fetchedRecipe.quantity,
 					time: 			String(fetchedRecipe.time),
-					image: 			`/images/${fetchedRecipe.id}.webp`,
+					image: 			`http://localhost:8080/api/image/${fetchedRecipe.id}`,
 					sections: 		JSON.parse(String(fetchedRecipe.ingredients)),
 					instructions: 	fetchedRecipe.instructions,
 				}

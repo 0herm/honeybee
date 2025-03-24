@@ -54,7 +54,7 @@ export async function fetchById(q:string):Promise<RecipeProp | null> {
     }
 }
 
-export async function fetchByType(q:string):Promise<Recipes | null> {
+export async function fetchByType(q:string):Promise<Recipes | string> {
     try {
         const res = await fetch(`${url}/api/recipesByType?type=${q}`,{
             next: { revalidate: 3600 },
@@ -71,25 +71,37 @@ export async function fetchByType(q:string):Promise<Recipes | null> {
   
         const data: Recipes = await res.json()
       
-        return data.length > 0 ? data : null
+        return data.length > 0 ? data : 'Error no data'
 
     } catch (error) {
         console.error('Error fetching recipe data:', error)
-        return null
+        return 'Error while fetching'
     }
 }
 
 export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
     try {
+
+        const formData = new FormData()
+
+        formData.append('title', queryBody.title)
+        formData.append('date', queryBody.date)
+        formData.append('type', queryBody.type)
+        formData.append('quantity', queryBody.quantity.toString())
+        formData.append('time', queryBody.time.toString())
+        formData.append('ingredients', queryBody.ingredients)
+        formData.append('instructions', queryBody.instructions)
+        if (queryBody.image)
+            formData.append('image', queryBody.image)
+
         const res = await fetch(`${url}/api/addRecipe`,{
             next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${process.env.API_TOKEN}`
             },
-            body: JSON.stringify(queryBody)
+            body: formData
         })
 
         const data = await res.json()
@@ -108,15 +120,29 @@ export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
 
 export async function editRecipe(queryBody:queryBodyProp):Promise<string|null> {
     try {
+
+        const formData = new FormData()
+
+        formData.append('title', queryBody.title)
+        formData.append('date', queryBody.date)
+        formData.append('type', queryBody.type)
+        formData.append('quantity', queryBody.quantity.toString())
+        formData.append('time', queryBody.time.toString())
+        formData.append('ingredients', queryBody.ingredients)
+        formData.append('instructions', queryBody.instructions)
+        if (queryBody.id !== undefined)
+            formData.append('id', queryBody.id.toString())
+        if (queryBody.image)
+            formData.append('image', queryBody.image)
+
         const res = await fetch(`${url}/api/editRecipe`,{
             next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${process.env.API_TOKEN}`
             },
-            body: JSON.stringify(queryBody)
+            body: formData
         })
 
         const data = await res.json()

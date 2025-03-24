@@ -30,7 +30,7 @@ export default function CarouselComponent({data}:CarouselProp) {
 		<CarouselContent>
 			{data.map((recipe) => (
 			<CarouselItem key={recipe.id} className={`sm:basis-1/1 ${length > 1? "md:basis-1/2" : ""} ${length > 3? "lg:basis-1/4" : ""}`}>
-				<Link href={`recipe/${recipe.id}`}>
+				<Link href={`recipe/${recipe.id}`} prefetch={true}>
 				<div className="p-1">
 					<Card className="relative w-full h-[15rem]">
 						<div className="relative w-full h-[10rem]">

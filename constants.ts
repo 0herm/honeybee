@@ -47,4 +47,5 @@ export type queryBodyProp = {
     ingredients: string
     instructions: string
     id?: number
+    image: File | null
 } 

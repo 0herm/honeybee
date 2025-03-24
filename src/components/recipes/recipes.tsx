@@ -37,7 +37,7 @@ export default function RecipesPage({slug}:{slug:string}){
     }, [search,slug])
  
     if (!recipes) {
-        return <div>Loading...</div>
+        return 
     }
 
     return (

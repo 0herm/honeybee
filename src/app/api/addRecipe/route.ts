@@ -16,26 +16,36 @@ export async function POST(req: Request) {
 
     if (token !== API_TOKEN) return NextResponse.json({ error: 'Forbidden: Invalid' }, { status: 403 })
 
-        const { title, date, type, quantity, time, ingredients, instructions } = await req.json();
+        const formData = await req.formData();
     
-        if (!title || !date || !type || !quantity || !time || !ingredients || !instructions) {
+        const title = formData.get('title');
+        const date = formData.get('date');
+        const type = formData.get('type');
+        const quantity = formData.get('quantity');
+        const time = formData.get('time');
+        const ingredients = formData.get('ingredients');
+        const instructions = formData.get('instructions');
+        const image = formData.get('image') as File;
+
+        if (!title || !date || !type || !quantity || !time || !ingredients || !instructions ) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        let db
+        const buffer = image ? Buffer.from(await image.arrayBuffer()) : null
 
+        let db
         try {
             db = await openDb()
     
             const result = await db.run(`
-                INSERT INTO recipes (title, date, type, quantity, time, ingredients, instructions)
-                VALUES (?, ?, ?, ?, ?, ?, ?);
-              `, title, date, type, quantity, time, ingredients, instructions);
+                INSERT INTO recipes (title, date, type, quantity, time, ingredients, instructions, image)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+              `, title, date, type, quantity, time, ingredients, instructions, buffer);
     
             return NextResponse.json({ id: result.lastID, message: 'Successfully added Recipe' }, { status: 200 });
         } catch (error) {
             console.error('Database error:', error); 
-            return NextResponse.json({ error: `Database error: ${error}` }, { status: 500 })
+            return NextResponse.json({ error: 'Database error' }, { status: 500 })
         } finally {
             await db?.close()
         }

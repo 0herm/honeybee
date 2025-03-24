@@ -1,7 +1,3 @@
-'use client'
-
-import { useEffect, useState } from "react"
-
 import Link from "next/link"
 
 import { ArrowRight } from "lucide-react"
@@ -10,7 +6,7 @@ import CarouselComponent from "@/components/carousel/carousel"
 
 import { fetchByType } from "@/utils/fetch"
 
-import { Recipes, recipeTypes, Types } from "@parent/constants"
+import { recipeTypes, Types } from "@parent/constants"
 
 export default function Home() {
 
@@ -31,39 +27,21 @@ export default function Home() {
 	)
 }
 
-function ContentType({type,typeNO}:Types){
-	const [recipes, setRecipes] = useState<Recipes | null>(null)
-	const [error, setError]   = useState<string | null>(null)
+async function ContentType({type,typeNO}:Types){
 	
-	useEffect(() => {
-		async function fetchData() {
-		const fetchedRecipes = await fetchByType(type)
-		
-		if (!fetchedRecipes) {
-			setError('No recipe data found')
-		} else {
-			setRecipes(fetchedRecipes)
-		}
-		}
-
-		fetchData()
-	}, [type])
-
-	if (error) {
-        return <div>Error: {error}</div>
-    }
-
-    if (!recipes) {
-        return <div>Loading...</div>
+	const fetchedRecipes = await fetchByType(type)
+	
+	if (typeof fetchedRecipes === 'string') {
+        return <div>Error: {fetchedRecipes}</div>
     }
 
 	return (
-		<div className={`flex flex-col gap-2 w-[12rem] ${recipes.length>=2?'md:w-[25rem]':''} ${recipes.length>=4?'lg:w-[51rem]':''} `}>
+		<div className={`flex flex-col gap-2 w-[12rem] ${fetchedRecipes.length>=2?'md:w-[25rem]':''} ${fetchedRecipes.length>=4?'lg:w-[51rem]':''} `}>
 			<Link href={`/recipes/${type}`} className="flex flex-row justify-start items-center gap-1">
 				<h1 className="capitalize">{typeNO}</h1>
 				<ArrowRight width={20} height={20} />
 			</Link>
-			<CarouselComponent data={recipes}/>
+			<CarouselComponent data={fetchedRecipes}/>
 		</div>
 	)
 }
