@@ -9,7 +9,7 @@ type imgProp = {
 
 async function checkImage(imageUrl:string) {
     try {
-        const res = await fetch(imageUrl)
+        const res = await fetch(imageUrl, {method: 'HEAD'})
 
         if (res.ok) {
             return true
