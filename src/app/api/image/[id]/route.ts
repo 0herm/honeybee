@@ -25,16 +25,20 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         }
 
         let imageBuffer;
-        if(image.image)
+        if(image.image){
             imageBuffer = Buffer.isBuffer(image.image) ? image.image : Buffer.from(image.image)
 
-        return new NextResponse(imageBuffer, {
-            headers: {
-                "Content-Type": 'image/webp',
-                "Content-Disposition": "inline",
-                "Cache-Control": "public, max-age=86400, immutable",
-            },
-        })
+            return new NextResponse(imageBuffer, {
+                headers: {
+                    "Content-Type": 'image/webp',
+                    "Content-Disposition": "inline",
+                    "Cache-Control": "public, max-age=86400, immutable",
+                },
+            })
+        }
+        else
+            return new NextResponse("Internal Server Error", { status: 500 })
+
       } catch (error) {
         console.error("Error fetching image:", error)
         return new NextResponse("Internal Server Error", { status: 500 })

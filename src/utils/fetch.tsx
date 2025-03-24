@@ -4,10 +4,10 @@ import { queryBodyProp, RecipeProp, Recipes } from "@parent/constants"
 
 const url  = `http://localhost:8080`
 
-export async function fetchByTitle(title:string,type:string):Promise<Recipes | null> {
+export async function fetchByTitle(title:string,type:string):Promise<Recipes | string> {
     try {
         const res = await fetch(`${url}/api/recipesByTitle?title=${title}&type=${type}`,{
-            next: { revalidate: 3600 },
+            // next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'GET',
             headers: {
@@ -16,23 +16,24 @@ export async function fetchByTitle(title:string,type:string):Promise<Recipes | n
         })
       
         if (!res.ok) {
-            throw new Error('Failed to fetch recipe data')
+            console.error('Error fetching recipe data:')
+            return 'error'
         }
   
         const data: Recipes = await res.json()
       
-        return data.length > 0 ? data : null
+        return data.length > 0 ? data : 'error'
 
     } catch (error) {
         console.error('Error fetching recipe data:', error)
-        return null
+        return 'error'
     }
 }
 
-export async function fetchById(q:string):Promise<RecipeProp | null> {
+export async function fetchById(q:string):Promise<RecipeProp | string> {
     try {
         const res = await fetch(`${url}/api/recipeById?id=${q}`,{
-            next: { revalidate: 3600 },
+            // next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'GET',
             headers: {
@@ -41,7 +42,8 @@ export async function fetchById(q:string):Promise<RecipeProp | null> {
         })
       
         if (!res.ok) {
-            throw new Error('Failed to fetch recipe data')
+            console.error('Error fetching recipe data:')
+            return 'error'
         }
   
         const data: Recipes = await res.json()
@@ -50,14 +52,14 @@ export async function fetchById(q:string):Promise<RecipeProp | null> {
 
     } catch (error) {
         console.error('Error fetching recipe data:', error)
-        return null
+        return 'error'
     }
 }
 
 export async function fetchByType(q:string):Promise<Recipes | string> {
     try {
         const res = await fetch(`${url}/api/recipesByType?type=${q}`,{
-            next: { revalidate: 3600 },
+            // next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'GET',
             headers: {
@@ -95,7 +97,7 @@ export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
             formData.append('image', queryBody.image)
 
         const res = await fetch(`${url}/api/addRecipe`,{
-            next: { revalidate: 3600 },
+            // next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'POST',
             headers: {
@@ -136,7 +138,7 @@ export async function editRecipe(queryBody:queryBodyProp):Promise<string|null> {
             formData.append('image', queryBody.image)
 
         const res = await fetch(`${url}/api/editRecipe`,{
-            next: { revalidate: 3600 },
+            // next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'POST',
             headers: {

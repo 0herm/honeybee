@@ -1,6 +1,5 @@
-'use client'
+'use server'
 
-import { useEffect, useState } from "react"
 import Image from 'next/image'
 
 type imgProp = {
@@ -8,38 +7,48 @@ type imgProp = {
     style: string
 }
 
-export default function LoadImage({id, style}:imgProp){
+async function checkImage(imageUrl:string) {
+    try {
+        const res = await fetch(imageUrl)
 
-    const [imgSrc, setImgSrc] = useState(`/fallback.svg`)
-
-    useEffect(() => {
-        async function fetchImage() {
-            try {
-                const response = await fetch(`http://localhost:8080/api/image/${id}`)
-    
-                if (response.ok) {
-                    setImgSrc(`http://localhost:8080/api/image/${id}`) 
-                }else{
-                    setImgSrc('/fallback.svg')
-                }
-            } catch (error) {
-                console.error('Error fetching image:', error)
-                setImgSrc('/fallback.svg')
-            }
+        if (res.ok) {
+            return true
+        } else {
+            return false
         }
-    
-        fetchImage()
-      }, [id])
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+        return false
+    }
+}
 
-    return(
-        <Image
-            src={imgSrc}
-            alt="bilde"
-            fill={true}
-            sizes="100%"
-            priority
-            className={`object-contain ${style}`}
-            onError={() =>setImgSrc('/fallback.svg')}
-        />
+export default async function LoadImage({id,style}:imgProp){
+    const imageUrl = `http://localhost:8080/api/image/${id}`
+    const fallbackImage = '/fallback.svg'
+
+    const validImage = await checkImage(imageUrl)
+
+    return (
+        <div>
+            {validImage ? (
+                <Image
+                    src={imageUrl}
+                    alt="bilde"
+                    fill={true}
+                    sizes="100%"
+                    priority
+                    className={`object-contain ${style}`}
+                />
+                ) : (
+                <Image
+                    src={fallbackImage}
+                    alt="Fallback"
+                    fill={true}
+                    sizes="100%"
+                    priority
+                    className={`object-contain ${style}`}
+                />
+            )}
+        </div>
     )
 }

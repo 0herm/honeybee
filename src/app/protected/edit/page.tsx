@@ -4,7 +4,7 @@ import EditPage, { FormValues } from "@/components/editPage/editPage"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { fetchById, fetchByTitle } from "@/utils/fetch"
-import { Recipes } from "@parent/constants"
+import { RecipeProp, Recipes } from "@parent/constants"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
@@ -21,10 +21,10 @@ export default function Page() {
 	useEffect(() => {
 		async function fetchData() {
 			const fetchedRecipes = await fetchByTitle(search,"")
-			if (!fetchedRecipes) {
+			if (!fetchedRecipes || typeof recipes === 'string') {
 				setError('No recipe data found')
 			} else {
-				setRecipes(fetchedRecipes)
+				setRecipes(fetchedRecipes as Recipes)
 				setError(null)
 			}
 		}
@@ -36,19 +36,20 @@ export default function Page() {
 	function handleClick(id:string) {
 		async function fetchData() {
 		const fetchedRecipe = await fetchById(id)
-		if (!fetchedRecipe) {
+		if (!fetchedRecipe || typeof recipes === 'string') {
 			setError('No recipe data found')
-		} else {
+		} else if(fetchedRecipe) {
+			const recipes = fetchedRecipe as RecipeProp
 			setValues(
 				{
-					title: 			fetchedRecipe.title,
-					date: 			new Date(fetchedRecipe.date),
-					type: 			fetchedRecipe.type,
-					quantity: 		fetchedRecipe.quantity,
-					time: 			String(fetchedRecipe.time),
-					image: 			`http://localhost:8080/api/image/${fetchedRecipe.id}`,
-					sections: 		JSON.parse(String(fetchedRecipe.ingredients)),
-					instructions: 	fetchedRecipe.instructions,
+					title: 			recipes.title,
+					date: 			new Date(recipes.date),
+					type: 			recipes.type,
+					quantity: 		recipes.quantity,
+					time: 			String(recipes.time),
+					image: 			`http://localhost:8080/api/image/${recipes.id}`,
+					sections: 		JSON.parse(String(recipes.ingredients)),
+					instructions: 	recipes.instructions,
 				}
 			)
 			setError(null)
