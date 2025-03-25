@@ -10,6 +10,19 @@ const nextConfig: NextConfig = {
             pathname: '/api/image/**',
         },
         ]
+    },
+    async headers() {
+        return [
+            {
+                source: '/(.*)',
+                headers: [
+                    {
+                        key: 'Cache-Control',
+                        value: '',
+                    },
+                ],
+            },
+        ]
     }
 }
 
