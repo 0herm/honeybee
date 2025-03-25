@@ -3,6 +3,7 @@ services:
     container_name: herbivorene
     volumes:
       - ../main.db:/app/main.db
+      - ../deploy.txt:/app/deploy.txt
     build: .
     ports:
       - "8080:8080"
