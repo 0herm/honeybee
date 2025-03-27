@@ -19,8 +19,9 @@ export async function GET(req: Request) {
 		const url = new URL(req.url)
 		const title = url.searchParams.get('title')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
 		const type = url.searchParams.get('type')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
+		const offset = url.searchParams.get('offset') || 0
 
-		if (typeof title !== 'string' || title.length > 30 || typeof type !== 'string' || type.length > 30) {
+		if (typeof offset === 'number' || typeof title !== 'string' || title.length > 30 || typeof type !== 'string' || type.length > 30) {
 			return NextResponse.json(
 			  	{ error: 'Invalid title parameter' },
 			  	{ status: 400 }
@@ -37,9 +38,11 @@ export async function GET(req: Request) {
 			params.push(type)
 		}
 
+		params.push(offset)
+
 		const whereClause = conditions.join(' AND ')
 		
-		const recipe = await db.all(`
+		const recipes = await db.all(`
 			SELECT id,title FROM recipes 
 			WHERE ${whereClause}
 			ORDER BY 
@@ -50,11 +53,19 @@ export async function GET(req: Request) {
 					ELSE 4
 				END, 
 				title
-			LIMIT 8`
+			LIMIT 8
+			OFFSET ?`
 			, ...params 
 		)
 
-		return NextResponse.json(recipe)
+		const totalCount = await db.get(`
+			SELECT COUNT(*) AS total
+			FROM recipes
+			WHERE ${whereClause}`
+			, queryTitle 
+		)
+
+		return NextResponse.json({recipes:recipes,totalItems:totalCount.total})
 	} catch (error) {
 		return NextResponse.json({ error: `Database error: ${error}` }, { status: 500 })
 	} finally {

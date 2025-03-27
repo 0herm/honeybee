@@ -49,3 +49,8 @@ export type queryBodyProp = {
     id?: number
     image: File | null
 } 
+
+export type RecipesByTitle = {
+    recipes: RecipeProp[]
+    totalItems: number
+}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { usePathname, useSearchParams, useRouter } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import { Input } from "@/components/ui/input"
 
@@ -10,11 +10,14 @@ export default function RecipesInput(){
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    const [input, setInput] = useState<string>('')
+    const search = searchParams.get('q') || ''
+
+    const [input, setInput] = useState<string>(search)
 
     function setSearch(q:string){
-        const params = new URLSearchParams(searchParams?.toString())
+        const params = new URLSearchParams()
         params.set('q', q)
+        if(q==='') params.delete('q')
         router.push(pathname+'?'+params.toString())
     }
 

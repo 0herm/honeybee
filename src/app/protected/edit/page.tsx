@@ -20,11 +20,11 @@ export default function Page() {
 
 	useEffect(() => {
 		async function fetchData() {
-			const fetchedRecipes = await fetchByTitle(search,"")
+			const fetchedRecipes = await fetchByTitle(search,"",1)
 			if (!fetchedRecipes || typeof recipes === 'string') {
 				setError('No recipe data found')
-			} else {
-				setRecipes(fetchedRecipes as Recipes)
+			} else if(typeof fetchedRecipes !== 'string') {
+				setRecipes(fetchedRecipes.recipes)
 				setError(null)
 			}
 		}
