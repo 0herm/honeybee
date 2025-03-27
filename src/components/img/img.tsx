@@ -24,7 +24,7 @@ async function checkImage(imageUrl:string) {
 
 export default async function LoadImage({id,style}:imgProp){
     const imageUrl = `http://localhost:8080/api/image/${id}`
-    const fallbackImage = '/fallback.svg'
+    const fallbackImage = '/images/fallback.svg'
 
     const validImage = await checkImage(imageUrl)
 

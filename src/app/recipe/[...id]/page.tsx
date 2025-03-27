@@ -24,8 +24,9 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
                     <h1 className="capitalize font-semibold">{section.title ?`${section.title}:`:''}</h1>
                     <ul>
                         {section.ingredients.map((item, idx) => (
-                            <li key={idx}>
-                                {item.quantity} {item.ingredient}
+                            <li key={idx} className='flex flex-row'>
+                                <p className='diagonal-fractions'>{item.quantity}&nbsp;</p>
+                                <p>{item.ingredient}</p>
                             </li>
                         ))}
                     </ul>

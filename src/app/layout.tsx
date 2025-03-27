@@ -1,5 +1,4 @@
-import type { Metadata } from "next"
-import type { Viewport } from 'next'
+import type { Metadata, Viewport } from "next"
 import { ThemeProvider } from "@/components/theme-provider"
 import './globals.css'
 
@@ -20,7 +19,7 @@ export default function RootLayout({ children }: Readonly<{children: React.React
 		<>
 		  <html lang="en" suppressHydrationWarning>
 			<head/>
-			<body className="w-screen h-screen m-0 p-0">
+			<body className="w-screen h-screen m-0 p-0 font-[family-name:Inter] antialiased align-middle break-words leading-[1.5] tracking-normal">
 			  <ThemeProvider
 				attribute="class"
 				defaultTheme="dark"

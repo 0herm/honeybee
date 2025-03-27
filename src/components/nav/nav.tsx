@@ -1,6 +1,6 @@
 "use client"
 
-import { Moon, Sun } from "lucide-react"
+import { Leaf, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import Link from "next/link"
 
@@ -15,8 +15,6 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
 
-import Logo from "@/components/svg/logo"
-
 import { recipeTypes } from "@parent/constants" 
 
 export default function NavBar() {
@@ -25,9 +23,13 @@ export default function NavBar() {
 	return (
 		<div className="flex flex-row justify-between items-center w-full h-full pr-1">
 				
-			<Link href={"/"} className="h-full"> 
-				<Logo className="h-full p-2" fill="fill-primary"/>
-			</Link>
+			<div className='flex flex-row h-full items-center'>
+				<Link href={"/"} className="h-full"> 
+					{/* text-[#599459] */}
+					<Leaf className="h-full w-auto p-2 text-[#599459]" />
+				</Link>
+				<h1>Herbivorene</h1>
+			</div>
 			
 			<NavigationMenu>
 				<NavigationMenuList>
@@ -61,7 +63,7 @@ export default function NavBar() {
 					<NavigationMenuItem>
 						<Link 
 							href='/about'
-							className='block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center'
+							className='block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center text-[0.875rem]'
 							>
 							Om oss
 						</Link>	
