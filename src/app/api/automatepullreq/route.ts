@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
 		if(payload.after)
 			try {
-				const { stderr: pullStderr } = await execAsync(`${payload.after} > deploy.txt`)
+				const { stderr: pullStderr } = await execAsync(`echo ${payload.after} > deploy.txt`)
 		
 				if (pullStderr) {
 					console.warn("Waring: ", pullStderr)
