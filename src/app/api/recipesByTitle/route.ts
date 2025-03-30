@@ -18,12 +18,12 @@ export async function GET(req: Request) {
 
 		const url = new URL(req.url)
 		const title = url.searchParams.get('title')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
-		const type = url.searchParams.get('type')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
-		const offset = url.searchParams.get('offset') || 0
+		const type = url.searchParams.get('type')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase() || ''
+		const offset = url.searchParams.get('offset') || '0'
 
-		if (typeof offset === 'number' || typeof title !== 'string' || title.length > 30 || typeof type !== 'string' || type.length > 30) {
+		if (typeof Number(offset) !== 'number' || typeof title !== 'string' || typeof type !== 'string') {
 			return NextResponse.json(
-			  	{ error: 'Invalid title parameter' },
+				{ error: 'Invalid params' },
 			  	{ status: 400 }
 			)
 		}
