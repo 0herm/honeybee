@@ -5,7 +5,6 @@ import { queryBodyProp, RecipeProp, Recipes, RecipesByTitle } from "@parent/cons
 const url  = `http://localhost:8080`
 
 export async function fetchByTitle(title: string, type: string, offset: number): Promise<RecipesByTitle | string> {
-    console.log(`${url}/api/recipesByTitle?title=${title} ${type?`&type=${type}`:''} &offset=${(offset-1)*8}`)
     try {
         const res = await fetch(`${url}/api/recipesByTitle?title=${title}${type?`&type=${type}`:''}&offset=${(offset-1)*8}`,{
             // next: { revalidate: 3600 },

@@ -6,6 +6,9 @@ backend default {
 }
 
 sub vcl_recv {
+    if (req.url == "/api/automatepullreq") {
+        return (pass);
+    }
     return (hash);
 }
 
