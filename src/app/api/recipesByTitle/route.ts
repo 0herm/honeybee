@@ -32,10 +32,12 @@ export async function GET(req: Request) {
 
 		const conditions = ['title LIKE ?']
 		const params = [queryTitle]
+		const totalCountParams = [queryTitle]
 
 		if (type && type !== 'undefined') {
 			conditions.push('type = ?')
 			params.push(type)
+			totalCountParams.push(type)
 		}
 
 		params.push(offset)
@@ -62,7 +64,7 @@ export async function GET(req: Request) {
 			SELECT COUNT(*) AS total
 			FROM recipes
 			WHERE ${whereClause}`
-			, queryTitle 
+			, ...totalCountParams 
 		)
 
 		return NextResponse.json({recipes:recipes,totalItems:totalCount.total})
