@@ -34,6 +34,10 @@ export async function POST(req: Request) {
 
         const buffer = image ? Buffer.from(await image.arrayBuffer()) : null
 
+        const params = buffer ? 
+            [title, date, type, quantity, time, ingredients, instructions, buffer, id] :
+            [title, date, type, quantity, time, ingredients, instructions, id];
+
         let db
         try {
             db = await openDb()
@@ -47,9 +51,9 @@ export async function POST(req: Request) {
                     time = ?, 
                     ingredients = ?, 
                     instructions = ?,
-                    image = ?
+                    ${buffer !== null ? 'image = ?' : ''}
                 WHERE id = ?;
-              `, title, date, type, quantity, time, ingredients, instructions, buffer, id);
+              `, ...params);
     
             return NextResponse.json({ message: 'Successfully added Recipe' }, { status: 200 });
         } catch (error) {

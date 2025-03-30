@@ -10,30 +10,29 @@ async function openDb() {
 	})
 }
 
-// GET recipes by Title
+// GET recipes sorted by date
 export async function GET(req: Request) {
   	let db
   	try {
     	db = await openDb()
 
 		const url = new URL(req.url)
-		const type = url.searchParams.get('type')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
+		const limit = Number(url.searchParams.get('l'))
 
-		if (typeof type !== 'string' || type.length > 30) {
+		if (typeof limit !== 'number') {
 			return NextResponse.json(
 			  	{ error: 'Invalid title parameter' },
 			  	{ status: 400 }
 			)
 		  }
 		
-		const recipe = await db.all(`
-			SELECT id,title FROM recipes 
-			WHERE type = ? 
+		const recipes = await db.all(`
+			SELECT id,title,date,time,type FROM recipes 
 			ORDER BY date DESC
-			LIMIT 6`, type
+			LIMIT ?`, limit
 		)
 
-		return NextResponse.json(recipe)
+		return NextResponse.json(recipes)
 	} catch (error) {
 		return NextResponse.json({ error: `Database error: ${error}` }, { status: 500 })
 	} finally {

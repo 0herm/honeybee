@@ -56,9 +56,9 @@ export async function fetchById(q:string):Promise<RecipeProp | string> {
     }
 }
 
-export async function fetchByType(q:string):Promise<Recipes | string> {
+export async function fetchRecipes(limit:number):Promise<Recipes | string> {
     try {
-        const res = await fetch(`${url}/api/recipesByType?type=${q}`,{
+        const res = await fetch(`${url}/api/recipes?l=${limit}`,{
             // next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'GET',

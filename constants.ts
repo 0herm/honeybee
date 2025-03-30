@@ -3,9 +3,10 @@ type RecipeTypes = {
 }
 
 export const recipeTypes: RecipeTypes = {
-    'dinner':   'middag',
-    'baking':   'bakst',
-    'drink' :   'drikke',
+    'dinner'  : 'middag',
+    'baking'  : 'bakst',
+    'drink'   : 'drikke',
+    'dessert' : 'dessert'
 };
 
 
