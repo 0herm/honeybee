@@ -1,8 +1,8 @@
 'use server'
 
-import { queryBodyProp, RecipeProp, Recipes, RecipesByTitle } from "@parent/constants"
+import { queryBodyProp, RecipeProp, Recipes, RecipesByTitle } from '@parent/constants'
 
-const url  = `http://localhost:8080`
+const url  = 'http://localhost:8080'
 
 export async function fetchByTitle(title: string, type: string, offset: number): Promise<RecipesByTitle | string> {
     try {
@@ -48,7 +48,7 @@ export async function fetchById(q:string):Promise<RecipeProp | string> {
   
         const data: Recipes = await res.json()
       
-        return data[0]
+        return typeof data[0] === 'object' ? data[0] : 'error'
 
     } catch (error) {
         console.error('Error fetching recipe data:', error)
@@ -163,23 +163,23 @@ export async function editRecipe(queryBody:queryBodyProp):Promise<string|null> {
 
 export async function addImage(file: File, id: string) {
     const formData = new FormData()
-    formData.append("file", file)
-    formData.append("id", id)
+    formData.append('file', file)
+    formData.append('id', id)
 
     try {
         const response = await fetch(`${url}/api/addImage`, {
-            method: "POST",
+            method: 'POST',
             body: formData,
         })
 
         if (!response.ok) {
-            throw new Error("Failed to upload image")
+            throw new Error('Failed to upload image')
         }
 
         const result = await response.json()
         return result
     } catch (error) {
-        console.error("Error uploading image:", error)
+        console.error('Error uploading image:', error)
         return null
     }
 }

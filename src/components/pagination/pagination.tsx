@@ -8,18 +8,18 @@ import {
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from "@/components/ui/pagination"
-import { usePathname, useSearchParams } from "next/navigation"
+} from '@/components/ui/pagination'
+import { usePathname, useSearchParams } from 'next/navigation'
 
 export default function PageOverview({current,pages}:{current:number,pages:number}) {
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
-    const pageNumber1 = Math.max(1,     Math.min(current - 1, pages - 4));
-    const pageNumber2 = Math.min(pages, pageNumber1 + 1);
-    const pageNumber3 = Math.min(pages, pageNumber2 + 1);
-    const pageNumber4 = Math.min(pages, pageNumber3 + 1);
-    const pageNumberEnd = pages;
+    const pageNumber1 = Math.max(1,     Math.min(current - 1, pages - 4))
+    const pageNumber2 = Math.min(pages, pageNumber1 + 1)
+    const pageNumber3 = Math.min(pages, pageNumber2 + 1)
+    const pageNumber4 = Math.min(pages, pageNumber3 + 1)
+    const pageNumberEnd = pages
 
     function trigger(page:number){
         const params = new URLSearchParams(searchParams.toString())

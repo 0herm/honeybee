@@ -33,18 +33,18 @@ export default async function LoadImage({id,style}:imgProp){
             {validImage ? (
                 <Image
                     src={imageUrl}
-                    alt="bilde"
+                    alt='bilde'
                     fill={true}
-                    sizes="100%"
+                    sizes='100%'
                     priority
                     className={`object-contain ${style}`}
                 />
-                ) : (
+            ) : (
                 <Image
                     src={fallbackImage}
-                    alt="Fallback"
+                    alt='Fallback'
                     fill={true}
-                    sizes="100%"
+                    sizes='100%'
                     priority
                     className={`object-contain ${style}`}
                 />

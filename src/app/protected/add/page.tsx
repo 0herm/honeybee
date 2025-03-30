@@ -1,10 +1,10 @@
-"use client"
+'use server'
 
-import EditPage from "@/components/editPage/editPage"
+import EditPage from '@/components/editPage/editPage'
 
-export default function Page() {
-	
-	return(
-		<EditPage isNew={true} />
-	)
+export default async function Page() {
+
+    return (
+        <EditPage isNew={true} />
+    )
 }

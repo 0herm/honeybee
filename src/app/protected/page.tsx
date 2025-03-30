@@ -1,18 +1,18 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default function Page() {
 
     return (
         <div>
-            <h1 className="mb-[1rem]">Admin Panel</h1>
-            <div className="flex flex-col gap-[1rem]">
+            <h1 className='mb-[1rem]'>Admin Panel</h1>
+            <div className='flex flex-col gap-[1rem]'>
                 <Button asChild>
-                    <Link href="protected/add">Add Recipe</Link>
+                    <Link href='protected/add'>Add Recipe</Link>
                 </Button>
 
                 <Button asChild>
-                    <Link href="protected/edit">Edit Recipe</Link>
+                    <Link href='protected/edit'>Edit Recipe</Link>
                 </Button>
             </div>
         </div>
