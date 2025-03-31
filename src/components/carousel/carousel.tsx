@@ -42,7 +42,7 @@ export default function CarouselComponent({data}:CarouselProp) {
                                     <div className='w-full h-full'>
                                         <CardTitle className='text-left text-base capitalize py-[1rem] px-[0.4rem]'>{recipe.title}</CardTitle>
                                         <CardDescription className='flex flex-col gap-[0.3rem] px-[0.4rem]'>
-                                            {recipe.date && Math.abs(new Date(recipe.date).getTime() - now.getTime())<=14*24*60*60*1000 &&
+                                            {recipe.date && Math.abs(new Date(recipe.date).getTime() - now.getTime())<=30*24*60*60*1000 &&
                                                 <div className='flex flex-row items-center gap-[0.2rem]'>
                                                     <BadgePlus className='h-[1rem] w-auto text-[#599459]'/>
                                                     <p className='flex flex-row gap-[0.2rem] text-[#599459]'>Ny</p>

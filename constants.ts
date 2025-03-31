@@ -7,7 +7,7 @@ export const recipeTypes: RecipeTypes = {
     'baking'  : 'bakst',
     'drink'   : 'drikke',
     'dessert' : 'dessert'
-};
+}
 
 
 
