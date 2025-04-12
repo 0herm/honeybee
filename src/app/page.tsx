@@ -1,12 +1,13 @@
 import Link from 'next/link'
 
-import { ArrowRight, Croissant, CupSoda, IceCreamBowl, Soup } from 'lucide-react'
+import { Croissant, CupSoda, IceCreamBowl, Soup } from 'lucide-react'
 
 import CarouselComponent from '@/components/carousel/carousel'
 
 import { fetchRecipes } from '@/utils/fetch'
 
 import { recipeTypes } from '@parent/constants'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
 
@@ -63,11 +64,12 @@ async function ContentType({limit}:{limit:number}){
 
     return (
         <div className={`flex flex-col gap-2 w-[18rem] sm:w-[20rem] ${fetchedRecipes.length>=2?'md:w-[40rem]':''} ${fetchedRecipes.length>=3?'6xl:w-[65rem]':''}`}>
-            <Link href={'/recipes/'} className='flex flex-row justify-start items-center gap-1'>
-                <h1 className='capitalize'>Nylige oppskrifter</h1>
-                <ArrowRight width={20} height={20} />
-            </Link>
             <CarouselComponent data={fetchedRecipes}/>
+            <Link href={'/recipes/'} className='flex flex-row justify-center items-center gap-1 pt-[2rem]'>
+                <Button variant='outline'>
+                    Se alle oppskrifter
+                </Button>
+            </Link>
         </div>
     )
 }
