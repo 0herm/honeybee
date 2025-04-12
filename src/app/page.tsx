@@ -22,7 +22,7 @@ export default function Home() {
             </div>
             
             <div className='flex flex-col items-center gap-10 w-full'>
-                <h1 className='capitalize text-left'>Sorter på kategorier</h1>
+                <h1 className='capitalize text-center'>Sorter på kategorier</h1>
                 <div className='grid grid-rows-2 grid-cols-2 sm:flex sm:flex-row gap-[4rem]'>
                     <Link href={'/recipes/dinner'}>
                         <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-md'>
@@ -63,9 +63,10 @@ async function ContentType({limit}:{limit:number}){
     }
 
     return (
-        <div className={`flex flex-col gap-2 w-[18rem] sm:w-[20rem] ${fetchedRecipes.length>=2?'md:w-[40rem]':''} ${fetchedRecipes.length>=3?'6xl:w-[65rem]':''}`}>
+        <div className={`flex flex-col gap-4 w-[18rem] sm:w-[20rem] ${fetchedRecipes.length>=2?'md:w-[40rem]':''} ${fetchedRecipes.length>=3?'6xl:w-[65rem]':''}`}>
+            <h1 className='capitalize text-center'>Nyeste oppskrifter</h1>
             <CarouselComponent data={fetchedRecipes}/>
-            <Link href={'/recipes/'} className='flex flex-row justify-center items-center gap-1 pt-[2rem]'>
+            <Link href={'/recipes/'} className='flex flex-row justify-center items-center gap-1'>
                 <Button variant='outline'>
                     Se alle oppskrifter
                 </Button>
