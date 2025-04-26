@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
     env: {
@@ -6,12 +6,12 @@ const nextConfig: NextConfig = {
     },
     images: {
         remotePatterns: [
-        {
-            protocol: 'http',
-            hostname: 'localhost',
-            port: '8080',
-            pathname: '/api/image/**',
-        },
+            {
+                protocol: 'http',
+                hostname: 'localhost',
+                port: '8080',
+                pathname: '/api/image/**',
+            },
         ]
     },
     async headers() {
@@ -25,17 +25,27 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
+            {
+                source: '/(.*)',
+                headers: [
+                    {
+                        key: 'Content-Security-Policy',
+                        // eslint-disable-next-line @stylistic/js/quotes
+                        value: "script-src 'self' https://herbivorene.com;",
+                    },
+                ],
+            },
         ]
     },
     async redirects() {
         return [
-          {
-            source: '/login',
-            destination: '/protected',
-            permanent: true,
-          },
+            {
+                source: '/login',
+                destination: '/protected',
+                permanent: true,
+            },
         ]
-      },
+    },
 }
 
-export default nextConfig;
+export default nextConfig

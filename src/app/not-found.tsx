@@ -1,27 +1,9 @@
-'use client'
-
-type LineProps = {
-    color?: string,
-    className?: string,
-    height?: number,
-    width?: number
-}
-
-// Basic line of passed color
-function Line({color, className, height, width}: LineProps) {
-    return <div 
-        className={`${className}`} 
-        style={{backgroundColor: color || '#555', height, width}}
-    />
-}
-
-// Handles invalid pages
 export default function Custom404() {
     return (
-        <div className='w-full flex flex-row justify-center items-center'>
-            <h1 className='text-3xl'>404</h1>
-            <Line width={2} height={40} className='mx-4' />
-            <h1 className='text-3xl'>This page could not be found.</h1>
+        <div className='w-full h-full flex flex-col gap-[0.75rem] sm:gap-0 sm:flex-row justify-center items-center'>
+            <h1 className='text-xl sm:text-3xl'>404</h1>
+            <div className='bg-almostbright mx-4 w-[6rem] h-[0.15rem] sm:w-[0.15rem] sm:h-[3rem]' />
+            <h1 className='text-xl sm:text-3xl'>Denne siden finnes ikke.</h1>
         </div>
     )
 }
