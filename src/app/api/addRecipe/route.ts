@@ -42,7 +42,7 @@ export async function POST(req: Request) {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
               `, title, date, type, quantity, time, ingredients, instructions, buffer)
     
-        return NextResponse.json({ id: result.lastID, message: 'Successfully added Recipe' }, { status: 200 })
+        return NextResponse.json({ id: result.lastID, message: 'Successfully edited Recipe' }, { status: 200 })
     } catch (error) {
         console.error('Database error:', error) 
         return NextResponse.json({ error: 'Database error' }, { status: 500 })

@@ -50,12 +50,12 @@ export async function POST(req: Request) {
                     quantity = ?, 
                     time = ?, 
                     ingredients = ?, 
-                    instructions = ?,
-                    ${buffer !== null ? 'image = ?' : ''}
+                    instructions = ?
+                    ${buffer !== null ? ', image = ?' : ''}
                 WHERE id = ?
               `, ...params)
 
-        return NextResponse.json({ message: 'Successfully added Recipe' }, { status: 200 })
+        return NextResponse.json({ message: 'Successfully edited Recipe' }, { status: 200 })
     } catch (error) {
         console.error('Database error:', error) 
         return NextResponse.json({ error: `Database error: ${error}` }, { status: 500 })

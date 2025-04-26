@@ -150,13 +150,15 @@ export async function editRecipe(queryBody:queryBodyProp):Promise<string|null> {
         const data = await res.json()
       
         if (!res.ok) {
-            throw new Error('Failed to add recipe')
+            const errorText = await res.text()
+            console.error('Error response:', errorText)
+            throw new Error('Failed to edit recipe')
         }
   
         return data 
 
     } catch (error) {
-        console.error('Error adding recipe:', error)
+        console.error('Error editing recipe:', error)
         return null
     }
 }
