@@ -4,6 +4,7 @@ import './globals.css'
 
 import NavBar from '@/components/nav/nav'
 import Footer from '@/components/footer/footer'
+import { Toaster } from '@/components/ui/toaster'
 
 export const metadata: Metadata = {
     title: 'Herbivorene',
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: Readonly<{children: React.React
                             <footer className='mt-10 border-solid border-t border-accent print:hidden'>
                                 <Footer />
                             </footer>
+                            <Toaster />
                         </div>
                     </ThemeProvider>
                 </body>

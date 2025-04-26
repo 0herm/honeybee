@@ -1,18 +1,12 @@
 'use client'
 
 import { recipeTypes } from '@parent/constants'
-
-import { addRecipe, editRecipe } from '@/utils/fetch'
-
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-
 import { useForm, useFieldArray, type Control } from 'react-hook-form'
-
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
@@ -20,14 +14,12 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-
+import { useToast } from '@/hooks/use-toast'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { Plus, Minus } from 'lucide-react'
-
 import { cn } from '@/lib/utils'
-
 import { format } from 'date-fns'
-
+import { submitForm } from '@/actions/form'
 
 const formSchema = z.object({
     title: z.string().min(1,{message:'Required'}),
@@ -53,7 +45,7 @@ export type FormValues = z.infer<typeof formSchema>;
 
 
 export default function EditPage({ isNew, values, id }:{ isNew: boolean, values?: FormValues, id?: number }) {
-    
+    const { toast } = useToast()
     const router = useRouter()
 
     const defaultValues = values ? values :
@@ -76,24 +68,31 @@ export default function EditPage({ isNew, values, id }:{ isNew: boolean, values?
 
     
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        const queryBody = {
-            title:          values.title,
-            date:           values.date.toISOString().split('T')[0],
-            type:           values.type,
-            quantity:       values.quantity,
-            time:           Number(values.time),
-            ingredients:    JSON.stringify(values.sections),
-            instructions:   values.instructions,
-            image:          values.image instanceof File ? values.image : null
+        try {
+            const result = await submitForm(values,id,isNew)
+            if (result.success) {
+                toast({
+                    title: 'Form submitted successfully!',
+                    description: '',
+                })
+                form.reset()
+            } else {
+                toast({
+                    title: 'Something went wrong',
+                    description: result.error || 'Please try again later.',
+                    variant: 'destructive',
+                })
+            }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: 'An unexpected error occurred. Please try again.',
+                variant: 'destructive',
+            })
         }
 
-        if (isNew)
-            await addRecipe(queryBody)
-        else if (!isNew && id){
-            await editRecipe({ ...queryBody, id: id })
-
-            router.push('/protected')
-        }
+        router.push('/protected')
     }
 
     return (
