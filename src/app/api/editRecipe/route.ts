@@ -11,12 +11,12 @@ async function openDb() {
     })
 }
 
-export async function POST(req: Request) {
-    const token = req.headers.get('Authorization')?.split(' ')[1]
+export async function POST(request: Request) {
+    const token = request.headers.get('Authorization')?.split(' ')[1]
 
     if (token !== API_TOKEN) return NextResponse.json({ error: 'Forbidden: Invalid' }, { status: 403 })
 
-    const formData = await req.formData()
+    const formData = await request.formData()
 
     const title = formData.get('title')
     const date = formData.get('date')

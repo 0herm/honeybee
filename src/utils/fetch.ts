@@ -1,8 +1,10 @@
 'use server'
 
-import { queryBodyProp, RecipeProp, Recipes, RecipesByTitle } from '@parent/constants'
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+require('dotenv').config()
 
 const url  = 'http://localhost:8080'
+const apiKey = process.env.API_TOKEN
 
 export async function fetchByTitle(title: string, type: string, offset: number): Promise<RecipesByTitle | string> {
     try {
@@ -82,10 +84,12 @@ export async function fetchRecipes(limit:number):Promise<Recipes | string> {
 }
 
 export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
+    if (typeof apiKey === 'undefined') {
+        console.error('Error API key')
+        return null
+    }
     try {
-
         const formData = new FormData()
-
         formData.append('title', queryBody.title)
         formData.append('date', queryBody.date)
         formData.append('type', queryBody.type)
@@ -101,18 +105,19 @@ export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
             cache: 'no-store',
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.API_TOKEN}`
+                'Authorization': `Bearer ${apiKey}`
             },
             body: formData
         })
 
-        const data = await res.json()
+        const text = await res.text()
+        const data = text ? JSON.parse(text) : null
       
         if (!res.ok) {
             throw new Error('Failed to add recipe')
         }
   
-        return data.id 
+        return data ? data.id : null 
 
     } catch (error) {
         console.error('Error adding recipe:', error)
@@ -121,10 +126,13 @@ export async function addRecipe(queryBody:queryBodyProp):Promise<string|null> {
 }
 
 export async function editRecipe(queryBody:queryBodyProp):Promise<string|null> {
+    if (typeof apiKey === 'undefined') {
+        console.error('Error API key')
+        return null
+    }
+
     try {
-
         const formData = new FormData()
-
         formData.append('title', queryBody.title)
         formData.append('date', queryBody.date)
         formData.append('type', queryBody.type)
@@ -142,20 +150,21 @@ export async function editRecipe(queryBody:queryBodyProp):Promise<string|null> {
             cache: 'no-store',
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.API_TOKEN}`
+                'Authorization': `Bearer ${apiKey}`
             },
             body: formData
         })
 
-        const data = await res.json()
-      
         if (!res.ok) {
             const errorText = await res.text()
             console.error('Error response:', errorText)
             throw new Error('Failed to edit recipe')
         }
+
+        const text = await res.text()
+        const data = text ? JSON.parse(text) : null
   
-        return data 
+        return data
 
     } catch (error) {
         console.error('Error editing recipe:', error)

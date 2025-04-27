@@ -9,6 +9,15 @@ sub vcl_recv {
     if (req.url == "/api/automatepullreq") {
         return (pass);
     }
+    if (req.url ~ "/protected/") {
+        return (pass);
+    }
+    if (req.url ~ "/api/editRecipe") {
+        return (pass);
+    }
+    if (req.url ~ "/api/addRecipe") {
+        return (pass);
+    }
     return (hash);
 }
 

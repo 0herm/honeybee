@@ -25,16 +25,6 @@ const nextConfig: NextConfig = {
                     },
                 ],
             },
-            {
-                source: '/(.*)',
-                headers: [
-                    {
-                        key: 'Content-Security-Policy',
-                        // eslint-disable-next-line @stylistic/js/quotes
-                        value: "script-src 'self' https://herbivorene.com;",
-                    },
-                ],
-            },
         ]
     },
     async redirects() {

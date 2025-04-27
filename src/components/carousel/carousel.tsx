@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/carousel'
 import LoadImage from '@/components/img/img'
 
-import { Recipes, recipeTypes } from '@parent/constants'
+import { recipeTypes } from '@parent/constants'
 import { BadgePlus, Clock, Shapes } from 'lucide-react'
 
 type CarouselProp = {

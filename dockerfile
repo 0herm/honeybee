@@ -1,5 +1,5 @@
 # Node image with Alpine Linux
-FROM node:20-alpine
+FROM node:23-alpine
 
 # Varnish 
 RUN apk add --no-cache varnish

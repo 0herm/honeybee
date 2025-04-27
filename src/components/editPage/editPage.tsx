@@ -1,7 +1,6 @@
 'use client'
 
 import { recipeTypes } from '@parent/constants'
-import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useForm, useFieldArray, type Control } from 'react-hook-form'
@@ -19,96 +18,73 @@ import { Calendar as CalendarIcon } from 'lucide-react'
 import { Plus, Minus } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
-import { submitForm } from '@/actions/form'
+import { submitForm } from '@/app/actions'
+import { useActionState, useEffect } from 'react'
+import { formSchema, FormState, formSchemaData, defaultSchemaData } from '@/lib/schema'
 
-const formSchema = z.object({
-    title: z.string().min(1,{message:'Required'}),
-    date: z.date(),
-    type: z.string().min(1,{message:'Required'}),
-    quantity: z.string().min(1,{message:'Required'}),
-    time: z.string().min(1,{message:'Required'}),
-    image: z.instanceof(File).or(z.string()),
-    sections: z.array(
-        z.object({
-            title: z.string().optional(),
-            ingredients: z.array(
-                z.object({
-                    quantity: z.string(),
-                    ingredient: z.string(),
-                }),
-            ),
-        }),
-    ),
-    instructions: z.string().min(1,{message:'Required'}),
-})
-export type FormValues = z.infer<typeof formSchema>;
+const initialState: FormState = {
+    error: '',
+    success: false,
+    initial: true
+}
 
-
-export default function EditPage({ isNew, values, id }:{ isNew: boolean, values?: FormValues, id?: number }) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function EditPage({ values, isNew, id }:{ values?: formSchemaData, isNew: boolean, id?: number }) {
+    const [state, formAction, isPending] = useActionState(submitForm, initialState)
     const { toast } = useToast()
     const router = useRouter()
 
-    const defaultValues = values ? values :
-        {
-            title:          '',
-            date:           new Date,
-            type:           '',
-            quantity:       '',
-            time:           '',
-            image:          undefined,
-            sections:       [{ title: '', ingredients: [{ quantity: '', ingredient: '' }] }],
-            instructions:   '',
-        }
+    const defaultValues = values ? values : defaultSchemaData
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: defaultValues
+        defaultValues: defaultValues,
+        mode: 'onBlur',
     })
-
     const { fields: sectionFields, append: appendSection, remove: removeSection, } = useFieldArray({ control: form.control, name: 'sections', })
 
+    async function handleSubmit() {
+        const values = form.getValues()
+        const newFormData = new FormData()
+        newFormData.append('title', values.title)
+        newFormData.append('date', values.date.toISOString())
+        newFormData.append('type', values.type)
+        newFormData.append('quantity', values.quantity)
+        newFormData.append('time', values.time.toString())
+        newFormData.append('image', values.image)
+        newFormData.append('sections', JSON.stringify(values.sections))
+        newFormData.append('instructions', values.instructions)
+        if (id !== undefined) newFormData.append('id', id.toString())
+        newFormData.append('isNew', isNew.toString())
     
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        try {
-            const result = await submitForm(values,id,isNew)
-            if (result.success) {
-                toast({
-                    title: 'Form submitted successfully!',
-                    description: '',
-                })
-                form.reset()
-            } else {
-                toast({
-                    title: 'Something went wrong',
-                    description: result.error || 'Please try again later.',
-                    variant: 'destructive',
-                })
-            }
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
+        return formAction(newFormData)
+    }
+
+    useEffect(() => {
+        if (state.success) {
+            toast({
+                title: 'Form submitted successfully!',
+                description: '',
+            })
+            router.back()
+        } else if (!state.success && !state.initial) {
             toast({
                 title: 'Error',
-                description: 'An unexpected error occurred. Please try again.',
+                description: state.error || 'Please try again later.',
                 variant: 'destructive',
             })
         }
-
-        router.push('/protected')
-    }
+    }, [state])
 
     return (
         <div className='flex flex-col'>
-
-            {!isNew && <Button className='w-[4rem] mb-[2rem]' variant='outline' asChild>
-                <Link href='/protected/edit'>Back</Link>
-            </Button>}
-            {isNew && <Button className='w-[4rem] mb-[2rem]' variant='outline' asChild>
-                <Link href='/protected'>Back</Link>
-            </Button>}
+            <Button className='w-[4rem] mb-[2rem]' variant='outline' onClick={() => router.back()}>
+                Back
+            </Button>
 
             <div className='flex flex-row *:min-w-[45vw]'>
-
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+                    <form className='space-y-8' action={() => {handleSubmit(); form.trigger()}}>
                         <div className='max-w-[20rem] p-2 flex flex-col gap-[1rem]'>
                             <h1>Add Recipe</h1>
                             <FormField
@@ -172,7 +148,7 @@ export default function EditPage({ isNew, values, id }:{ isNew: boolean, values?
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Type</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <Select onValueChange={(value) => { form.clearErrors('type'); field.onChange(value) }} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder='Select type' />
@@ -231,7 +207,7 @@ export default function EditPage({ isNew, values, id }:{ isNew: boolean, values?
                                                 type='file'
                                                 onChange={(e) => {
                                                     const file = e.target.files?.[0]
-                                                    if (file) field.onChange(file)
+                                                    if (file) field.onChange(file); form.clearErrors('image')
                                                 }}
                                             />
                                         </FormControl>
@@ -294,13 +270,12 @@ export default function EditPage({ isNew, values, id }:{ isNew: boolean, values?
                                 )}
                             />
 
-                            <Button type='submit'>Submit</Button>
+                            <Button type='submit' disabled={isPending}>Submit {isPending ? '...' : ''}</Button>
                         </div>
                     </form>
                 </Form>
 
                 {/* PREVIEW: */}
-
                 <div className='w-full max-w-[40rem] p-2'>
                     <h1>Preview:</h1>
                     <h1 className='capitalize text-2xl font-semibold'>{form.watch('title')}</h1>

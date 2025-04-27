@@ -1,6 +1,5 @@
 import LoadImage from '@/components/img/img'
 import { fetchById } from '@/utils/fetch'
-import { RecipeProp } from '@parent/constants'
 
 export default async function RecipePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
