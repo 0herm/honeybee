@@ -18,7 +18,14 @@ sub vcl_recv {
     if (req.url ~ "/api/addRecipe") {
         return (pass);
     }
+    if (req.http.Cookie) {
+        set req.http.X-Theme = regsub(req.http.Cookie, ".*theme=([^;]+);?.*", "\1");
+    }
     return (hash);
+}
+
+sub vcl_hash {
+    hash_data(req.http.X-Theme);
 }
 
 sub vcl_backend_response {

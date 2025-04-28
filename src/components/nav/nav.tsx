@@ -1,10 +1,7 @@
 'use client'
 
-import { Leaf, Moon, Sun, User } from 'lucide-react'
-import { useTheme } from 'next-themes'
+import { Leaf, User } from 'lucide-react'
 import Link from 'next/link'
-
-
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -13,20 +10,16 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
-import { Button } from '@/components/ui/button'
-
 import { recipeTypes } from '@parent/constants' 
-import { setCookie } from '@/utils/cookies'
+import ThemeToggle from '@components/themetoggle/themeToggle'
 
 export default function NavBar() {
-    const { theme, setTheme } = useTheme()
 
     return (
         <div className='flex flex-row justify-between items-center w-full h-full pr-1'>
                 
             <div className='flex flex-row h-full items-center'>
                 <Link href={'/'} className='h-full'> 
-                    {/* text-[#599459] */}
                     <Leaf className='h-full w-auto p-2 text-[#599459]' />
                 </Link>
                 <h1 className='hidden md:block'>Herbivorene</h1>
@@ -73,16 +66,7 @@ export default function NavBar() {
             </NavigationMenu>
 
             <div className='flex flex-row items-center py-1 px-3'>
-                <Button
-                    variant='ghost'
-                    size='icon'
-                    onClick={() => {setTheme(theme === 'light' ? 'dark' : 'light'); setCookie('theme', theme === 'light' ? 'dark' : 'light')}}
-                    className='h-full w-auto p-1'
-                >
-                    <Sun className='dark:hidden' style={{ height: '100%', width: '100%' }} />
-                    <Moon className='hidden dark:block' style={{ height: '100%', width: '100%' }} />
-                    <span className='sr-only'>Toggle theme</span>
-                </Button>
+                <ThemeToggle />
                 <Link 
                     href={'/login'}
                     className='p-1'
