@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button'
 
 import { recipeTypes } from '@parent/constants' 
+import { setCookie } from '@/utils/cookies'
 
 export default function NavBar() {
     const { theme, setTheme } = useTheme()
@@ -75,7 +76,7 @@ export default function NavBar() {
                 <Button
                     variant='ghost'
                     size='icon'
-                    onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                    onClick={() => {setTheme(theme === 'light' ? 'dark' : 'light'); setCookie('theme', theme === 'light' ? 'dark' : 'light')}}
                     className='h-full w-auto p-1'
                 >
                     <Sun className='dark:hidden' style={{ height: '100%', width: '100%' }} />

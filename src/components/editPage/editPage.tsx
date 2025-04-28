@@ -28,7 +28,6 @@ const initialState: FormState = {
     initial: true
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function EditPage({ values, isNew, id }:{ values?: formSchemaData, isNew: boolean, id?: number }) {
     const [state, formAction, isPending] = useActionState(submitForm, initialState)
     const { toast } = useToast()
