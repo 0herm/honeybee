@@ -14,6 +14,10 @@ export default function Page() {
                 <Button asChild>
                     <Link href='protected/edit'>Edit Recipe</Link>
                 </Button>
+
+                <Button asChild>
+                    <Link href='protected/deploy'>Deploy logs</Link>
+                </Button>
             </div>
         </div>
     )
