@@ -4,6 +4,9 @@ FROM node:23-alpine
 # Varnish 
 RUN apk add --no-cache varnish
 
+# Install latest npm
+RUN npm install -g npm@latest
+
 # Workdir required for tailwind to compile
 WORKDIR /app
 
@@ -17,7 +20,7 @@ COPY package*.json ./
 COPY entrypoint.sh ./entrypoint.sh
 
 # Installs dependencies
-RUN npm install
+RUN npm ci
 
 # Copies the rest of the UI source code
 COPY . .

@@ -2,28 +2,31 @@
 
 import { useEffect, useState } from 'react'
 import { getCookie, setCookie } from '@/utils/cookies'
-import { useRouter } from 'next/navigation'
 import { Moon, Sun } from 'lucide-react'
 
 export default function ThemeSwitch() {
-    const router = useRouter()
     const [theme, setTheme] = useState<'dark' | 'light'>('dark')
 
     useEffect(() => {
+        const el = document.documentElement
         const savedTheme = getCookie('theme') as 'dark' | 'light'
         if (savedTheme) {
             setTheme(savedTheme)
         }
-
-        document.documentElement.classList.remove('dark', 'light')
-        document.documentElement.classList.add(theme)
-    }, [theme])
+        else if (el.classList.contains('light')) {
+            setTheme('light')
+        } else {
+            setTheme('dark')
+        }
+    }, [])
 
     function toggleTheme() {
         const newTheme = theme === 'dark' ? 'light' : 'dark'
         setCookie('theme', newTheme)
         setTheme(newTheme)
-        router.refresh()
+        const el = document.documentElement
+        el.classList.remove('dark', 'light')
+        el.classList.add(newTheme)
     }
 
     return (

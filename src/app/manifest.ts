@@ -7,8 +7,6 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
         description: 'A vegan recipe website',
         start_url: '/',
         display: 'standalone',
-        background_color: '',
-        theme_color: '',
         icons: [
             {
                 src: 'images/logo/logo_192.png',

@@ -36,7 +36,7 @@ export default function CarouselComponent({data}:CarouselProp) {
                         <Link href={`recipe/${recipe.id}`} prefetch={true}>
                             <div className=' p-1'>
                                 <Card className='flex flex-row relative w-full h-[10rem]'>
-                                    <div className='relative h-full w-auto aspect-[1/1]'>
+                                    <div className='relative h-full w-auto aspect-1/1'>
                                         <LoadImage id={recipe.id} style='flex' /> 
                                     </div>
                                     <div className='w-full h-full'>

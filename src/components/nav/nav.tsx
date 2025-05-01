@@ -28,13 +28,13 @@ export default function NavBar() {
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger>Oppskrifter</NavigationMenuTrigger>
+                        <NavigationMenuTrigger className='bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[state=open]:focus:bg-accent/50 data-[state=open]:hover:bg-accent/50'>Oppskrifter</NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <ul className='flex flex-col w-[100px] p-2 gap-2'>
                                 <NavigationMenuLink asChild>
                                     <Link 
                                         href={'/recipes/'}
-                                        className='block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize'
+                                        className='block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize'
                                     >
                                         Alle
                                     </Link>
@@ -44,7 +44,7 @@ export default function NavBar() {
                                         <NavigationMenuLink asChild key={key}>
                                             <Link 
                                                 href={`/recipes/${key}`}
-                                                className='block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize'
+                                                className='block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize'
                                             >
                                                 {value}
                                             </Link>
@@ -57,7 +57,7 @@ export default function NavBar() {
                     <NavigationMenuItem>
                         <Link 
                             href='/about'
-                            className='block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground text-center text-[0.875rem]'
+                            className='block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground text-center text-[0.875rem]'
                         >
                             Om oss
                         </Link>	
