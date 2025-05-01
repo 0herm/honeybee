@@ -15,8 +15,8 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
     return (
         <div className='w-full max-w-[40rem]'>
             <h1 className='capitalize text-2xl font-semibold'>{recipe.title}</h1>
-            <div className='relative flex items-start w-[300px] h-[15rem]'>
-                <LoadImage id={Number(id)} style='print:hidden' />
+            <div className='relative flex items-start w-[300px] h-[15rem] print:hidden'>
+                <LoadImage id={Number(id)} />
             </div>
             {recipe.ingredients.map((section, index) => (
                 <div key={index} className='mt-4'>

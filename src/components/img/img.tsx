@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 type imgProp = {
     id: number
-    style: string
+    style?: string
 }
 
 async function checkImage(imageUrl:string) {
@@ -16,8 +16,8 @@ async function checkImage(imageUrl:string) {
         } else {
             return false
         }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+        console.error('Error checking image:', error)
         return false
     }
 }
