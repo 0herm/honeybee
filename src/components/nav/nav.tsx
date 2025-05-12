@@ -20,12 +20,12 @@ export default function NavBar() {
                 
             <div className='flex flex-row h-full items-center'>
                 <Link href={'/'} className='h-full'> 
-                    <Leaf className='h-full w-auto p-2 text-[#599459]' />
+                    <Leaf className='h-full w-auto p-[0.75rem] text-[#599459]' />
                 </Link>
                 <h1 className='hidden md:block'>Herbivorene</h1>
             </div>
             
-            <NavigationMenu>
+            <NavigationMenu className='absolute left-1/2 transform -translate-x-1/2'> 
                 <NavigationMenuList>
                     <NavigationMenuItem>
                         <NavigationMenuTrigger className='bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[state=open]:focus:bg-accent/50 data-[state=open]:hover:bg-accent/50'>Oppskrifter</NavigationMenuTrigger>

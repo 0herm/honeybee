@@ -141,6 +141,10 @@
 }
 
 @layer base {
+  :root {
+    --h-navbar: 4rem;
+  }
+
   * {
     @apply border-border;
   }
