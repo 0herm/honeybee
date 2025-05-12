@@ -6,7 +6,7 @@ backend default {
 }
 
 sub vcl_recv {
-    if (req.url == "/api/automatepullreq") {
+    if (req.url == "/api/deploy") {
         return (pass);
     }
     if (req.url ~ "/protected/") {
@@ -30,7 +30,7 @@ sub vcl_hash {
 
 sub vcl_backend_response {
     unset beresp.http.Cache-Control;
-    set beresp.http.Cache-Control = "herbivorene-cache, max-age=86400";
+    set beresp.http.Cache-Control = "honeybee-cache, max-age=86400";
     set beresp.ttl = 86400s;
     return (deliver);
 }

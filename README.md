@@ -1,28 +1,31 @@
-**About**
+# HoneyBee
+A self-hosted recipe website, where you can share your recipes. Ease of use with tools to edit and add recipes.
 
-This is Herbivorene, a NextJS website for recipes. Uses React and Typescript, and shadcn/ui for UI components,
-. SQLite for database both recipes and BLOB for images.  
+**Build With**  
+NextJS with TypeScript, React and Tailwind. Database is SQLite.
 
-**Packages**
-```
-npm install
-```  
-**Deploy**  
+### ✨ Features
+- Overview for new recipes
+- Sort by categories
+- Search for recipes
+- Add and edit recipes
 
-Development
-``` 
-npm run dev
-``` 
+### ⚙️ Environment Variables
 
-Production
-```
-docker compose up --build -d
-```
+| Name                  | Notes                                                                                                                            |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
+| GITHUB_WEBHOOK_SECRET | API token for automated deploy with Github                                                                                       |
+| API_TOKEN             | Secret for the POST API to the datebase (changes coming)                                                                         |
 
-<br>
+### 🐳 Install with Docker
+Remember to set the environment variables you wish in the .env file. ( minimum `API_TOKEN` ) 
+To start the containers run:
 
-Open cashed site at [http://localhost:8080](http://localhost:8080)  
-NextJS without varnish at [http://localhost:8081](http://localhost:8081)
+~~~ 
+docker-compose up -d 
+~~~ 
 
-<br>
+Then go to the cashed site: [http://localhost:8080](http://localhost:8080)  
 
+### ⚠️ Warning
+Still under work and there will be breaking changes

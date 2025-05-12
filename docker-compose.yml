@@ -1,6 +1,6 @@
 services:
-  herbivorene:
-    container_name: herbivorene
+  honeybee:
+    container_name: honeybee
     volumes:
       - ../main.db:/app/main.db
       - ../deploy.txt:/app/deploy.txt
