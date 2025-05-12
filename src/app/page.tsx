@@ -25,10 +25,10 @@ export default function Home() {
                         <h1 className='text-3xl md:text-5xl font-bold text-center md:text-left'>Plantebasert Oppskrifter</h1>
                         <p className='text-sm md:text-lg text-center md:text-left'>Oppdag deilige, enkle veganske oppskrifter</p>
                         <div className='flex flex-col xs:flex-row gap-[1rem]'>
-                            <Link href={'/recipes/'}>
+                            <Link href={'/recipes/'} className='flex justify-center'>
                                 <Button className='cursor-pointer bg-green-600 hover:bg-green-500'> Utforsk oppskrifter </Button>
                             </Link>
-                            <Link href={'/'}>
+                            <Link href={'/'} className='flex justify-center'>
                                 <Button className='cursor-pointer hover:text-green-600 text-green-600' variant={'outline'}>Favorittoppskrifter</Button>
                             </Link>
                         </div>
