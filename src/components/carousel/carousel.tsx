@@ -34,8 +34,8 @@ export default function CarouselComponent({data}:CarouselProp) {
                 {data.map((recipe) => (
                     <CarouselItem key={recipe.id} className={`sm:basis-1/1 ${length > 1? 'md:basis-1/2' : ''} ${length > 2? '6xl:basis-1/3' : ''}`}>
                         <Link href={`recipe/${recipe.id}`} prefetch={true}>
-                            <div className=' p-1'>
-                                <Card className='flex flex-row relative w-full h-[10rem]'>
+                            <div className='p-1'>
+                                <Card className='flex flex-row relative w-full h-[10rem] py-[0.5rem] gap-[0.5rem]'>
                                     <div className='relative h-full w-auto aspect-1/1'>
                                         <LoadImage id={recipe.id} style='flex' /> 
                                     </div>
@@ -51,7 +51,7 @@ export default function CarouselComponent({data}:CarouselProp) {
                                             {recipe.type &&
                                                 <div className='flex flex-row items-center gap-[0.2rem]'>
                                                     <Shapes className='h-[1rem] w-auto'/>
-                                                    <p className='flex flex-row gap-[0.2rem]'>
+                                                    <p className='flex flex-row gap-[0.2rem] capitalize'>
                                                         <span className='hidden 6xl:block'>Kategori: </span>
                                                         {recipeTypes[recipe.type]}
                                                     </p>
@@ -74,8 +74,8 @@ export default function CarouselComponent({data}:CarouselProp) {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
+            <CarouselPrevious className='left-[-2rem] xs:left-[-3rem]'/>
+            <CarouselNext className='right-[-2rem] xs:right-[-3rem]'/>
         </Carousel>
     )
 }

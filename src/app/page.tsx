@@ -33,7 +33,7 @@ export default function Home() {
                             </Link>
                         </div>
                     </div>
-                    <div className='relative size-[30rem]'>
+                    <div className='relative w-full h-full max-h-[30rem] max-w-[30rem]'>
                         <Image 
                             src={'/images/heroSection.webp'}
                             fill={true}
@@ -45,38 +45,39 @@ export default function Home() {
             </div>
 
 
-
-            <div className='flex flex-col items-center gap-10 px-20 w-full'>
-                <ContentType limit={6} />
-            </div>
-            
-            <div className='flex flex-col items-center gap-10 w-full'>
-                <h1 className='capitalize text-center'>Sorter på kategorier</h1>
-                <div className='grid grid-rows-2 grid-cols-2 sm:flex sm:flex-row gap-[4rem]'>
-                    <Link href={'/recipes/dinner'}>
-                        <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-md'>
-                            <Soup className='h-full w-full p-[1rem] stroke-[#599459] stroke-[0.08rem]' />
-                        </div>
-                        <h1 className='text-center capitalize'>{recipeTypes['dinner']}</h1>
-                    </Link>
-                    <Link href={'/recipes/baking'}>
-                        <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-  md'>
-                            <Croissant className='h-full w-full p-[1rem] stroke-[#599459] stroke-[0.08rem]' />
-                        </div>
-                        <h1 className='text-center capitalize'>{recipeTypes['baking']}</h1>
-                    </Link>
-                    <Link href={'/recipes/dessert'}>
-                        <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-md    '>
-                            <IceCreamBowl className='h-full w-full p-[1rem] stroke-[#599459] stroke-[0.08rem]' />
-                        </div>
-                        <h1 className='text-center capitalize'>{recipeTypes['dessert']}</h1>
-                    </Link>
-                    <Link href={'/recipes/drink'}>
-                        <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-md'>
-                            <CupSoda className='h-full w-full p-[1rem] stroke-[#599459] stroke-[0.08rem]' />
-                        </div>
-                        <h1 className='text-center capitalize'>{recipeTypes['drink']}</h1>
-                    </Link>
+            <div className='flex flex-col gap-[10rem]'>
+                <div className='flex flex-col items-center gap-10 px-20 w-full'>
+                    <ContentType limit={6} />
+                </div>
+                
+                <div className='flex flex-col items-center gap-10 w-full'>
+                    <h1 className='capitalize text-center text-xl font-semibold'>Sorter på kategorier</h1>
+                    <div className='grid grid-rows-2 grid-cols-2 sm:flex sm:flex-row gap-[4rem]'>
+                        <Link href={'/recipes/dinner'}>
+                            <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-md'>
+                                <Soup className='h-full w-full p-[1rem] stroke-[#599459] stroke-[0.08rem]' />
+                            </div>
+                            <h1 className='text-center capitalize'>{recipeTypes['dinner']}</h1>
+                        </Link>
+                        <Link href={'/recipes/baking'}>
+                            <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-  md'>
+                                <Croissant className='h-full w-full p-[1rem] stroke-[#599459] stroke-[0.08rem]' />
+                            </div>
+                            <h1 className='text-center capitalize'>{recipeTypes['baking']}</h1>
+                        </Link>
+                        <Link href={'/recipes/dessert'}>
+                            <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-md    '>
+                                <IceCreamBowl className='h-full w-full p-[1rem] stroke-[#599459] stroke-[0.08rem]' />
+                            </div>
+                            <h1 className='text-center capitalize'>{recipeTypes['dessert']}</h1>
+                        </Link>
+                        <Link href={'/recipes/drink'}>
+                            <div className='flex items-center justify-center mb-4 h-24 w-24 overflow-hidden rounded-full border-[0.4rem] border-primary-foreground shadow-md'>
+                                <CupSoda className='h-full w-full p-[1rem] stroke-[#599459] stroke-[0.08rem]' />
+                            </div>
+                            <h1 className='text-center capitalize'>{recipeTypes['drink']}</h1>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,7 +94,7 @@ async function ContentType({limit}:{limit:number}){
 
     return (
         <div className={`flex flex-col gap-4 w-[18rem] sm:w-[20rem] ${fetchedRecipes.length>=2?'md:w-[40rem]':''} ${fetchedRecipes.length>=3?'6xl:w-[65rem]':''}`}>
-            <h1 className='capitalize text-center'>Nyeste oppskrifter</h1>
+            <h1 className='capitalize text-center text-xl font-semibold'>Nyeste oppskrifter</h1>
             <CarouselComponent data={fetchedRecipes}/>
             <Link href={'/recipes/'} className='flex flex-row justify-center items-center gap-1'>
                 <Button variant='outline'>

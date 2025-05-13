@@ -61,7 +61,7 @@ export default function NavBar() {
                             href='/about'
                             className='block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground text-center text-[0.875rem]'
                         >
-                            <p className='text-[0.95rem]'>Om oss</p>
+                            <p className='text-[0.95rem] whitespace-nowrap'>Om oss</p>
                         </Link>	
                     </NavigationMenuItem>	
                 </NavigationMenuList>
