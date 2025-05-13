@@ -46,7 +46,7 @@ export default function Home() {
 
 
             <div className='flex flex-col gap-[10rem]'>
-                <div className='flex flex-col items-center gap-10 px-20 w-full'>
+                <div className='flex flex-col items-center gap-10 px-0 sm:px-[5rem] w-full'>
                     <ContentType limit={6} />
                 </div>
                 
