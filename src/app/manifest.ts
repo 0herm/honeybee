@@ -4,6 +4,7 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     return {
         name: 'herbivorene',
         short_name: 'herbivorene',
+        theme_color: '#0A0A0A',
         description: 'A vegan recipe website',
         start_url: '/',
         display: 'standalone',

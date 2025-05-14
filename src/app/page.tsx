@@ -19,7 +19,7 @@ export default function Home() {
     return (
         <div className='w-full flex flex-col items-center gap-[5rem]'>
             <div className='h-[calc(100vh-var(--h-navbar))] w-screen relative'>
-                <div className='absolute inset-0 bg-gradient-to-b from-green-900 blur-3xl brightness-50'></div>
+                <div className='absolute inset-0 bg-gradient-to-b not-dark:from-green-400/60 dark:from-green-900 blur-3xl brightness-50'></div>
                 <div className='w-full h-full relative flex md:flex-row flex-col gap-[3rem] md:gap-[5rem] lg:gap-[10rem] items-center pb-[10rem] pl-[2rem] md:pl-[4rem] lg:pl-[6rem] p-[2rem]'>
                     <div className='flex flex-col gap-[1rem] justify-center md:justify-normal'>
                         <h1 className='text-3xl md:text-5xl font-bold text-center md:text-left'>Plantebasert Oppskrifter</h1>
