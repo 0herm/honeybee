@@ -1,7 +1,7 @@
-'use client'
-
 import { Leaf, User } from 'lucide-react'
 import Link from 'next/link'
+import { recipeTypes } from '@parent/constants' 
+import ThemeToggle from '@components/themetoggle/themeToggle'
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -9,12 +9,10 @@ import {
     NavigationMenuLink,
     NavigationMenuList,
     NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu'
-import { recipeTypes } from '@parent/constants' 
-import ThemeToggle from '@components/themetoggle/themeToggle'
+} from '@components/ui/navigation-menu'
+import SearchForm from '@components/searchForm/searchForm'
 
 export default function NavBar() {
-
     return (
         <div className='flex flex-row justify-between items-center w-full h-full pr-1'>
                 
@@ -25,7 +23,7 @@ export default function NavBar() {
                 <h1 className='hidden md:block'>Herbivorene</h1>
             </div>
             
-            <NavigationMenu className='absolute left-1/2 transform -translate-x-1/2'> 
+            <NavigationMenu className='absolute left-[calc(50%-2rem)] sm:left-1/2 transform -translate-x-1/2'> 
                 <NavigationMenuList>
                     <NavigationMenuItem>
                         <NavigationMenuTrigger className='bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[state=open]:focus:bg-accent/50 data-[state=open]:hover:bg-accent/50'>
@@ -67,12 +65,10 @@ export default function NavBar() {
                 </NavigationMenuList>
             </NavigationMenu>
 
-            <div className='flex flex-row items-center py-1 px-3'>
+            <div className='flex flex-row items-center py-1 px-3 gap-[0.5rem]'>
+                <SearchForm />
                 <ThemeToggle />
-                <Link 
-                    href={'/login'}
-                    className='p-1'
-                >
+                <Link href={'/login'}>
                     <User />
                 </Link>
             </div>

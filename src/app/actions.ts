@@ -12,8 +12,8 @@ export async function submitForm(prevState: FormState, formData: FormData): Prom
         time: formData.get('time') as string,
         image: formData.get('image') as string | File,
         sections: JSON.parse(formData.get('sections') as string) as {
-            ingredients: { quantity: string; ingredient: string }[];
-            title?: string;
+            ingredients: { quantity: string; ingredient: string }[]
+            title?: string
         }[],
         instructions: formData.get('instructions') as string,
     } as formSchemaData

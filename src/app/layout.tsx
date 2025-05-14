@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description: 'A vegan recipe website',
 }
 
-export default async function RootLayout({ children }: Readonly<{children: React.ReactNode;}>) {
+export default async function RootLayout({ children }: Readonly<{children: React.ReactNode}>) {
     const Cookies = await cookies()
     const theme = Cookies.get('theme')?.value || 'dark'
 
