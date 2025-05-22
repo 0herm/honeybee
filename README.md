@@ -27,5 +27,8 @@ docker-compose up -d
 
 Then go to the cashed site: [http://localhost:8080](http://localhost:8080)  
 
+### ℹ️ Information
+Change `/public/robots.txt` based on your use case
+
 ### ⚠️ Warning
 Still under work and there will be breaking changes
