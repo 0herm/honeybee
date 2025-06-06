@@ -29,7 +29,7 @@ export default async function LoadImage({id,style}:imgProp){
     const validImage = await checkImage(imageUrl)
 
     return (
-        <div>
+        <>
             {validImage ? (
                 <Image
                     src={imageUrl}
@@ -49,6 +49,6 @@ export default async function LoadImage({id,style}:imgProp){
                     className={`object-contain ${style}`}
                 />
             )}
-        </div>
+        </>
     )
 }

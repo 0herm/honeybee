@@ -6,9 +6,9 @@ require('dotenv').config()
 const url  = 'http://localhost:8080'
 const apiKey = process.env.API_TOKEN
 
-export async function fetchByTitle(title: string, type: string, offset: number): Promise<RecipesByTitle | string> {
+export async function fetchByTitle(title: string, type: string, time: string, offset: number): Promise<RecipesByTitle | string> {
     try {
-        const res = await fetch(`${url}/api/recipesByTitle?title=${title}${type?`&type=${type}`:''}&offset=${(offset-1)*8}`,{
+        const res = await fetch(`${url}/api/recipesByTitle?title=${title}${type?`&type=${type}`:''}&time=${time}&offset=${(offset-1)*8}`,{
             // next: { revalidate: 3600 },
             cache: 'no-store',
             method: 'GET',

@@ -18,10 +18,11 @@ export async function GET(req: Request) {
 
         const url = new URL(req.url)
         const title = url.searchParams.get('title')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase()
-        const type = url.searchParams.get('type')?.replace(/[^a-zøæå]/gi, '').toLocaleLowerCase() || ''
+        const typeParam = url.searchParams.get('type')?.toLocaleLowerCase() || ''
+        const timeParam = Number(url.searchParams.get('time')) || 0
         const offset = url.searchParams.get('offset') || '0'
 
-        if (typeof Number(offset) !== 'number' || typeof title !== 'string' || typeof type !== 'string') {
+        if (typeof Number(offset) !== 'number' || typeof title !== 'string' || typeof typeParam !== 'string') {
             return NextResponse.json(
                 { error: 'Invalid params' },
                 { status: 400 }
@@ -34,10 +35,21 @@ export async function GET(req: Request) {
         const params = [queryTitle]
         const totalCountParams = [queryTitle]
 
-        if (type && type !== 'undefined') {
-            conditions.push('type = ?')
-            params.push(type)
-            totalCountParams.push(type)
+        if (typeParam && typeParam !== 'undefined') {
+            const types = typeParam.split(',').map(t => t.replace(/[^a-zøæå]/gi, '').trim())
+            
+            if (types.length > 0) {
+                const typeConditions = types.map(() => 'type = ?').join(' OR ')
+                conditions.push(`(${typeConditions})`)
+                params.push(...types)
+                totalCountParams.push(...types)
+            }
+        }
+
+        if (timeParam > 0) {
+            conditions.push('time <= ?')
+            params.push(timeParam.toString())
+            totalCountParams.push(timeParam.toString())
         }
 
         params.push(offset)
@@ -45,7 +57,7 @@ export async function GET(req: Request) {
         const whereClause = conditions.join(' AND ')
         
         const recipes = await db.all(`
-            SELECT id,title FROM recipes 
+            SELECT id,title,date,time,type FROM recipes 
             WHERE ${whereClause}
             ORDER BY 
                 CASE 

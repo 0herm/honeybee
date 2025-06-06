@@ -22,7 +22,7 @@ export default function Page() {
                     <p className='mt-4 text-sm text-muted-foreground'>Last updated: {new Date().toLocaleString()}</p>
                 </div>
                 <div className='w-full h-full bg-primary-foreground rounded-lg p-[1rem]'>
-                    <pre>{fileContentsLog}</pre>
+                    <pre className='text-pretty'>{fileContentsLog}</pre>
                     <p className='mt-4 text-sm text-muted-foreground'>Last updated: {new Date().toLocaleString()}</p>
                 </div>
             </div>
