@@ -1,4 +1,5 @@
 import LoadImage from '@/components/img/img'
+import PrintButton from '@/components/print/print'
 import { Separator } from '@/components/ui/separator'
 import { fetchById } from '@/utils/fetch'
 import { Clock, Gauge, Leaf, Users } from 'lucide-react'
@@ -76,6 +77,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
                         <p className='w-full'>{recipe.instructions}</p>
                     </div>
                 </div>
+                <PrintButton recipe={recipe} />
             </div>
         </div>
     )
