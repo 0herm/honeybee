@@ -22,8 +22,8 @@ function RecipeContent({ recipe, options }: { recipe: RecipeProp; options: Optio
             <p className='text-gray-600'>Porsjoner: {recipe.quantity}</p>
             <p className='text-gray-600'>Total tid: {recipe.time} minutter</p>
             <hr className='my-[1.25rem] border-t-[0.1rem] border-gray-300' />
+            <h2 className='text-base font-semibold'>Ingredienser:</h2>
             <div className={`flex ${options.listDirection === 'row' ? 'flex-row gap-[2rem]' : 'flex-col gap-[0.5rem]'}`}>
-                <h2 className='text-base font-semibold'>Ingredienser:</h2>
                 {recipe.ingredients.map((part, index) => (
                     <div key={index} className='break-inside-avoid'>
                         <h3 className='text-base font-semibold capitalize'>{part.title}</h3>

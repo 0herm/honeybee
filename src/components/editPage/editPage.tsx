@@ -1,26 +1,22 @@
 'use client'
 
 import { recipeTypes } from '@parent/constants'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useForm, useFieldArray, type Control } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
-import { Calendar as CalendarIcon } from 'lucide-react'
+import { ArrowLeft, Upload } from 'lucide-react'
 import { Plus, Minus } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { format } from 'date-fns'
 import { submitForm } from '@/app/actions'
 import { useActionState, useEffect } from 'react'
 import { formSchema, FormState, formSchemaData, defaultSchemaData } from '@/lib/schema'
+import Image from 'next/image'
 
 const initialState: FormState = {
     error: '',
@@ -46,7 +42,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
         const values = form.getValues()
         const newFormData = new FormData()
         newFormData.append('title', values.title)
-        newFormData.append('date', values.date.toISOString())
+        newFormData.append('date', new Date().toISOString().split('T')[0])
         newFormData.append('type', values.type)
         newFormData.append('quantity', values.quantity)
         newFormData.append('time', values.time.toString())
@@ -76,71 +72,31 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
     }, [state])
 
     return (
-        <div className='flex flex-col'>
-            <Button className='w-[4rem] mb-[2rem]' variant='outline' onClick={() => router.back()}>
-                Back
-            </Button>
+        <div className='relative w-full'>
+            <Form {...form}>
+                <form className='space-y-8' action={() => {handleSubmit(); form.trigger()}}>
+                    <div className='max-w-3xl mx-auto p-2 flex flex-col gap-[1rem]'>
+                        <Button className='w-fit text-base cursor-pointer hover:bg-transparent dark:hover:bg-transparent' variant='ghost' size='icon' onClick={() => router.back()}>
+                            <ArrowLeft />
+                            Back to recipe
+                        </Button>
+                        <h1 className='text-2xl'>{isNew ? 'Add Recipe' : 'Edit Recipe'}</h1>
 
-            <div className='flex flex-row *:min-w-[45vw]'>
-                <Form {...form}>
-                    <form className='space-y-8' action={() => {handleSubmit(); form.trigger()}}>
-                        <div className='max-w-[20rem] p-2 flex flex-col gap-[1rem]'>
-                            <h1>Add Recipe</h1>
-                            <FormField
-                                control={form.control}
-                                name='title'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Title</FormLabel>
-                                        <FormControl>
-                                            <Input placeholder='Title' {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name='date'
-                                render={({ field }) => (
-                                    <FormItem className='flex flex-col'>
-                                        <Popover>
-                                            <FormLabel>Date</FormLabel>
-                                            <PopoverTrigger asChild>
-                                                <FormControl>
-                                                    <Button
-                                                        variant={'outline'}
-                                                        className={cn(
-                                                            'w-[240px] pl-3 text-left font-normal',
-                                                            !field.value && 'text-muted-foreground'
-                                                        )}
-                                                    >
-                                                        {field.value ? (
-                                                            format(field.value, 'PPP')
-                                                        ) : (
-                                                            <span>Pick a date</span>
-                                                        )}
-                                                        <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-                                                    </Button>
-                                                </FormControl>
-                                            </PopoverTrigger>
-                                            <PopoverContent className='w-auto p-0' align='start'>
-                                                <Calendar
-                                                    mode='single'
-                                                    selected={field.value ? new Date(field.value) : undefined}
-                                                    onSelect={field.onChange}
-                                                    disabled={(date) =>
-                                                        date > new Date() || date < new Date('1900-01-01')
-                                                    }
-                                                    initialFocus
-                                                />
-                                            </PopoverContent>
-                                        </Popover>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                        <FormField
+                            control={form.control}
+                            name='title'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Title</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder='Title' {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
+                        <div className='grid grid-cols-3 gap-[2rem]'>
                             <FormField
                                 control={form.control}
                                 name='type'
@@ -148,7 +104,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                     <FormItem>
                                         <FormLabel>Type</FormLabel>
                                         <Select onValueChange={(value) => { form.clearErrors('type'); field.onChange(value) }} defaultValue={field.value}>
-                                            <FormControl>
+                                            <FormControl className='w-full'>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder='Select type' />
                                                 </SelectTrigger>
@@ -193,117 +149,111 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                     </FormItem>
                                 )}
                             />
+                        </div>
 
-                            <FormField
-                                control={form.control}
-                                name='image'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Image</FormLabel>
-                                        <FormControl> 
-                                            <Input
-                                                placeholder='Image'
-                                                type='file'
-                                                onChange={(e) => {
-                                                    const file = e.target.files?.[0]
-                                                    if (file) field.onChange(file); form.clearErrors('image')
-                                                }}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                    
+                        <div className='flex flex-col gap-[0.5rem]'>
                             <FormLabel>Ingredients</FormLabel>
-                            {sectionFields.map((section, sectionIndex) => (
-                                <div key={section.id} className='border p-4 rounded-md'>
-                                    <FormField
-                                        control={form.control}
-                                        name={`sections.${sectionIndex}.title`}
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Section Title</FormLabel>
-                                                <FormControl>
-                                                    <Input placeholder='Section Title' {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <div className='mt-2'>
-                                        <IngredientFields nestIndex={sectionIndex} control={form.control} />
-                                    </div>
-                                    <Button
-                                        type='button'
-                                        variant='outline'
-                                        onClick={() => removeSection(sectionIndex)}
-                                        className='mt-2'
-                                        disabled={sectionFields.length === 1}
-                                    >
-                                        <Minus className='h-4 w-4 mr-2' />
-                                        Remove Section
-                                    </Button>
+                            <div className='w-full flex flex-col justify-center items-center bg-input/30 border border-input rounded-md p-[1rem]'>
+                                <Image
+                                    src={form.watch('image') instanceof File ? URL.createObjectURL(form.watch('image') as Blob) : typeof form.watch('image') === 'string' ? form.watch('image') as string : '/images/fallback.svg'}
+                                    width={300}
+                                    height={300}
+                                    alt='Recipe image'
+                                    className='object-cover rounded-md'
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name='image'
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel />
+                                            <FormControl>
+                                                <div>
+                                                    <Button
+                                                        type='button'
+                                                        onClick={() => document.getElementById('file-input')?.click()}
+                                                        className='w-full'
+                                                    >
+                                                        <Upload />
+                                                        Select Image
+                                                    </Button>
+                                                    <Input
+                                                        id='file-input'
+                                                        type='file'
+                                                        className='hidden'
+                                                        onChange={(e) => {
+                                                            const file = e.target.files?.[0]
+                                                            if (file) field.onChange(file); form.clearErrors('image')
+                                                        }}
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </div>
+
+                        <FormLabel>Ingredients</FormLabel>
+                        {sectionFields.map((section, sectionIndex) => (
+                            <div key={section.id} className='border p-4 rounded-md'>
+                                <FormField
+                                    control={form.control}
+                                    name={`sections.${sectionIndex}.title`}
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Section Title</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder='Section Title' {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <div className='mt-2'>
+                                    <IngredientFields nestIndex={sectionIndex} control={form.control} />
                                 </div>
-                            ))}
-                            <Button
-                                type='button'
-                                variant='outline'
-                                onClick={() => appendSection({ title: '', ingredients: [{ quantity: '', ingredient: '' }] })}
-                            >
-                                <Plus className='h-4 w-4 mr-2' />
-                                Add Section
-                            </Button>
-                    
-                            <FormField
-                                control={form.control}
-                                name='instructions'
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Instructions</FormLabel>
-                                        <FormControl>
-                                            <Textarea placeholder='Instructions' {...field}/>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
+                                <Button
+                                    type='button'
+                                    variant='outline'
+                                    onClick={() => removeSection(sectionIndex)}
+                                    className='mt-2'
+                                    disabled={sectionFields.length === 1}
+                                >
+                                    <Minus className='h-4 w-4 mr-2' />
+                                    Remove Section
+                                </Button>
+                            </div>
+                        ))}
+                        <Button
+                            type='button'
+                            variant='outline'
+                            onClick={() => appendSection({ title: '', ingredients: [{ quantity: '', ingredient: '' }] })}
+                        >
+                            <Plus className='h-4 w-4 mr-2' />
+                            Add Section
+                        </Button>
 
-                            <Button type='submit' disabled={isPending}>Submit {isPending ? '...' : ''}</Button>
-                        </div>
-                    </form>
-                </Form>
-
-                {/* PREVIEW: */}
-                <div className='w-full max-w-[40rem] p-2'>
-                    <h1>Preview:</h1>
-                    <h1 className='capitalize text-2xl font-semibold'>{form.watch('title')}</h1>
-                    {(
-                        <Image
-                            src={form.watch('image') instanceof File ? URL.createObjectURL(form.watch('image') as Blob) : typeof form.watch('image') === 'string' ? form.watch('image') as string : '/images/fallback.svg'}
-                            width={500}
-                            height={500}
-                            alt='Recipe image'
-                            className='flex w-[300px] object-cover items-center justify-center pt-4 print:hidden'
+                        <FormField
+                            control={form.control}
+                            name='instructions'
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Instructions</FormLabel>
+                                    <FormControl>
+                                        <Textarea placeholder='Instructions' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                    )}
-                    {form.watch('sections').map((section, index) => (
-                        <div key={index} className='mt-4'>
-                            <h2 className='capitalize font-semibold'>
-                                {section.title ? `${section.title}:` : ''}
-                            </h2>
-                            <ul>
-                                {section.ingredients.map((item, idx) => (
-                                    <li key={idx}>
-                                        {item.quantity} {item.ingredient}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    ))}
-                    <p className='pt-4'>{form.watch('instructions')}</p>
-                </div>
-            </div>
+
+                        <Button type='submit' disabled={isPending}>Submit {isPending ? '...' : ''}</Button>
+                    </div>
+                </form>
+            </Form>
         </div>
     )
 }
