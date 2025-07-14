@@ -1,4 +1,3 @@
-import { fetchByTitle } from '@/utils/fetch'
 import Link from 'next/link'
 import {
     Card,
@@ -8,23 +7,21 @@ import {
 } from '@/components/ui/card'
 import LoadImage from '@/components/img/img'
 import PageOverview from '@/components/pagination/pagination'
-import Form from 'next/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { BadgePlus, Clock, Filter, Search, Shapes } from 'lucide-react'
+import { BadgePlus, Clock, Filter, Shapes } from 'lucide-react'
 import { recipeTypes } from '@parent/constants'
 import Filters from '@/components/filters/filters'
+import { searchRecipes } from '@/utils/api'
 
 export default async function Page({searchParams}: {searchParams: Promise<{ [key: string]: string | undefined }>}) {
     const paramsSearch = await searchParams
 
     const search = typeof paramsSearch.q    === 'string' ? paramsSearch.q           : ''
-    const offset = typeof paramsSearch.p    === 'string' ? Number(paramsSearch.p)   : 1
-    const time   = typeof paramsSearch.time === 'string' ? paramsSearch.time        : '0'
-    const type   = typeof paramsSearch.type === 'string'
-                || typeof paramsSearch.type === 'object' ? paramsSearch.type        : ''
+    const offset = typeof paramsSearch.p    === 'string' ? Number(paramsSearch.p)   : 0
+    const category = typeof paramsSearch.category === 'string' ? paramsSearch.category : undefined
+    const difficulty = typeof paramsSearch.difficulty === 'string' ? paramsSearch.difficulty : undefined
+    const duration = typeof paramsSearch.duration === 'string' ? Number(paramsSearch.duration) : undefined
 
-    const data = await fetchByTitle(search, Array.isArray(type) ? type.join(',') : type, time, offset)
+    const data = await searchRecipes(search, 8, offset, { category, difficulty, duration })
 
     return (
         <div className='container mx-auto px-[1rem] py-[2rem]'>
@@ -36,7 +33,6 @@ export default async function Page({searchParams}: {searchParams: Promise<{ [key
                             Filtre
                         </h1>
                         <div className='space-y-[1rem]'>
-                            <SearchBar search={search} type={type} />
                             <Filters />
                         </div>
                     </div>
@@ -65,31 +61,7 @@ export default async function Page({searchParams}: {searchParams: Promise<{ [key
     )
 }
 
-function SearchBar({search, type}: {search: string, type: string}) {
-    return (
-        <Form action={`/recipes${type !== '' ? `/${type}` : ''}`}>
-            <div className='relative'>
-                <Input 
-                    type='search'
-                    name='q' 
-                    placeholder='Søk oppskrifter...'
-                    defaultValue={search}
-                    className='pr-[2.5rem]'
-                />
-                <Button 
-                    variant='ghost' 
-                    type='submit' 
-                    size='icon'
-                    className='absolute right-0 top-0 h-full'
-                >
-                    <Search className='h-[1rem] w-[1rem]' />
-                </Button>
-            </div>
-        </Form>
-    )
-}
-
-function RecipeGrid({recipes}: {recipes: Recipes}) {
+function RecipeGrid({recipes}: {recipes: RecipeProps[]}) {
     if (!recipes || recipes.length === 0) {
         return (
             <div className='flex items-center justify-center h-[15rem] bg-muted/20 rounded-lg'>
@@ -107,15 +79,15 @@ function RecipeGrid({recipes}: {recipes: Recipes}) {
     )
 }
 
-function RecipeCard({recipe}: {recipe: RecipeProp}) {
+function RecipeCard({recipe}: {recipe: RecipeProps}) {
     const now = new Date()
-    const isNew = recipe.date && Math.abs(new Date(recipe.date).getTime() - now.getTime()) <= 30 * 24 * 60 * 60 * 1000
+    const isNew = recipe.dateCreated && Math.abs(new Date(recipe.dateCreated).getTime() - now.getTime()) <= 30 * 24 * 60 * 60 * 1000
     
     return (
         <Link href={`../recipe/${recipe.id}`}>
             <Card className='h-[17.5rem] w-full overflow-hidden transition-all hover:shadow-md'>
                 <div className='relative h-[10rem] w-full overflow-hidden flex items-center justify-center'>
-                    <LoadImage id={recipe.id} style='w-full h-auto max-h-[10rem] object-contain' />
+                    <LoadImage data={recipe.image} style='w-full h-auto max-h-[10rem] object-contain' />
                     {isNew && (
                         <div className='absolute top-[0.5rem] left-[0.5rem] bg-green-950/70 py-[0.25rem] px-[0.5rem] rounded-md flex items-center gap-[0.25rem]'>
                             <BadgePlus className='h-[0.75rem] w-[0.75rem] text-green-400' />
@@ -130,19 +102,19 @@ function RecipeCard({recipe}: {recipe: RecipeProp}) {
                     </CardTitle>
                     
                     <CardDescription className='flex flex-wrap gap-[0.75rem] text-xs'>
-                        {recipe.type && (
+                        {recipe.category && (
                             <div className='flex items-center gap-[0.25rem]'>
                                 <Shapes className='h-[0.75rem] w-[0.75rem]' />
-                                <span className='capitalize'>{recipeTypes[recipe.type]}</span>
+                                <span className='capitalize'>{recipeTypes[recipe.category]}</span>
                             </div>
                         )}
                         
-                        {recipe.time > 0 && (
+                        {recipe.duration > 0 && (
                             <div className='flex items-center gap-[0.25rem]'>
                                 <Clock className='h-[0.75rem] w-[0.75rem]' />
                                 <span>
-                                    {Math.floor(recipe.time/60) > 0 && `${Math.floor(recipe.time/60)}t `}
-                                    {recipe.time % 60 > 0 && `${recipe.time % 60}min`}
+                                    {Math.floor(recipe.duration/60) > 0 && `${Math.floor(recipe.duration/60)}t `}
+                                    {recipe.duration % 60 > 0 && `${recipe.duration % 60}min`}
                                 </span>
                             </div>
                         )}

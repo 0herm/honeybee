@@ -1,48 +1,23 @@
-type Ingredient = {
+type IngredientProps = {
     ingredient: string
     quantity: string
 }
   
-type RecipePart = {
+type IngredientsProps = {
     title: string
-    ingredients: Ingredient[]
+    ingredients: IngredientProps[]
 }
 
-type RecipeProp = {
+type RecipeProps = {
     id: number
     title: string
-    date: string
-    type: string
+    dateCreated: Date
+    dateUpdated: Date
+    category: string
+    duration: number
+    difficulty: string
     quantity: string
-    time: number
-    ingredients: RecipePart[]
-    instructions: string
-}
-
-type Recipes = RecipeProp[]
-
-type Types = {
-    type: string
-    typeNO: string
-}
-
-type queryBodyProp = {
-    title: string
-    date: string
-    type: string
-    quantity: string
-    time: number
-    ingredients: string
-    instructions: string
-    id?: number
-    image: File | null
-} 
-
-type RecipesByTitle = {
-    recipes: RecipeProp[]
-    totalItems: number
-}
-
-type RecipeTypes = {
-    [key: string]: string
+    ingredients: IngredientsProps[]
+    instructions: string[]
+    image: Uint8Array | null
 }

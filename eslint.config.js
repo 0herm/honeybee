@@ -7,7 +7,7 @@ export default [
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
     {
-        ignores: ['**/components/ui/**', '**/hooks/use-toast.ts'],
+        ignores: ['**/components/ui/**'],
     },
     {
         plugins: {

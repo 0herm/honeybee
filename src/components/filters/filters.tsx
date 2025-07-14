@@ -5,6 +5,9 @@ import { recipeTypes } from '@parent/constants'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Slider } from '../ui/slider'
 import { useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Search } from 'lucide-react'
 
 export default function Filters() {
     const router = useRouter()
@@ -15,8 +18,9 @@ export default function Filters() {
     const maxTime  = 240 + 15
     const stepTime = 15
 
-    const selectedTypes = searchParams.getAll('type')
-    const [timeFilter, setTimeFilter] = useState(Number(searchParams.get('time')) || maxTime)
+    const selectedTypes = searchParams.getAll('category')
+    const [timeFilter, setTimeFilter] = useState(Number(searchParams.get('duration')) || maxTime)
+    const [search, setSearch] = useState(searchParams.get('q') || '')
 
     function handleFilterChangeGroup(paramName: string, value: string, selected: boolean) {
         const params = new URLSearchParams(searchParams.toString())
@@ -46,20 +50,47 @@ export default function Filters() {
     return (
         <div className='flex flex-col gap-[1rem]'>
             <div>
-                <h2 className='pb-[0.5rem]'>Type måltid</h2>
-                {recipeTypes && Object.entries(recipeTypes).map(([type, label]) => (
-                    <div key={type} className='flex items-center space-x-2 mb-2'>
+                <h2 className='pb-[0.5rem]'>Søk</h2>
+                <div className='relative'>
+                    <Input 
+                        type='search'
+                        name='q' 
+                        placeholder='Søk oppskrifter...'
+                        value={search}
+                        className='pr-[2.5rem]'
+                        onChange={(e) => setSearch(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                handleFilterChange('q', search)
+                            }
+                        }}
+                    />
+                    <Button 
+                        variant='ghost' 
+                        type='button' 
+                        size='icon'
+                        className='absolute right-0 top-0 h-full'
+                        onClick={() => handleFilterChange('q', search)}
+                    >
+                        <Search className='h-[1rem] w-[1rem]' />
+                    </Button>
+                </div>
+            </div>
+            <div>
+                <h2 className='pb-[0.5rem]'>Kategori</h2>
+                {recipeTypes && Object.entries(recipeTypes).map(([category, label]) => (
+                    <div key={category} className='flex items-center space-x-2 mb-2'>
                         <Checkbox
-                            id={type}
-                            value={type}
+                            id={category}
+                            value={category}
                             className='border-[0.1rem] dark:data-[state=checked]:bg-green-700/70 data-[state=checked]:bg-green-700 dark:data-[state=checked]:border-secondary'
-                            checked={selectedTypes.includes(type)}
+                            checked={selectedTypes.includes(category)}
                             onCheckedChange={checked =>
-                                handleFilterChangeGroup('type', type, !!checked)
+                                handleFilterChangeGroup('category', category, !!checked)
                             }
                         />
                         <label
-                            htmlFor={type}
+                            htmlFor={category}
                             className='peer-not-data-[state=checked]:text-muted-foreground capitalize'
                         >
                             {label}
@@ -80,7 +111,7 @@ export default function Filters() {
                         step={stepTime}
                         defaultValue={[timeFilter]}
                         onValueChange={([val]) => setTimeFilter(val)}
-                        onValueCommit={([val]) => val === maxTime ? handleFilterChange('time', String(val), true) : handleFilterChange('time', String(val))}
+                        onValueCommit={([val]) => val === maxTime ? handleFilterChange('duration', String(val), true) : handleFilterChange('duration', String(val))}
                     />
                 </div>
             </div>

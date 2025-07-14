@@ -2,7 +2,7 @@
 A self-hosted recipe website, where you can share your recipes. Ease of use with tools to edit and add recipes.
 
 **Build With**  
-NextJS with TypeScript, React and Tailwind. Database is SQLite.
+NextJS with TypeScript, React and Tailwind. Database is Postgres.
 
 ### ✨ Features
 - Overview for new recipes
@@ -29,6 +29,3 @@ Then go to the cashed site: [http://localhost:8080](http://localhost:8080)
 
 ### ℹ️ Information
 Change `/public/robots.txt` based on your use case
-
-### ⚠️ Warning
-Still under work and there will be breaking changes

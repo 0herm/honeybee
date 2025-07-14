@@ -1,29 +1,27 @@
 import LoadImage from '@/components/img/img'
 import PrintButton from '@/components/print/print'
 import { Separator } from '@/components/ui/separator'
-import { fetchById } from '@/utils/fetch'
+import { getRecipeById } from '@/utils/api'
 import { Clock, Gauge, Leaf, Users } from 'lucide-react'
 
 export default async function RecipePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
 
-    const recipe = await fetchById(id) as RecipeProp | string
+    const recipe = await getRecipeById(Number(id))
 
     if (typeof recipe === 'string') {
         return <div>Error: {recipe}</div>
     }
 
-    recipe.ingredients = JSON.parse(String(recipe.ingredients))
-
-    const hours = Math.floor(recipe.time / 60)
-    const minutes = recipe.time % 60
+    const hours = Math.floor(recipe.duration / 60)
+    const minutes = recipe.duration % 60
 
     return (
         <div className='w-full flex justify-center'>
             <div className='w-full max-w-[65rem] sm:px-[2rem]'>
                 <h1 className='w-full text-center capitalize text-2xl font-semibold'>{recipe.title}</h1>
                 <div className='relative flex items-start w-full h-[12rem] sm:h-[14rem] mt-[1rem] print:hidden'>
-                    <LoadImage id={Number(id)} />
+                    <LoadImage data={recipe.image} />
                 </div>
                 <div className='flex flex-col md:flex-row justify-center items-center gap-[1rem] md:gap-[3rem] pt-[2rem] md:pt-[3rem]'>
                     <div className='flex flex-row items-center gap-[1rem] w-[15rem] p-[1rem] rounded-lg bg-green-950/10 border border-green-900/40'>
@@ -74,10 +72,10 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
                     <div className='w-full'>
                         <h2 className='text-xl font-semibold mb-[1rem]'>Fremgangsmåte</h2>
                         <Separator className='mb-[1rem] bg-green-900' />
-                        <p className='w-full'>{recipe.instructions}</p>
+                        <p className='w-full leading-relaxed'>{recipe.instructions.join(' ')}</p>
                     </div>
                 </div>
-                <PrintButton recipe={recipe} />
+                <PrintButton recipe={{...recipe, image: null}} />
             </div>
         </div>
     )

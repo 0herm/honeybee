@@ -9,6 +9,3 @@
 
 # typescript
 next-env.d.ts
-
-# database
-main.db

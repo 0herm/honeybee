@@ -1,6 +1,6 @@
 'use client'
 
-import { recipeTypes } from '@parent/constants'
+import { recipeTypes, recipeDifficulty } from '@parent/constants'
 import { useRouter } from 'next/navigation'
 import { useForm, useFieldArray, type Control } from 'react-hook-form'
 import { z } from 'zod'
@@ -9,8 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+import { toast } from 'sonner'
 import { ArrowLeft, Upload } from 'lucide-react'
 import { Plus, Minus } from 'lucide-react'
 import { submitForm } from '@/app/actions'
@@ -19,14 +18,11 @@ import { formSchema, FormState, formSchemaData, defaultSchemaData } from '@/lib/
 import Image from 'next/image'
 
 const initialState: FormState = {
-    error: '',
-    success: false,
-    initial: true
+    success: null
 }
 
 export default function EditPage({ values, isNew, id }:{ values?: formSchemaData, isNew: boolean, id?: number }) {
     const [state, formAction, isPending] = useActionState(submitForm, initialState)
-    const { toast } = useToast()
     const router = useRouter()
 
     const defaultValues = values ? values : defaultSchemaData
@@ -38,43 +34,30 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
     })
     const { fields: sectionFields, append: appendSection, remove: removeSection, } = useFieldArray({ control: form.control, name: 'sections', })
 
-    async function handleSubmit() {
-        const values = form.getValues()
-        const newFormData = new FormData()
-        newFormData.append('title', values.title)
-        newFormData.append('date', new Date().toISOString().split('T')[0])
-        newFormData.append('type', values.type)
-        newFormData.append('quantity', values.quantity)
-        newFormData.append('time', values.time.toString())
-        newFormData.append('image', values.image)
-        newFormData.append('sections', JSON.stringify(values.sections))
-        newFormData.append('instructions', values.instructions)
-        if (id !== undefined) newFormData.append('id', id.toString())
-        newFormData.append('isNew', isNew.toString())
     
-        return formAction(newFormData)
+    function handleSubmit(formData: FormData) {
+        formData.set('sections', JSON.stringify(form.getValues('sections')))
+        const image = form.getValues('image')
+        if (image instanceof Blob) {
+            formData.set('image', image)
+        }
+        formData.set('instructions', JSON.stringify(form.getValues('instructions')))
+        return formAction(formData)
     }
 
     useEffect(() => {
         if (state.success) {
-            toast({
-                title: 'Form submitted successfully!',
-                description: '',
-            })
+            toast.success('Form submitted successfully!')
             router.back()
-        } else if (!state.success && !state.initial) {
-            toast({
-                title: 'Error',
-                description: state.error || 'Please try again later.',
-                variant: 'destructive',
-            })
+        } else if (state.success === false) {
+            toast.error(state.error || 'Error: Please try again later.')
         }
     }, [state])
 
     return (
         <div className='relative w-full'>
             <Form {...form}>
-                <form className='space-y-8' action={() => {handleSubmit(); form.trigger()}}>
+                <form className='space-y-8' action={handleSubmit} onSubmit={() => form.trigger()}>
                     <div className='max-w-3xl mx-auto p-2 flex flex-col gap-[1rem]'>
                         <Button className='w-fit text-base cursor-pointer hover:bg-transparent dark:hover:bg-transparent' variant='ghost' size='icon' onClick={() => router.back()}>
                             <ArrowLeft />
@@ -96,25 +79,31 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             )}
                         />
 
-                        <div className='grid grid-cols-3 gap-[2rem]'>
+                        <div className='grid grid-cols-2 gap-[2rem]'>
                             <FormField
                                 control={form.control}
-                                name='type'
+                                name='category'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Type</FormLabel>
-                                        <Select onValueChange={(value) => { form.clearErrors('type'); field.onChange(value) }} defaultValue={field.value}>
+                                        <FormLabel>Category</FormLabel>
+                                        <Select 
+                                            name='category'
+                                            onValueChange={(value) => {
+                                                field.onChange(value)
+                                                form.clearErrors('category')
+                                            }}
+                                        >
                                             <FormControl className='w-full'>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder='Select type' />
+                                                    <SelectValue placeholder='Select category' />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {
-                                                    Object.entries(recipeTypes).map(([key, value]) => {
-                                                        return <SelectItem key={key} value={key}>{value}</SelectItem>
-                                                    })
-                                                }
+                                                {Object.entries(recipeTypes).map(([key, value]) => (
+                                                    <SelectItem key={key} value={key}>
+                                                        {value}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -122,6 +111,39 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                 )}
                             />
 
+                            <FormField
+                                control={form.control}
+                                name='difficulty'
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Difficulty</FormLabel>
+                                        <Select 
+                                            name='difficulty'
+                                            onValueChange={(value) => {
+                                                field.onChange(value)
+                                                form.clearErrors('difficulty')
+                                            }}
+                                        >
+                                            <FormControl className='w-full'>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder='Select difficulty' />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                {Object.entries(recipeDifficulty).map(([key, value]) => (
+                                                    <SelectItem key={key} value={key}>
+                                                        {value}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <div className='grid grid-cols-2 gap-[2rem]'>
                             <FormField
                                 control={form.control}
                                 name='quantity'
@@ -138,12 +160,12 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
 
                             <FormField
                                 control={form.control}
-                                name='time'
+                                name='duration'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Time</FormLabel>
+                                        <FormLabel>Duration</FormLabel>
                                         <FormControl>
-                                            <Input placeholder='Time (minutes)' type='number' {...field} />
+                                            <Input placeholder='Duration (min)' type='number' {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -242,13 +264,62 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Instructions</FormLabel>
-                                    <FormControl>
-                                        <Textarea placeholder='Instructions' {...field}/>
-                                    </FormControl>
+                                    <div className='flex flex-col gap-2'>
+                                        {form.watch('instructions').map((instruction, index) => (
+                                            <div key={index} className='flex gap-2'>
+                                                <FormControl>
+                                                    <Input
+                                                        placeholder={`Instruction ${index + 1}`}
+                                                        value={instruction}
+                                                        onChange={(e) => {
+                                                            const updatedInstructions = [...form.watch('instructions')]
+                                                            updatedInstructions[index] = e.target.value
+                                                            field.onChange(updatedInstructions)
+                                                        }}
+                                                    />
+                                                </FormControl>
+                                                <Button
+                                                    type='button'
+                                                    variant='outline'
+                                                    size='icon'
+                                                    onClick={() => {
+                                                        const updatedInstructions = [...form.watch('instructions')]
+                                                        updatedInstructions.splice(index, 1)
+                                                        field.onChange(updatedInstructions)
+                                                    }}
+                                                    disabled={form.watch('instructions').length === 1}
+                                                >
+                                                    <Minus className='h-4 w-4' />
+                                                </Button>
+                                            </div>
+                                        ))}
+                                        <Button
+                                            type='button'
+                                            variant='outline'
+                                            onClick={() => field.onChange([...form.watch('instructions'), ''])}
+                                        >
+                                            <Plus className='h-4 w-4 mr-2' />
+                                            Add Instruction
+                                        </Button>
+                                    </div>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
+                        {!isNew && id &&
+                            <FormField
+                                control={form.control}
+                                name='id'
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input type='hidden' {...field} value={id} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        }
 
                         <Button type='submit' disabled={isPending}>Submit {isPending ? '...' : ''}</Button>
                     </div>

@@ -3,7 +3,7 @@ import './globals.css'
 
 import NavBar from '@/components/nav/nav'
 import Footer from '@/components/footer/footer'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 import { cookies } from 'next/headers'
 
 export const metadata: Metadata = {
@@ -29,7 +29,16 @@ export default async function RootLayout({ children }: Readonly<{children: React
                     <footer className='mt-10 border-solid border-t border-accent print:hidden'>
                         <Footer />
                     </footer>
-                    <Toaster />
+                    <Toaster 
+                        position='bottom-right'
+                        style={
+                            {
+                                '--normal-bg': '#111111',
+                                '--normal-text': 'white',
+                                '--normal-border': '#1c1c1c',
+                            } as React.CSSProperties
+                        }
+                    />
                 </body>
             </html>
         </>

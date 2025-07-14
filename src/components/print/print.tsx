@@ -15,12 +15,12 @@ type OptionsProps = {
     instructionPosition: string
 }
 
-function RecipeContent({ recipe, options }: { recipe: RecipeProp; options: OptionsProps }) {
+function RecipeContent({ recipe, options }: { recipe: RecipeProps; options: OptionsProps }) {
     return (
         <div className={`${options.font !== 'none' ? options.font : ''} pl-[5rem] pt-[2.5rem] pr-[2.5rem] leading-relaxed break-inside-avoid`}>
             <h1 className='text-2xl font-bold mb-[0.5rem] capitalize'>{recipe.title}</h1>
             <p className='text-gray-600'>Porsjoner: {recipe.quantity}</p>
-            <p className='text-gray-600'>Total tid: {recipe.time} minutter</p>
+            <p className='text-gray-600'>Total tid: {recipe.duration} minutter</p>
             <hr className='my-[1.25rem] border-t-[0.1rem] border-gray-300' />
             <h2 className='text-base font-semibold'>Ingredienser:</h2>
             <div className={`flex ${options.listDirection === 'row' ? 'flex-row gap-[2rem]' : 'flex-col gap-[0.5rem]'}`}>
@@ -44,7 +44,7 @@ function RecipeContent({ recipe, options }: { recipe: RecipeProp; options: Optio
     )
 }
 
-export default function PrintButton({ recipe }: { recipe: RecipeProp }) {
+export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
     const availableOptions = {
         font: {
             name: 'Skrifttype',

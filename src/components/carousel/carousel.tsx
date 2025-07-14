@@ -16,7 +16,7 @@ import { recipeTypes } from '@parent/constants'
 import { BadgePlus, Clock, Shapes } from 'lucide-react'
 
 type CarouselProp = {
-    data: Recipes
+    data: RecipeProps[]
 }
 
 export default function CarouselComponent({data}:CarouselProp) {
@@ -37,32 +37,32 @@ export default function CarouselComponent({data}:CarouselProp) {
                             <div className='p-1'>
                                 <Card className='flex flex-row relative w-full h-[10rem] py-[0.5rem] gap-[0.5rem]'>
                                     <div className='relative h-full w-auto aspect-1/1'>
-                                        <LoadImage id={recipe.id} style='flex' /> 
+                                        <LoadImage data={recipe.image} style='flex' /> 
                                     </div>
                                     <div className='w-full h-full'>
                                         <CardTitle className='text-left text-base capitalize py-[1rem] px-[0.4rem]'>{recipe.title}</CardTitle>
                                         <CardDescription className='flex flex-col gap-[0.3rem] px-[0.4rem]'>
-                                            {recipe.date && Math.abs(new Date(recipe.date).getTime() - now.getTime())<=30*24*60*60*1000 &&
+                                            {recipe.dateCreated && Math.abs(new Date(recipe.dateCreated).getTime() - now.getTime())<=30*24*60*60*1000 &&
                                                 <div className='flex flex-row items-center gap-[0.2rem]'>
                                                     <BadgePlus className='h-[1rem] w-auto text-[#599459]'/>
                                                     <p className='flex flex-row gap-[0.2rem] text-[#599459]'>Ny</p>
                                                 </div>
                                             }
-                                            {recipe.type &&
+                                            {recipe.category &&
                                                 <div className='flex flex-row items-center gap-[0.2rem]'>
                                                     <Shapes className='h-[1rem] w-auto'/>
                                                     <p className='flex flex-row gap-[0.2rem] capitalize'>
                                                         <span className='hidden 6xl:block'>Kategori: </span>
-                                                        {recipeTypes[recipe.type]}
+                                                        {recipeTypes[recipe.category]}
                                                     </p>
                                                 </div>
                                             }
-                                            {recipe.time > 1 &&
+                                            {recipe.duration > 1 &&
                                                 <div className='flex flex-row items-center gap-[0.2rem]'>
                                                     <Clock className='h-[1rem] w-auto'/>
                                                     <p className='flex flex-row gap-[0.2rem]'>
                                                         <span className='hidden 6xl:block'>Tid: </span> 
-                                                        {Math.floor(recipe.time/60) !== 0 ? Math.floor(recipe.time/60)+'t' : ''} {recipe.time%60 !== 0 ? recipe.time%60+'min' : ''}
+                                                        {Math.floor(recipe.duration/60) !== 0 ? Math.floor(recipe.duration/60)+'t' : ''} {recipe.duration%60 !== 0 ? recipe.duration%60+'min' : ''}
                                                     </p>
                                                 </div>
                                             }

@@ -3,7 +3,7 @@
 import EditPage from '@/components/editPage/editPage'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { fetchById, fetchByTitle } from '@/utils/fetch'
+import { getRecipeById, searchRecipes } from '@/utils/api'
 import { Search } from 'lucide-react'
 import Form from 'next/form'
 import Link from 'next/link'
@@ -14,17 +14,17 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     const recipeId = id?.[0] ? id[0] : undefined
 
     if(recipeId){
-        const recipe = await fetchById(recipeId)
+        const recipe = await getRecipeById(Number(recipeId))
         if(typeof recipe !== 'string'){
             const values = {
-                title: 			recipe.title,
-                date: 			new Date(recipe.date),
-                type: 			recipe.type,
-                quantity: 		recipe.quantity,
-                time: 			String(recipe.time),
-                image: 			`http://localhost:8080/api/image/${recipe.id}`,
-                sections: 		JSON.parse(String(recipe.ingredients)),
-                instructions: 	recipe.instructions,
+                title:          recipe.title,
+                category:       recipe.category,
+                difficulty:     recipe.difficulty,
+                quantity:       recipe.quantity,
+                duration:       String(recipe.duration),
+                image:          recipe.image ? `http://localhost:8080/api/image/${recipe.id}` : undefined,
+                sections:       recipe.ingredients,
+                instructions:   recipe.instructions,
             }
 
             return (<EditPage isNew={false} values={values} id={Number(id)} />)
@@ -35,7 +35,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     const param = await searchParams
     const search = typeof param.q === 'string' ? param.q : ''
 
-    const recipes: RecipesByTitle | string = await fetchByTitle(search, '', '0' , 1)
+    const recipes = await searchRecipes(search, 8, 0, {})
 
     if(typeof recipes === 'string'){
         <div className='p-5'>Feil: ingen oppskrifter lik {`'${search}'`}</div>

@@ -1,14 +1,10 @@
 import Link from 'next/link'
-
 import { Croissant, CupSoda, IceCreamBowl, Soup } from 'lucide-react'
 import Image from 'next/image'
-
 import CarouselComponent from '@/components/carousel/carousel'
-
-import { fetchRecipes } from '@/utils/fetch'
-
 import { recipeTypes } from '@parent/constants'
 import { Button } from '@/components/ui/button'
+import { getRecipes } from '@/utils/api'
 
 export default function Home() {
 
@@ -85,17 +81,16 @@ export default function Home() {
 }
 
 async function ContentType({limit}:{limit:number}){
-    
-    const fetchedRecipes = await fetchRecipes(limit)
-    
-    if (typeof fetchedRecipes === 'string') {
-        return <div>Error: {fetchedRecipes}</div>
+    const recipes = await getRecipes(limit)
+
+    if (typeof recipes === 'string') {
+        return <div>Error: {recipes}</div>
     }
 
     return (
-        <div className={`flex flex-col gap-4 w-[18rem] sm:w-[20rem] ${fetchedRecipes.length>=2?'md:w-[40rem]':''} ${fetchedRecipes.length>=3?'6xl:w-[65rem]':''}`}>
+        <div className={`flex flex-col gap-4 w-[18rem] sm:w-[20rem] ${recipes.length>=2?'md:w-[40rem]':''} ${recipes.length>=3?'6xl:w-[65rem]':''}`}>
             <h1 className='capitalize text-center text-xl font-semibold'>Nyeste oppskrifter</h1>
-            <CarouselComponent data={fetchedRecipes}/>
+            <CarouselComponent data={recipes}/>
             <Link href={'/recipes/'} className='flex flex-row justify-center items-center gap-1'>
                 <Button variant='outline'>
                     Se alle oppskrifter

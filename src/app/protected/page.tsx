@@ -18,6 +18,10 @@ export default function Page() {
                 <Button asChild>
                     <Link href='protected/deploy'>Deploy logs</Link>
                 </Button>
+
+                <Button asChild>
+                    <Link href='/api/export'>Export Data</Link>
+                </Button>
             </div>
         </div>
     )

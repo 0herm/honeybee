@@ -2,37 +2,22 @@
 
 import Image from 'next/image'
 
-type imgProp = {
-    id: number
+type LoadImageProps = {
+    data: Uint8Array | null
     style?: string
 }
 
-async function checkImage(imageUrl:string) {
-    try {
-        const res = await fetch(imageUrl, {method: 'HEAD'})
-
-        if (res.ok) {
-            return true
-        } else {
-            return false
-        }
-    } catch (error) {
-        console.error('Error checking image:', error)
-        return false
-    }
-}
-
-export default async function LoadImage({id,style}:imgProp){
-    const imageUrl = `http://localhost:8080/api/image/${id}`
+export default async function LoadImage({data,style}: LoadImageProps){
     const fallbackImage = '/images/fallback.svg'
+    
+    const imageSrc = data ? `data:image/jpeg;base64,${Buffer.from(data).toString('base64')}` : null
 
-    const validImage = await checkImage(imageUrl)
 
     return (
         <>
-            {validImage ? (
+            {imageSrc ? (
                 <Image
-                    src={imageUrl}
+                    src={imageSrc}
                     alt='bilde'
                     fill={true}
                     sizes='100%'
