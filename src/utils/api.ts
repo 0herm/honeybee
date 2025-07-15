@@ -59,7 +59,7 @@ export async function searchRecipes(
     })
     const filtersQuery = filterConditions.join('')
 
-    const params = [`%${keyword}%`, ...filterKeys.map(key => filters[key as keyof typeof filters]), limit, offset]
+    const params = [`%${keyword}%`, ...filterKeys.map(key => filters[key as keyof typeof filters]), limit, offset*limit]
 
     const query = `SELECT * FROM recipes WHERE title LIKE $1${filtersQuery} ORDER BY date_created DESC LIMIT $${params.length - 1} OFFSET $${params.length}`
     const countQuery = `SELECT COUNT(*) FROM recipes WHERE title LIKE $1${filtersQuery}`

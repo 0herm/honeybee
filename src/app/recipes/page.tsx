@@ -16,12 +16,14 @@ export default async function Page({searchParams}: {searchParams: Promise<{ [key
     const paramsSearch = await searchParams
 
     const search = typeof paramsSearch.q    === 'string' ? paramsSearch.q           : ''
-    const offset = typeof paramsSearch.p    === 'string' ? Number(paramsSearch.p)   : 0
+    const offset = typeof paramsSearch.p    === 'string' ? Number(paramsSearch.p)   : 1
     const category = typeof paramsSearch.category === 'string' ? paramsSearch.category : undefined
     const difficulty = typeof paramsSearch.difficulty === 'string' ? paramsSearch.difficulty : undefined
     const duration = typeof paramsSearch.duration === 'string' ? Number(paramsSearch.duration) : undefined
 
-    const data = await searchRecipes(search, 8, offset, { category, difficulty, duration })
+    const limit = 8
+
+    const data = await searchRecipes(search, limit, offset-1, { category, difficulty, duration })
 
     return (
         <div className='container mx-auto px-[1rem] py-[2rem]'>
@@ -52,7 +54,7 @@ export default async function Page({searchParams}: {searchParams: Promise<{ [key
                             
                             <RecipeGrid recipes={data.recipes} />
                             
-                            <PageOverview current={offset} pages={Math.ceil(data.totalItems/8)} />
+                            <PageOverview current={offset} pages={Math.ceil(data.totalItems/limit)} />
                         </div>
                     )}
                 </div>
