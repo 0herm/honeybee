@@ -13,11 +13,12 @@ export const recipeDifficulty: Record<string, string> = {
 
 const config = {
     database: {
-        HOST: process.env.POSTGRES_HOST                         || 'localhost',
-        PORT: process.env.POSTGRES_PORT                         || '5432',
-        USER: process.env.POSTGRES_USER                         || 'admin',
-        PASSWORD: process.env.POSTGRES_PASSWORD,
-        DB: process.env.POSTGRES_DB                             || 'honeybee',
+        HOST: process.env.NODE_ENV === 'production' ? process.env.POSTGRES_HOST_PROD 
+            : process.env.POSTGRES_HOST_DEV         || 'honeybee_postgres',
+        PORT: process.env.POSTGRES_PORT             || '5432',
+        USER: process.env.POSTGRES_USER             || 'admin',
+        DB: process.env.POSTGRES_DB                 || 'honeybee',
+        PASSWORD: process.env.POSTGRES_PASSWORD
     }
 }
 

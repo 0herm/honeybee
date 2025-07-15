@@ -4,6 +4,9 @@ FROM node:23-alpine
 # Varnish 
 RUN apk add --no-cache varnish
 
+# Install PostgreSQL client for pg_dump
+RUN apk add --no-cache postgresql-client
+
 # Install latest npm
 RUN npm install -g npm@latest
 
