@@ -81,7 +81,7 @@ function RecipeGrid({recipes}: {recipes: RecipeProps[]}) {
 
 function RecipeCard({recipe}: {recipe: RecipeProps}) {
     const now = new Date()
-    const isNew = recipe.dateCreated && Math.abs(new Date(recipe.dateCreated).getTime() - now.getTime()) <= 30 * 24 * 60 * 60 * 1000
+    const isNew = recipe.date_created && Math.abs(new Date(recipe.date_created).getTime() - now.getTime()) <= 30 * 24 * 60 * 60 * 1000
     
     return (
         <Link href={`../recipe/${recipe.id}`}>

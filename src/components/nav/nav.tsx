@@ -43,7 +43,7 @@ export default function NavBar() {
                                     return ( 
                                         <NavigationMenuLink asChild key={key}>
                                             <Link 
-                                                href={`/recipes/${key}`}
+                                                href={`/recipes?category=${key}`}
                                                 className='block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-hidden transition-colors hover:bg-accent hover:text-accent-foreground text-center capitalize'
                                             >
                                                 <p className='text-[0.925rem]'>{value}</p>
