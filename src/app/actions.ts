@@ -10,7 +10,7 @@ export async function submitForm(prevState: FormState, formData: FormData): Prom
         quantity: formData.get('quantity'),
         difficulty: formData.get('difficulty'),
         duration: formData.get('duration'),
-        image: formData.get('image') as string | File,
+        image: formData.get('image') as File | string,
         sections: JSON.parse(formData.get('sections') as string) as {
             title: string
             ingredients: { quantity: string; ingredient: string }[]

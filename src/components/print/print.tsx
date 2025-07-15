@@ -98,7 +98,7 @@ export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
     })
 
     return (
-        <div className='w-full flex flex-col items-center sm:items-end pt-[2rem]'>
+        <>
             <Dialog>
                 <DialogTrigger asChild>
                     <Button className='px-[1rem] py-[0.5rem] bg-green-700/70 text-white rounded-md hover:bg-green-900'>
@@ -151,6 +151,6 @@ export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
             <div ref={contentRef} className='hidden print:block'>
                 <RecipeContent recipe={recipe} options={options} />
             </div>
-        </div>
+        </>
     )
 }

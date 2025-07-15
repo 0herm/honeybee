@@ -77,7 +77,7 @@ export async function searchRecipes(
     return { recipes: result, totalItems: totalItems }
 }
 
-export async function addRecipe(recipe: Omit<RecipeProps, 'dateCreated' | 'dateUpdated' | 'id'>): Promise<RecipeProps | string> {
+export async function addRecipe(recipe: Omit<RecipeProps, 'date_created' | 'date_updated' | 'id'>): Promise<RecipeProps | string> {
     const query = `INSERT INTO recipes (title, date_created, date_updated, category, duration, difficulty, quantity, ingredients, instructions, image) 
                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`
 
@@ -97,10 +97,10 @@ export async function addRecipe(recipe: Omit<RecipeProps, 'dateCreated' | 'dateU
     return typeof result === 'string' ? 'Failed to add recipe' : result[0]
 }
 
-export async function updateRecipe(id: number, recipe: Omit<RecipeProps, 'dateCreated' | 'dateUpdated' | 'id'>): Promise<RecipeProps | string> {
-    const query = `UPDATE recipes SET title = $1, date_updated = $2, category = $3, duration = $4, difficulty = $5, quantity = $6, ingredients = $7, instructions = $8, image = $9 
-                   WHERE id = $10 RETURNING *`
-    const params = [
+export async function updateRecipe(id: number, recipe: Omit<RecipeProps, 'date_created' | 'date_updated' | 'id'>): Promise<RecipeProps | string> {
+    const query = `UPDATE recipes SET title = $1, date_updated = $2, category = $3, duration = $4, difficulty = $5, quantity = $6, ingredients = $7, instructions = $8${recipe.image !== null ? ', image = $10' : ''} WHERE id = $9 RETURNING *`
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const params: any[] = [
         recipe.title,
         new Date().toISOString(),
         recipe.category,
@@ -109,9 +109,11 @@ export async function updateRecipe(id: number, recipe: Omit<RecipeProps, 'dateCr
         recipe.quantity,
         JSON.stringify(recipe.ingredients),
         recipe.instructions,
-        recipe.image,
         id
     ]
+    if (recipe.image !== null) {
+        params.push(recipe.image)
+    }
     const result = await dbWrapper(query, params)
     return typeof result === 'string' ? 'Failed to edit recipe' : result[0]
 
@@ -119,5 +121,6 @@ export async function updateRecipe(id: number, recipe: Omit<RecipeProps, 'dateCr
 
 export async function deleteRecipe(id: number) {
     const query = 'DELETE FROM recipes WHERE id = $1 RETURNING *'
-    return dbWrapper(query, [id])
+    const result = await  dbWrapper(query, [id])
+    return typeof result === 'string' ? 'Failed to delete recipe' : result[0]
 }

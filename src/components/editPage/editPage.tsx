@@ -16,6 +16,8 @@ import { submitForm } from '@/app/actions'
 import { useActionState, useEffect } from 'react'
 import { formSchema, FormState, formSchemaData, defaultSchemaData } from '@/lib/schema'
 import Image from 'next/image'
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { deleteRecipe } from '@/utils/api'
 
 const initialState: FormState = {
     success: null
@@ -40,9 +42,21 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
         const image = form.getValues('image')
         if (image instanceof Blob) {
             formData.set('image', image)
+        }else {
+            formData.set('image', 'null')
         }
         formData.set('instructions', JSON.stringify(form.getValues('instructions')))
         return formAction(formData)
+    }
+
+    function handleDelete(id: number) {
+        const result = deleteRecipe(id)
+        if (typeof result === 'string') {
+            toast.error(result || 'Error: Please try again later.')
+        }else {
+            toast.success('Recipe deleted successfully')
+            router.back()
+        }
     }
 
     useEffect(() => {
@@ -88,6 +102,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                         <FormLabel>Category</FormLabel>
                                         <Select 
                                             name='category'
+                                            defaultValue={field.value}
                                             onValueChange={(value) => {
                                                 field.onChange(value)
                                                 form.clearErrors('category')
@@ -119,6 +134,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                         <FormLabel>Difficulty</FormLabel>
                                         <Select 
                                             name='difficulty'
+                                            defaultValue={field.value}
                                             onValueChange={(value) => {
                                                 field.onChange(value)
                                                 form.clearErrors('difficulty')
@@ -177,7 +193,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             <FormLabel>Ingredients</FormLabel>
                             <div className='w-full flex flex-col justify-center items-center bg-input/30 border border-input rounded-md p-[1rem]'>
                                 <Image
-                                    src={form.watch('image') instanceof File ? URL.createObjectURL(form.watch('image') as Blob) : typeof form.watch('image') === 'string' ? form.watch('image') as string : '/images/fallback.svg'}
+                                    src={form.watch('image') instanceof File ? URL.createObjectURL(form.watch('image') as Blob) : typeof form.watch('image') === 'string' ? `data:image/png;base64,${form.watch('image')}` as string : '/images/fallback.svg'}
                                     width={300}
                                     height={300}
                                     alt='Recipe image'
@@ -322,6 +338,31 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                         }
 
                         <Button type='submit' disabled={isPending}>Submit {isPending ? '...' : ''}</Button>
+                        {!isNew && id &&
+                            <div className='w-full flex justify-end'>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button type='button' variant='destructive' className='cursor-pointer'>
+                                            Delete
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete the recipe.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={() => handleDelete(id)}>
+                                                Continue
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </div>
+                        }
                     </div>
                 </form>
             </Form>

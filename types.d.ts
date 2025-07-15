@@ -11,8 +11,8 @@ type IngredientsProps = {
 type RecipeProps = {
     id: number
     title: string
-    dateCreated: Date
-    dateUpdated: Date
+    date_created: Date
+    date_updated: Date
     category: string
     duration: number
     difficulty: string

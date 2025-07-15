@@ -75,7 +75,21 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
                         <p className='w-full leading-relaxed'>{recipe.instructions.join(' ')}</p>
                     </div>
                 </div>
-                <PrintButton recipe={{...recipe, image: null}} />
+                <div className='w-full flex flex-row justify-between items-center pt-[3rem]'>
+                    <div className='dark:text-white/70 text-black/70 text-sm'>
+                        <div className='grid grid-cols-2 gap-2 text-sm'>
+                            <span className='font-semibold'>Opprettet:</span>
+                            <span>{recipe.date_created.toLocaleDateString()}</span>
+                            {recipe.date_created.getTime() === recipe.date_updated.getTime() && (
+                                <>
+                                    <span className='font-semibold'>Endret:</span>
+                                    <span>{recipe.date_updated.toLocaleDateString()}</span>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                    <PrintButton recipe={{...recipe, image: null}} />
+                </div>
             </div>
         </div>
     )

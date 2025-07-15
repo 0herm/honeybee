@@ -22,7 +22,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
                 difficulty:     recipe.difficulty,
                 quantity:       recipe.quantity,
                 duration:       String(recipe.duration),
-                image:          recipe.image ? `http://localhost:8080/api/image/${recipe.id}` : undefined,
+                image:          recipe.image ? Buffer.from(recipe.image).toString('base64') : null,
                 sections:       recipe.ingredients,
                 instructions:   recipe.instructions,
             }

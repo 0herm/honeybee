@@ -2,12 +2,12 @@ import { z } from 'zod'
 
 export const formSchema = z.object({
     id: z.number().optional(),
-    title: z.string().min(1,{message:'Required'}),
-    category: z.string().min(1,{message:'Required'}),
-    difficulty: z.string().min(1,{message:'Required'}),
-    quantity: z.string().min(1,{message:'Required'}),
-    duration: z.string().min(1,{message:'Required'}),
-    image: z.instanceof(File).or(z.string()).optional(),
+    title: z.string().min(1, { message: 'Required' }),
+    category: z.string().min(1, { message: 'Required' }),
+    difficulty: z.string().min(1, { message: 'Required' }),
+    quantity: z.string().min(1, { message: 'Required' }),
+    duration: z.string().min(1, { message: 'Required' }),
+    image: (z.instanceof(File).or(z.null())).or(z.string()),
     sections: z.array(
         z.object({
             title: z.string(),
@@ -35,7 +35,7 @@ export const defaultSchemaData = {
     difficulty:     '',
     quantity:       '',
     duration:       '',
-    image:          undefined,
+    image:          null,
     sections:       [{ title: '', ingredients: [{ quantity: '', ingredient: '' }] }],
     instructions:   [''],
 }
