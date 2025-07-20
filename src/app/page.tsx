@@ -19,7 +19,7 @@ export default function Home() {
                 <div className='w-full h-full relative flex md:flex-row flex-col gap-[3rem] md:gap-[5rem] lg:gap-[10rem] items-center pb-[10rem] pl-[2rem] md:pl-[4rem] lg:pl-[6rem] p-[2rem]'>
                     <div className='flex flex-col gap-[1rem] justify-center md:justify-normal'>
                         <h1 className='text-3xl md:text-5xl font-bold text-center md:text-left'>Plantebasert Oppskrifter</h1>
-                        <p className='text-sm md:text-lg text-center md:text-left'>Oppdag deilige, enkle veganske oppskrifter</p>
+                        <p className='text-sm md:text-lg text-center md:text-left'>Oppdag deilige og enkle veganske oppskrifter</p>
                         <div className='flex flex-col xs:flex-row gap-[1rem]'>
                             <Link href={'/recipes/'} className='flex justify-center'>
                                 <Button className='cursor-pointer bg-green-600 hover:bg-green-500'> Utforsk oppskrifter </Button>
