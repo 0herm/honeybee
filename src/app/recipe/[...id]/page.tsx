@@ -29,7 +29,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
                         <div className='flex flex-col'>
                             <h1 className='text-sm text-green-400/70'>Total tid</h1>
                             <span className='text-xl font-semibold'>
-                                {hours === 1 ? '1 time' : hours > 1 ? hours + ' timer' : ''}
+                                {hours === 1 ? '1 time ' : hours > 1 ? hours + ' timer ' : ''}
                                 {minutes === 1 ? '1 minutt' : minutes > 1 ? minutes + ' minutter' : ''}
                             </span>
                         </div>
@@ -38,7 +38,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
                         <Gauge className='size-[2rem] stroke-green-600/70'/>
                         <div className='flex flex-col'>
                             <h1 className='text-sm text-green-400/70'>Vanskelighet</h1>
-                            <span className='text-xl font-semibold'>Lett</span>
+                            <span className='text-xl font-semibold capitalize'>{recipe.difficulty}</span>
                         </div>
                     </div>
                     <div className='flex flex-row items-center gap-[1rem] w-[15rem] p-[1rem] rounded-lg bg-green-950/10 border border-green-900/40'>
@@ -80,7 +80,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
                         <div className='grid grid-cols-2 gap-2 text-sm'>
                             <span className='font-semibold'>Opprettet:</span>
                             <span>{recipe.date_created.toLocaleDateString()}</span>
-                            {recipe.date_created.getTime() === recipe.date_updated.getTime() && (
+                            {recipe.date_created.getTime() !== recipe.date_updated.getTime() && (
                                 <>
                                     <span className='font-semibold'>Endret:</span>
                                     <span>{recipe.date_updated.toLocaleDateString()}</span>
