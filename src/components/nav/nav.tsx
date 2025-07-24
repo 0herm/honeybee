@@ -22,11 +22,11 @@ export default function NavBar() {
                 </Link>
                 <h1 className='hidden md:block'>Herbivorene</h1>
             </div>
-            
-            <NavigationMenu className='absolute left-[calc(50%-2rem)] sm:left-1/2 transform -translate-x-1/2'> 
+
+            <NavigationMenu className='absolute left-[calc(50%-2rem)] sm:left-1/2 transform -translate-x-1/2'>
                 <NavigationMenuList>
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger className='bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[state=open]:focus:bg-accent/50 data-[state=open]:hover:bg-accent/50'>
+                        <NavigationMenuTrigger className='cursor-pointer bg-transparent hover:bg-accent/50 focus:bg-accent/50 data-[state=open]:focus:bg-accent/50 data-[state=open]:hover:bg-accent/50'>
                             <p className='text-[0.95rem] font-normal'>Oppskrifter</p>
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>

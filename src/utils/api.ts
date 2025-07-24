@@ -33,13 +33,13 @@ export async function importData(tableName: string, data: Array<Record<string, s
 
 
 export async function getRecipeById(id: number): Promise<RecipeProps | string> {
-    const query = 'SELECT * FROM recipes WHERE id = $1'
+    const query = 'SELECT * FROM recipes WHERE id = $1 AND published = true'
     const result = await dbWrapper(query, [id])
     return typeof result === 'string' ? 'Recipe not found' : result[0]
 }
 
 export async function getRecipes(limit: number = 10): Promise<RecipeProps[] | string> {
-    const query = 'SELECT * FROM recipes ORDER BY date_created DESC LIMIT $1'
+    const query = 'SELECT * FROM recipes WHERE published = true ORDER BY date_created DESC LIMIT $1'
     const result = await dbWrapper(query, [limit])
     return typeof result === 'string' ? 'No recipes found' : result
 }
@@ -61,8 +61,8 @@ export async function searchRecipes(
 
     const params = [`%${keyword}%`, ...filterKeys.map(key => filters[key as keyof typeof filters]), limit, offset*limit]
 
-    const query = `SELECT * FROM recipes WHERE title LIKE $1${filtersQuery} ORDER BY date_created DESC LIMIT $${params.length - 1} OFFSET $${params.length}`
-    const countQuery = `SELECT COUNT(*) FROM recipes WHERE title LIKE $1${filtersQuery}`
+    const query = `SELECT * FROM recipes WHERE published = true AND title LIKE $1${filtersQuery} ORDER BY date_created DESC LIMIT $${params.length - 1} OFFSET $${params.length}`
+    const countQuery = `SELECT COUNT(*) FROM recipes WHERE published = true AND title LIKE $1${filtersQuery}`
 
     const [result, countResult] = await Promise.all([
         dbWrapper(query, params),
@@ -78,8 +78,8 @@ export async function searchRecipes(
 }
 
 export async function addRecipe(recipe: Omit<RecipeProps, 'date_created' | 'date_updated' | 'id'>): Promise<RecipeProps | string> {
-    const query = `INSERT INTO recipes (title, date_created, date_updated, category, duration, difficulty, quantity, ingredients, instructions, image) 
-                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`
+    const query = `INSERT INTO recipes (title, date_created, date_updated, category, duration, difficulty, quantity, ingredients, instructions, published, image) 
+                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`
 
     const params = [
         recipe.title,
@@ -91,6 +91,7 @@ export async function addRecipe(recipe: Omit<RecipeProps, 'date_created' | 'date
         recipe.quantity,
         JSON.stringify(recipe.ingredients),
         recipe.instructions,
+        recipe.published,
         recipe.image
     ]
     const result = await dbWrapper(query, params)
@@ -98,7 +99,7 @@ export async function addRecipe(recipe: Omit<RecipeProps, 'date_created' | 'date
 }
 
 export async function updateRecipe(id: number, recipe: Omit<RecipeProps, 'date_created' | 'date_updated' | 'id'>): Promise<RecipeProps | string> {
-    const query = `UPDATE recipes SET title = $1, date_updated = $2, category = $3, duration = $4, difficulty = $5, quantity = $6, ingredients = $7, instructions = $8${recipe.image !== null ? ', image = $10' : ''} WHERE id = $9 RETURNING *`
+    const query = `UPDATE recipes SET title = $1, date_updated = $2, category = $3, duration = $4, difficulty = $5, quantity = $6, ingredients = $7, instructions = $8, published = $9 ${recipe.image !== null ? ', image = $11' : ''} WHERE id = $10 RETURNING *`
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const params: any[] = [
         recipe.title,
@@ -109,6 +110,7 @@ export async function updateRecipe(id: number, recipe: Omit<RecipeProps, 'date_c
         recipe.quantity,
         JSON.stringify(recipe.ingredients),
         recipe.instructions,
+        recipe.published,
         id
     ]
     if (recipe.image !== null) {

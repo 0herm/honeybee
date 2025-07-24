@@ -69,7 +69,7 @@ export default function Filters() {
                         variant='ghost' 
                         type='button' 
                         size='icon'
-                        className='absolute right-0 top-0 h-full'
+                        className='absolute right-0 top-0 h-full cursor-pointer'
                         onClick={() => handleFilterChange('q', search)}
                     >
                         <Search className='h-[1rem] w-[1rem]' />
@@ -83,7 +83,7 @@ export default function Filters() {
                         <Checkbox
                             id={category}
                             value={category}
-                            className='border-[0.1rem] dark:data-[state=checked]:bg-green-700/70 data-[state=checked]:bg-green-700 dark:data-[state=checked]:border-secondary'
+                            className='cursor-pointer border-[0.1rem] dark:data-[state=checked]:bg-green-700/70 data-[state=checked]:bg-green-700 dark:data-[state=checked]:border-secondary'
                             checked={selectedTypes.includes(category)}
                             onCheckedChange={checked =>
                                 handleFilterChangeGroup('category', category, !!checked)
@@ -105,7 +105,7 @@ export default function Filters() {
                         {(timeFilter) === maxTime ? 'Ingen grense' : `Maks: ${Math.floor(timeFilter/60) !== 0 ? Math.floor(timeFilter/60)+'t' : ''} ${timeFilter%60 !== 0 ? timeFilter%60+'min' : ''}`}
                     </label>
                     <Slider
-                        className='w-full [&_[data-slot=slider-range]]:bg-green-700/70'
+                        className='w-full [&_[data-slot=slider-range]]:bg-green-700/70 cursor-pointer'
                         min={minTime}
                         max={maxTime}
                         step={stepTime}

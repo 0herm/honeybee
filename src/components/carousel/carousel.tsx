@@ -74,8 +74,8 @@ export default function CarouselComponent({data}:CarouselProp) {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselPrevious className='left-[-2rem] xs:left-[-3rem]'/>
-            <CarouselNext className='right-[-2rem] xs:right-[-3rem]'/>
+            <CarouselPrevious className='left-[-2rem] xs:left-[-3rem] cursor-pointer'/>
+            <CarouselNext className='right-[-2rem] xs:right-[-3rem] cursor-pointer'/>
         </Carousel>
     )
 }

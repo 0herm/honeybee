@@ -92,7 +92,7 @@ async function ContentType({limit}:{limit:number}){
             <h1 className='capitalize text-center text-xl font-semibold'>Nyeste oppskrifter</h1>
             <CarouselComponent data={recipes}/>
             <Link href={'/recipes/'} className='flex flex-row justify-center items-center gap-1'>
-                <Button variant='outline'>
+                <Button variant='outline' className='cursor-pointer'>
                     Se alle oppskrifter
                 </Button>
             </Link>

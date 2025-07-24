@@ -10,6 +10,7 @@ export async function submitForm(prevState: FormState, formData: FormData): Prom
         quantity: formData.get('quantity'),
         difficulty: formData.get('difficulty'),
         duration: formData.get('duration'),
+        published: formData.get('published') === 'on',
         image: formData.get('image') as File | string,
         sections: JSON.parse(formData.get('sections') as string) as {
             title: string
@@ -36,6 +37,7 @@ export async function submitForm(prevState: FormState, formData: FormData): Prom
             duration:       Number(result.data.duration),
             ingredients:    result.data.sections,
             instructions:   result.data.instructions,
+            published:      result.data.published,
             image:          null as Buffer | null
         }
 

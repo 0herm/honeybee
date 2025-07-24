@@ -101,7 +101,7 @@ export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
         <>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button className='px-[1rem] py-[0.5rem] bg-green-700/70 text-white rounded-md hover:bg-green-900'>
+                    <Button className='cursor-pointer px-[1rem] py-[0.5rem] bg-green-700/70 text-white rounded-md hover:bg-green-900'>
                         Print Oppskrift
                     </Button>
                 </DialogTrigger>
@@ -123,12 +123,12 @@ export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
                                             setOptions((prev) => ({ ...prev, [key]: value }))
                                         }
                                     >
-                                        <SelectTrigger>
+                                        <SelectTrigger className='cursor-pointer'>
                                             <SelectValue placeholder={`Select ${name}`} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {items.map((item) => (
-                                                <SelectItem key={item.value} value={item.value}>
+                                                <SelectItem key={item.value} value={item.value} className='cursor-pointer'>
                                                     {item.label}
                                                 </SelectItem>
                                             ))}
@@ -141,7 +141,7 @@ export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
                     <DialogFooter>
                         <Button
                             onClick={reactToPrintFn}
-                            className='px-[1rem] py-[0.5rem] bg-green-700/70 text-white rounded-md hover:bg-green-900'
+                            className='cursor-pointer px-[1rem] py-[0.5rem] bg-green-700/70 text-white rounded-md hover:bg-green-900'
                         >
                             Print
                         </Button>

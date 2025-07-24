@@ -38,8 +38,8 @@ export default function SearchForm() {
                         placeholder='Søk'
                         className='pr-10 focus-visible:ring-0'
                     />
-                    <div className='absolute inset-y-0 right-0 flex items-center cursor-pointer'>
-                        <Button variant='ghost' type='submit'>
+                    <div className='absolute top-0 right-0 flex items-center'>
+                        <Button variant='ghost' type='submit' className='cursor-pointer'>
                             <Search/>
                         </Button>
                     </div>

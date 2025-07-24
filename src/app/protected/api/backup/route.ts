@@ -17,7 +17,7 @@ if (!PASSWORD) {
 
 export async function GET(): Promise<Response> {
     const outputFilePath = path.join(DB_BACKUP_DIR, 'backup.sql')
-    const command = `PGPASSWORD=${PASSWORD} pg_dump -h ${HOST} -p ${PORT} -U ${USER} -d ${DB} -F p -f ${outputFilePath}`
+    const command = `PGPASSWORD="${PASSWORD}" pg_dump --data-only -h ${HOST} -p ${PORT} -U ${USER} -d ${DB} -F p -f ${outputFilePath}`
 
     return new Promise((resolve) => {
         const child = exec(command, (error) => {

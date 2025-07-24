@@ -12,12 +12,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { toast } from 'sonner'
 import { ArrowLeft, Upload } from 'lucide-react'
 import { Plus, Minus } from 'lucide-react'
-import { submitForm } from '@/app/actions'
+import { submitForm } from '@/components/editPage/actions'
 import { useActionState, useEffect } from 'react'
 import { formSchema, FormState, formSchemaData, defaultSchemaData } from '@/lib/schema'
 import Image from 'next/image'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { deleteRecipe } from '@/utils/api'
+import { Switch } from '@/components/ui/switch'
 
 const initialState: FormState = {
     success: null
@@ -77,8 +78,28 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             <ArrowLeft />
                             Back to recipe
                         </Button>
-                        <h1 className='text-2xl'>{isNew ? 'Add Recipe' : 'Edit Recipe'}</h1>
-
+                        <div className='w-full flex justify-between items-center'>
+                            <h1 className='text-2xl'>{isNew ? 'Add Recipe' : 'Edit Recipe'}</h1>
+                            {!isNew && 
+                                <FormField
+                                    control={form.control}
+                                    name='published'
+                                    render={({ field }) => (
+                                        <FormItem className='flex items-center'>
+                                            <FormLabel>Published</FormLabel>
+                                            <FormControl>
+                                                <Switch
+                                                    name='published'
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                    className='cursor-pointer'
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            }
+                        </div>
                         <FormField
                             control={form.control}
                             name='title'
@@ -108,7 +129,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                                 form.clearErrors('category')
                                             }}
                                         >
-                                            <FormControl className='w-full'>
+                                            <FormControl className='w-full cursor-pointer'>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder='Select category' />
                                                 </SelectTrigger>
@@ -140,7 +161,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                                 form.clearErrors('difficulty')
                                             }}
                                         >
-                                            <FormControl className='w-full'>
+                                            <FormControl className='w-full cursor-pointer'>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder='Select difficulty' />
                                                 </SelectTrigger>
@@ -211,7 +232,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                                     <Button
                                                         type='button'
                                                         onClick={() => document.getElementById('file-input')?.click()}
-                                                        className='w-full'
+                                                        className='w-full cursor-pointer'
                                                     >
                                                         <Upload />
                                                         Select Image
@@ -257,7 +278,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                     type='button'
                                     variant='outline'
                                     onClick={() => removeSection(sectionIndex)}
-                                    className='mt-2'
+                                    className='mt-2 cursor-pointer'
                                     disabled={sectionFields.length === 1}
                                 >
                                     <Minus className='h-4 w-4 mr-2' />
@@ -269,6 +290,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             type='button'
                             variant='outline'
                             onClick={() => appendSection({ title: '', ingredients: [{ quantity: '', ingredient: '' }] })}
+                            className='cursor-pointer'
                         >
                             <Plus className='h-4 w-4 mr-2' />
                             Add Section
@@ -313,6 +335,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                             type='button'
                                             variant='outline'
                                             onClick={() => field.onChange([...form.watch('instructions'), ''])}
+                                            className='cursor-pointer'
                                         >
                                             <Plus className='h-4 w-4 mr-2' />
                                             Add Instruction
@@ -337,7 +360,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             />
                         }
 
-                        <Button type='submit' disabled={isPending}>Submit {isPending ? '...' : ''}</Button>
+                        <Button type='submit' className='cursor-pointer' disabled={isPending}>Submit {isPending ? '...' : ''}</Button>
                         {!isNew && id &&
                             <div className='w-full flex justify-end'>
                                 <AlertDialog>
@@ -404,12 +427,12 @@ function IngredientFields({ nestIndex, control }: {nestIndex:number, control:Con
                             </FormItem>
                         )}
                     />
-                    <Button type='button' variant='outline' size='icon' onClick={() => remove(k)} disabled={fields.length === 1}>
+                    <Button type='button' variant='outline' size='icon' className='cursor-pointer' onClick={() => remove(k)} disabled={fields.length === 1}>
                         <Minus className='h-4 w-4' />
                     </Button>
                 </div>
             ))}
-            <Button type='button' variant='outline' onClick={() => append({ quantity: '', ingredient: '' })} className='mt-2'>
+            <Button type='button' variant='outline' onClick={() => append({ quantity: '', ingredient: '' })} className='mt-2 cursor-pointer'>
                 <Plus className='h-4 w-4 mr-2' />
                 Add Ingredient
             </Button>
