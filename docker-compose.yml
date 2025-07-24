@@ -1,10 +1,6 @@
 services:
   honeybee:
     container_name: honeybee
-    volumes:
-      - ../main.db:/app/main.db
-      - ../deploy.txt:/app/deploy.txt
-      - ../deploy.log:/app/deploy.log
     tmpfs:
       - /var/lib/varnish:rw,size=1g,exec
     build: .

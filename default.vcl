@@ -6,19 +6,9 @@ backend default {
 }
 
 sub vcl_recv {
-    if (req.url == "/api/deploy") {
-        return (pass);
-    }
-    if (req.url ~ "/protected/") {
-        return (pass);
-    }
-    if (req.url ~ "/api/editRecipe") {
-        return (pass);
-    }
-    if (req.url ~ "/api/addRecipe") {
-        return (pass);
-    }
-    if (req.url ~ "/protected/api/backup") {
+    if (req.url ~ "/protected/"     ||
+        (req.method != "GET" && req.method != "HEAD")
+        ) {
         return (pass);
     }
     if (req.http.Cookie) {
@@ -37,12 +27,10 @@ sub vcl_backend_response {
 }
 
 sub vcl_deliver {
-    # Set headers to indicate whether the content was served from cache
     if (obj.hits > 0) {
         set resp.http.X-Cache = "HIT";
     } else {
         set resp.http.X-Cache = "MISS";
     }
-
     return (deliver);
 }
