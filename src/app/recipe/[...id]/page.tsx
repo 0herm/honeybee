@@ -3,14 +3,15 @@ import PrintButton from '@/components/print/print'
 import { Separator } from '@/components/ui/separator'
 import { getRecipeById } from '@/utils/api'
 import { Clock, Gauge, Leaf, Users } from 'lucide-react'
+import { notFound } from 'next/navigation'
 
-export default async function RecipePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function RecipePage({ params }: { params: Promise<{ id?: string[] }> }) {
     const { id } = await params
 
     const recipe = await getRecipeById(Number(id))
 
-    if (typeof recipe === 'string') {
-        return <div>Error: {recipe}</div>
+    if (typeof recipe === 'string' || recipe === undefined) {
+        notFound()
     }
 
     const hours = Math.floor(recipe.duration / 60)

@@ -21,3 +21,8 @@ type RecipeProps = {
     instructions: string[]
     image: Uint8Array | null
 }
+
+type FormStateImport = {
+    error?: string
+    success?: boolean | null
+}

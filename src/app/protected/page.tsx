@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import ExportButton from '@/components/backup/export'
+import ImportButton from '@/components/backup/import'
 
 export default function Page() {
     return (
@@ -20,16 +21,10 @@ export default function Page() {
                         <Link href='protected/edit'>Edit Recipe</Link>
                     </Button>
 
-                    <Button asChild>
-                        <Link href='protected/deploy'>Deploy Logs</Link>
-                    </Button>
-
                 </CardContent>
-                <CardFooter className='flex flex-col gap-4'>
-                    <div className='w-full'>
-                        <ExportButton />
-                    </div>
-                    {/* <ImportButton /> */}
+                <CardFooter className='w-full flex flex-col gap-4'>
+                    <ExportButton />
+                    <ImportButton />
                 </CardFooter>
             </Card>
         </div>

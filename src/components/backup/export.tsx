@@ -45,10 +45,8 @@ export default function ExportButton() {
     }
 
     return (
-        <div>
-            <Button onClick={handleBackup} disabled={loading} className='w-full cursor-pointer'>
-                {loading ? 'Downloading...' : 'Export Database'}
-            </Button>
-        </div>
+        <Button onClick={handleBackup} disabled={loading} className='w-full cursor-pointer'>
+            {loading ? 'Downloading...' : 'Export Database'}
+        </Button>
     )
 }

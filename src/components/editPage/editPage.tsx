@@ -61,7 +61,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
 
     useEffect(() => {
         if (state.success) {
-            toast.success('Form submitted successfully!')
+            toast.success(`Recipe ${isNew ? 'created' : 'updated'} successfully!`)
             router.back()
         } else if (state.success === false) {
             toast.error(state.error || 'Error: Please try again later.')
