@@ -80,11 +80,11 @@ export default async function RecipePage({ params }: { params: Promise<{ id?: st
                     <div className='dark:text-white/70 text-black/70 text-sm'>
                         <div className='grid grid-cols-2 gap-2 text-sm'>
                             <span className='font-semibold'>Opprettet:</span>
-                            <span>{recipe.date_created.toLocaleDateString()}</span>
+                            <span>{recipe.date_created.toLocaleDateString('NO', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                             {recipe.date_created.getTime() !== recipe.date_updated.getTime() && (
                                 <>
                                     <span className='font-semibold'>Endret:</span>
-                                    <span>{recipe.date_updated.toLocaleDateString()}</span>
+                                    <span>{recipe.date_updated.toLocaleDateString('NO', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                                 </>
                             )}
                         </div>

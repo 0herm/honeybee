@@ -4,16 +4,6 @@ const nextConfig: NextConfig = {
     env: {
         NEXT_PUBLIC_VERSION: process.env.npm_package_version,
     },
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'http',
-                hostname: 'localhost',
-                port: '8080',
-                pathname: '/api/image/**',
-            },
-        ]
-    },
     async headers() {
         return [
             {

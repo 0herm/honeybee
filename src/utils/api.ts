@@ -90,12 +90,14 @@ export async function searchRecipes(
 
 export async function addRecipe(recipe: Omit<RecipeProps, 'date_created' | 'date_updated' | 'id'>): Promise<RecipeProps | string> {
     const query = `INSERT INTO recipes (title, date_created, date_updated, category, duration, difficulty, quantity, ingredients, instructions, published, image) 
-                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`
+                   VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0) RETURNING *`
+
+    const date = new Date().toISOString()
 
     const params = [
         recipe.title,
-        new Date().toISOString(),
-        new Date().toISOString(),
+        date,
+        date,
         recipe.category,
         recipe.duration,
         recipe.difficulty,
@@ -110,9 +112,35 @@ export async function addRecipe(recipe: Omit<RecipeProps, 'date_created' | 'date
 }
 
 export async function updateRecipe(id: number, recipe: Omit<RecipeProps, 'date_created' | 'date_updated' | 'id'>): Promise<RecipeProps | string> {
-    const query = `UPDATE recipes SET title = $1, date_updated = $2, category = $3, duration = $4, difficulty = $5, quantity = $6, ingredients = $7, instructions = $8, published = $9 ${recipe.image !== null ? ', image = $11' : ''} WHERE id = $10 RETURNING *`
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const params: any[] = [
+    const query = `
+        UPDATE recipes 
+        SET 
+            title = $1, 
+            date_updated = CASE 
+                WHEN title IS DISTINCT FROM $1 OR
+                     category IS DISTINCT FROM $3 OR
+                     duration IS DISTINCT FROM $4 OR
+                     difficulty IS DISTINCT FROM $5 OR
+                     quantity IS DISTINCT FROM $6 OR
+                     ingredients IS DISTINCT FROM $7 OR
+                     instructions IS DISTINCT FROM $8
+                THEN $2
+                ELSE date_updated
+            END, 
+            category = $3, 
+            duration = $4, 
+            difficulty = $5, 
+            quantity = $6, 
+            ingredients = $7, 
+            instructions = $8, 
+            published = $9,
+            image = COALESCE($10, image)
+        WHERE 
+            id = $11
+        RETURNING *
+    `
+
+    const params = [
         recipe.title,
         new Date().toISOString(),
         recipe.category,
@@ -122,12 +150,12 @@ export async function updateRecipe(id: number, recipe: Omit<RecipeProps, 'date_c
         JSON.stringify(recipe.ingredients),
         recipe.instructions,
         recipe.published,
+        recipe.image,
         id
     ]
-    if (recipe.image !== null) {
-        params.push(recipe.image)
-    }
+
     const result = await dbWrapper(query, params)
+
     return typeof result === 'string' ? 'Failed to edit recipe' : result[0]
 
 }
