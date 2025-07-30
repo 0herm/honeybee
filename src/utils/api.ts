@@ -14,6 +14,16 @@ export async function dbWrapper(query: string, params: any[] = []) {
     }
 }
 
+// Varnish cache
+export async function banCachePattern(pattern: string) {
+    await fetch('http://localhost:8080', {
+        method: 'BAN',
+        headers: {
+            'x-invalidate-pattern': pattern
+        }
+    })
+}
+
 export async function exportData(tableName: string): Promise<string> {
     const query = `SELECT * FROM ${tableName}`
     const result = await dbWrapper(query)
@@ -33,7 +43,7 @@ export async function importData(tableName: string, data: Array<Record<string, s
 
 
 export async function getRecipeById(id: number): Promise<RecipeProps | string> {
-    const query = 'SELECT * FROM recipes WHERE id = $1 AND published = true'
+    const query = 'SELECT * FROM recipes WHERE id = $1'
     const result = await dbWrapper(query, [id])
     return typeof result === 'string' ? 'Recipe not found' : result[0]
 }
@@ -48,6 +58,7 @@ export async function searchRecipes(
     keyword: string,
     limit: number = 8,
     offset: number = 0,
+    showUnpublished: boolean = false,
     filters: { category?: string; difficulty?: string; duration?: number }
 ): Promise<{ recipes: RecipeProps[]; totalItems: number } | string> {
     const filterKeys = Object.keys(filters).filter(key => filters[key as keyof typeof filters] !== undefined)
@@ -61,8 +72,8 @@ export async function searchRecipes(
 
     const params = [`%${keyword}%`, ...filterKeys.map(key => filters[key as keyof typeof filters]), limit, offset*limit]
 
-    const query = `SELECT * FROM recipes WHERE published = true AND title LIKE $1${filtersQuery} ORDER BY date_created DESC LIMIT $${params.length - 1} OFFSET $${params.length}`
-    const countQuery = `SELECT COUNT(*) FROM recipes WHERE published = true AND title LIKE $1${filtersQuery}`
+    const query = `SELECT * FROM recipes WHERE ${showUnpublished ? '' : 'published = true AND'} title LIKE $1${filtersQuery} ORDER BY date_created DESC LIMIT $${params.length - 1} OFFSET $${params.length}`
+    const countQuery = `SELECT COUNT(*) FROM recipes WHERE ${showUnpublished ? '' : 'published = true AND'} title LIKE $1${filtersQuery}`
 
     const [result, countResult] = await Promise.all([
         dbWrapper(query, params),

@@ -36,7 +36,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     const param = await searchParams
     const search = typeof param.q === 'string' ? param.q : ''
 
-    const recipes = await searchRecipes(search, 8, 0, {})
+    const recipes = await searchRecipes(search, 8, 0, true, {})
 
     if(typeof recipes === 'string'){
         <div className='p-5'>Feil: ingen oppskrifter lik {`'${search}'`}</div>

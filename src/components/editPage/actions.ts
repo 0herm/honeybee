@@ -1,7 +1,7 @@
 'use server'
 
 import { formSchema, FormState } from '@/lib/schema'
-import { addRecipe, updateRecipe } from '@/utils/api'
+import { addRecipe, banCachePattern, updateRecipe } from '@/utils/api'
 
 export async function submitForm(prevState: FormState, formData: FormData): Promise<FormState> {
     const formObject = {
@@ -57,9 +57,15 @@ export async function submitForm(prevState: FormState, formData: FormData): Prom
             if (typeof res === 'string') return { error: 'Failed to edit recipe', success: false }
         }
 
-        return { 
+        banCachePattern('/')
+        banCachePattern('/?.*')
+        banCachePattern('/recipes.*')
+        if (id)  banCachePattern(`/recipe/${id}.*`)
+
+        return {
             success: true
         }
+
     } catch (error) {
         console.error('Form submission error:', error)
         return {

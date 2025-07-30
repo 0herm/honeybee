@@ -23,7 +23,7 @@ export default async function Page({searchParams}: {searchParams: Promise<{ [key
 
     const limit = 8
 
-    const data = await searchRecipes(search, limit, offset-1, { category, difficulty, duration })
+    const data = await searchRecipes(search, limit, offset-1, false, { category, difficulty, duration })
 
     return (
         <div className='container mx-auto px-[1rem] py-[2rem]'>

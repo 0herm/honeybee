@@ -5,10 +5,23 @@ backend default {
     .port = "8081";
 }
 
+acl purge {
+    "localhost";
+    "127.0.0.1";
+}
+
 sub vcl_recv {
-    if (req.url ~ "/protected/"     ||
-        (req.method != "GET" && req.method != "HEAD")
-        ) {
+    if (req.method == "BAN") {
+        if (!client.ip ~ purge) {
+            return (synth(405));
+        }
+        if (!req.http.x-invalidate-pattern) {
+            return (purge);
+        }
+        ban("req.url ~ " + req.http.x-invalidate-pattern);
+        return (synth(200,"Ban added"));
+    }
+    if (req.url ~ "/protected/" || (req.method != "GET" && req.method != "HEAD")) {
         return (pass);
     }
     if (req.http.Cookie) {
@@ -22,7 +35,7 @@ sub vcl_hash {
 }
 
 sub vcl_backend_response {
-    set beresp.ttl = 86400s;
+    set beresp.ttl = 7d;
     return (deliver);
 }
 

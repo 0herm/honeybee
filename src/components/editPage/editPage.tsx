@@ -74,32 +74,33 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
             <Form {...form}>
                 <form className='space-y-8' action={handleSubmit} onSubmit={() => form.trigger()}>
                     <div className='max-w-3xl mx-auto p-2 flex flex-col gap-[1rem]'>
+
                         <Button className='w-fit text-base cursor-pointer hover:bg-transparent dark:hover:bg-transparent' variant='ghost' size='icon' onClick={() => router.back()}>
                             <ArrowLeft />
                             Back to recipe
                         </Button>
+
                         <div className='w-full flex justify-between items-center'>
                             <h1 className='text-2xl'>{isNew ? 'Add Recipe' : 'Edit Recipe'}</h1>
-                            {!isNew && 
-                                <FormField
-                                    control={form.control}
-                                    name='published'
-                                    render={({ field }) => (
-                                        <FormItem className='flex items-center'>
-                                            <FormLabel>Published</FormLabel>
-                                            <FormControl>
-                                                <Switch
-                                                    name='published'
-                                                    checked={field.value}
-                                                    onCheckedChange={field.onChange}
-                                                    className='cursor-pointer'
-                                                />
-                                            </FormControl>
-                                        </FormItem>
-                                    )}
-                                />
-                            }
+                            <FormField
+                                control={form.control}
+                                name='published'
+                                render={({ field }) => (
+                                    <FormItem className='flex items-center'>
+                                        <FormLabel>Published</FormLabel>
+                                        <FormControl>
+                                            <Switch
+                                                name='published'
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                                className='cursor-pointer'
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
                         </div>
+
                         <FormField
                             control={form.control}
                             name='title'

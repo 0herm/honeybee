@@ -10,7 +10,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id?: st
 
     const recipe = await getRecipeById(Number(id))
 
-    if (typeof recipe === 'string' || recipe === undefined) {
+    if (typeof recipe === 'string' || recipe === undefined || recipe.published === false) {
         notFound()
     }
 
