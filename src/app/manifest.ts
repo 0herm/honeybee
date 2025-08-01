@@ -1,11 +1,12 @@
 import type { MetadataRoute } from 'next'
+import { siteName, siteNameShort, siteDescription } from '@text'
 
 export default async function manifest(): Promise<MetadataRoute.Manifest> {
     return {
-        name: 'herbivorene',
-        short_name: 'herbivorene',
+        name: siteName,
+        short_name: siteNameShort,
         theme_color: '#0A0A0A',
-        description: 'A vegan recipe website',
+        description: siteDescription,
         start_url: '/',
         display: 'standalone',
         icons: [

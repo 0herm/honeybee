@@ -1,3 +1,5 @@
+type Theme = 'dark' | 'light';
+
 type IngredientProps = {
     ingredient: string
     quantity: string

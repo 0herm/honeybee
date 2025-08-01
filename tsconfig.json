@@ -23,16 +23,17 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@app*": ["./src/app/*"],
-      "@db": ["./src/utils/db.ts"],
-      "@config": ["./constants.ts"],
       "@parent/*": ["./*"],
+      "@config": ["./constants.ts"],
+      "@/*": ["./src/*"],
+      "@public/*": ["./public/*"],
+      "@text": ["./public/text.json"],
+      "@app/*": ["./src/app/*"],
       "@components/*": ["./src/components/*"],
+      "@ui/*": ["./src/components/ui/*"],
       "@utils/*": ["./src/utils/*"],
       "@lib/*": ["./src/lib/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@ui/*": ["./src/components/ui/*"],
+      "@db": ["./src/utils/db.ts"],
     }
   },
   "include": [

@@ -2,8 +2,11 @@ import LoadImage from '@/components/img/img'
 import PrintButton from '@/components/print/print'
 import { Separator } from '@/components/ui/separator'
 import { getRecipeById } from '@/utils/api'
+import { timeToString } from '@/utils/timeFormater'
 import { Clock, Gauge, Leaf, Users } from 'lucide-react'
 import { notFound } from 'next/navigation'
+import { recipe as text } from '@text'
+
 
 export default async function RecipePage({ params }: { params: Promise<{ id?: string[] }> }) {
     const { id } = await params
@@ -13,9 +16,6 @@ export default async function RecipePage({ params }: { params: Promise<{ id?: st
     if (typeof recipe === 'string' || recipe === undefined || recipe.published === false) {
         notFound()
     }
-
-    const hours = Math.floor(recipe.duration / 60)
-    const minutes = recipe.duration % 60
 
     return (
         <div className='w-full flex justify-center'>
@@ -28,24 +28,23 @@ export default async function RecipePage({ params }: { params: Promise<{ id?: st
                     <div className='flex flex-row items-center gap-[1rem] w-[15rem] p-[1rem] rounded-lg bg-green-950/10 border border-green-900/40'>
                         <Clock className='size-[2rem] stroke-green-600/70'/>
                         <div className='flex flex-col'>
-                            <h1 className='text-sm text-green-400/70'>Total tid</h1>
+                            <h1 className='text-sm text-green-400/70'>{text.totalTime}</h1>
                             <span className='text-xl font-semibold'>
-                                {hours === 1 ? '1 time ' : hours > 1 ? hours + ' timer ' : ''}
-                                {minutes === 1 ? '1 minutt' : minutes > 1 ? minutes + ' minutter' : ''}
+                                {timeToString(recipe.duration, 'long')}
                             </span>
                         </div>
                     </div>
                     <div className='flex flex-row items-center gap-[1rem] w-[15rem] p-[1rem] rounded-lg bg-green-950/10 border border-green-900/40'>
                         <Gauge className='size-[2rem] stroke-green-600/70'/>
                         <div className='flex flex-col'>
-                            <h1 className='text-sm text-green-400/70'>Vanskelighet</h1>
+                            <h1 className='text-sm text-green-400/70'>{text.difficulty}</h1>
                             <span className='text-xl font-semibold capitalize'>{recipe.difficulty}</span>
                         </div>
                     </div>
                     <div className='flex flex-row items-center gap-[1rem] w-[15rem] p-[1rem] rounded-lg bg-green-950/10 border border-green-900/40'>
                         <Users className='size-[2rem] stroke-green-600/70'/>
                         <div className='flex flex-col'>
-                            <h1 className='text-sm text-green-400/70'>Porsjoner</h1>
+                            <h1 className='text-sm text-green-400/70'>{text.porsions}</h1>
                             <span className='text-xl font-semibold'>{recipe.quantity}</span>
                         </div>
                     </div>
@@ -54,7 +53,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id?: st
                     <div className='w-full md:max-w-[20rem]'>
                         <h2 className='text-xl font-semibold mb-4 flex items-center'>
                             <Leaf className='size-[1.25rem] text-green-600/70 mr-2' />
-                            Ingredienser
+                            {text.ingredients}
                         </h2>
                         <Separator className='mb-[1rem] bg-green-900' />
                         {recipe.ingredients.map((section, index) => (
@@ -71,7 +70,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id?: st
                         ))}
                     </div>
                     <div className='w-full'>
-                        <h2 className='text-xl font-semibold mb-[1rem]'>Fremgangsmåte</h2>
+                        <h2 className='text-xl font-semibold mb-[1rem]'>{text.instructions}</h2>
                         <Separator className='mb-[1rem] bg-green-900' />
                         <p className='w-full leading-relaxed'>{recipe.instructions.join(' ')}</p>
                     </div>
@@ -79,11 +78,11 @@ export default async function RecipePage({ params }: { params: Promise<{ id?: st
                 <div className='w-full flex flex-row justify-between items-center pt-[3rem]'>
                     <div className='dark:text-white/70 text-black/70 text-sm'>
                         <div className='grid grid-cols-2 gap-2 text-sm'>
-                            <span className='font-semibold'>Opprettet:</span>
+                            <span className='font-semibold'>{text.created}:</span>
                             <span>{recipe.date_created.toLocaleDateString('NO', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                             {recipe.date_created.getTime() !== recipe.date_updated.getTime() && (
                                 <>
-                                    <span className='font-semibold'>Endret:</span>
+                                    <span className='font-semibold'>{text.updated}:</span>
                                     <span>{recipe.date_updated.toLocaleDateString('NO', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                                 </>
                             )}

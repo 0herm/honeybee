@@ -1,12 +1,13 @@
 import { z } from 'zod'
+import { editPage as text } from '@text'
 
 export const formSchema = z.object({
     id: z.number().optional(),
-    title: z.string().min(1, { message: 'Required' }),
-    category: z.string().min(1, { message: 'Required' }),
-    difficulty: z.string().min(1, { message: 'Required' }),
-    quantity: z.string().min(1, { message: 'Required' }),
-    duration: z.string().min(1, { message: 'Required' }),
+    title: z.string().min(1, { message: text.required }),
+    category: z.string().min(1, { message: text.required }),
+    difficulty: z.string().min(1, { message: text.required }),
+    quantity: z.string().min(1, { message: text.required }),
+    duration: z.string().min(1, { message: text.required }),
     published: z.boolean(),
     image: (z.instanceof(File).or(z.null())).or(z.string()),
     sections: z.array(

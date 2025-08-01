@@ -19,6 +19,7 @@ import Image from 'next/image'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { deleteRecipe } from '@/utils/api'
 import { Switch } from '@/components/ui/switch'
+import { editPage as text } from '@text'
 
 const initialState: FormState = {
     success: null
@@ -77,17 +78,17 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
 
                         <Button className='w-fit text-base cursor-pointer hover:bg-transparent dark:hover:bg-transparent' variant='ghost' size='icon' onClick={() => router.back()}>
                             <ArrowLeft />
-                            Back to recipe
+                            {text.back}
                         </Button>
 
                         <div className='w-full flex justify-between items-center'>
-                            <h1 className='text-2xl'>{isNew ? 'Add Recipe' : 'Edit Recipe'}</h1>
+                            <h1 className='text-2xl'>{isNew ? text.addRecipe : text.editRecipe}</h1>
                             <FormField
                                 control={form.control}
                                 name='published'
                                 render={({ field }) => (
                                     <FormItem className='flex items-center'>
-                                        <FormLabel>Published</FormLabel>
+                                        <FormLabel>{text.published}</FormLabel>
                                         <FormControl>
                                             <Switch
                                                 name='published'
@@ -106,9 +107,9 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             name='title'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Title</FormLabel>
+                                    <FormLabel>{text.title}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder='Title' {...field} />
+                                        <Input placeholder={text.title} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -121,8 +122,8 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                 name='category'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Category</FormLabel>
-                                        <Select 
+                                        <FormLabel>{text.category}</FormLabel>
+                                        <Select
                                             name='category'
                                             defaultValue={field.value}
                                             onValueChange={(value) => {
@@ -132,7 +133,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                         >
                                             <FormControl className='w-full cursor-pointer'>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder='Select category' />
+                                                    <SelectValue placeholder={`${text.select} ${text.category}`} />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
@@ -153,8 +154,8 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                 name='difficulty'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Difficulty</FormLabel>
-                                        <Select 
+                                        <FormLabel>{text.difficulty}</FormLabel>
+                                        <Select
                                             name='difficulty'
                                             defaultValue={field.value}
                                             onValueChange={(value) => {
@@ -164,7 +165,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                         >
                                             <FormControl className='w-full cursor-pointer'>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder='Select difficulty' />
+                                                    <SelectValue placeholder={`${text.select} ${text.difficulty}`} />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
@@ -187,9 +188,9 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                 name='quantity'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Quantity</FormLabel>
+                                        <FormLabel>{text.quantity}</FormLabel>
                                         <FormControl>
-                                            <Input placeholder='Quantity' {...field} />
+                                            <Input placeholder={text.quantity} {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -201,9 +202,9 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                 name='duration'
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Duration</FormLabel>
+                                        <FormLabel>{text.duration}</FormLabel>
                                         <FormControl>
-                                            <Input placeholder='Duration (min)' type='number' {...field} />
+                                            <Input placeholder={`${text.duration} (min)`} type='number' {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -212,7 +213,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                         </div>
 
                         <div className='flex flex-col gap-[0.5rem]'>
-                            <FormLabel>Ingredients</FormLabel>
+                            <FormLabel>{text.ingredients}</FormLabel>
                             <div className='w-full flex flex-col justify-center items-center bg-input/30 border border-input rounded-md p-[1rem]'>
                                 <Image
                                     src={form.watch('image') instanceof File ? URL.createObjectURL(form.watch('image') as Blob) : typeof form.watch('image') === 'string' ? `data:image/png;base64,${form.watch('image')}` as string : '/images/fallback.svg'}
@@ -236,7 +237,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                                         className='w-full cursor-pointer'
                                                     >
                                                         <Upload />
-                                                        Select Image
+                                                        {text.select} {text.image}
                                                     </Button>
                                                     <Input
                                                         id='file-input'
@@ -256,7 +257,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             </div>
                         </div>
 
-                        <FormLabel>Ingredients</FormLabel>
+                        <FormLabel>{text.ingredients}</FormLabel>
                         {sectionFields.map((section, sectionIndex) => (
                             <div key={section.id} className='border p-4 rounded-md'>
                                 <FormField
@@ -264,9 +265,9 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                     name={`sections.${sectionIndex}.title`}
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Section Title</FormLabel>
+                                            <FormLabel>{text.sectionTitle}</FormLabel>
                                             <FormControl>
-                                                <Input placeholder='Section Title' {...field} />
+                                                <Input placeholder={text.sectionTitle} {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -283,7 +284,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                     disabled={sectionFields.length === 1}
                                 >
                                     <Minus className='h-4 w-4 mr-2' />
-                                    Remove Section
+                                    {text.removeSection}
                                 </Button>
                             </div>
                         ))}
@@ -294,7 +295,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             className='cursor-pointer'
                         >
                             <Plus className='h-4 w-4 mr-2' />
-                            Add Section
+                            {text.addSection}
                         </Button>
 
                         <FormField
@@ -302,13 +303,13 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             name='instructions'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Instructions</FormLabel>
+                                    <FormLabel>{text.instructions}</FormLabel>
                                     <div className='flex flex-col gap-2'>
                                         {form.watch('instructions').map((instruction, index) => (
                                             <div key={index} className='flex gap-2'>
                                                 <FormControl>
                                                     <Input
-                                                        placeholder={`Instruction ${index + 1}`}
+                                                        placeholder={`${text.instruction} ${index + 1}`}
                                                         value={instruction}
                                                         onChange={(e) => {
                                                             const updatedInstructions = [...form.watch('instructions')]
@@ -339,7 +340,7 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                                             className='cursor-pointer'
                                         >
                                             <Plus className='h-4 w-4 mr-2' />
-                                            Add Instruction
+                                            {text.addInstruction}
                                         </Button>
                                     </div>
                                     <FormMessage />
@@ -361,26 +362,26 @@ export default function EditPage({ values, isNew, id }:{ values?: formSchemaData
                             />
                         }
 
-                        <Button type='submit' className='cursor-pointer' disabled={isPending}>Submit {isPending ? '...' : ''}</Button>
+                        <Button type='submit' className='cursor-pointer' disabled={isPending}>{text.submit} {isPending ? '...' : ''}</Button>
                         {!isNew && id &&
                             <div className='w-full flex justify-end'>
                                 <AlertDialog>
                                     <AlertDialogTrigger asChild>
                                         <Button type='button' variant='destructive' className='cursor-pointer'>
-                                            Delete
+                                            {text.delete}
                                         </Button>
                                     </AlertDialogTrigger>
                                     <AlertDialogContent>
                                         <AlertDialogHeader>
-                                            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                            <AlertDialogTitle>{text.areYouSure}</AlertDialogTitle>
                                             <AlertDialogDescription>
-                                                This action cannot be undone. This will permanently delete the recipe.
+                                                {text.deleteDescription}
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
-                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogCancel>{text.deleteCancel}</AlertDialogCancel>
                                             <AlertDialogAction onClick={() => handleDelete(id)}>
-                                                Continue
+                                                {text.deleteConfirm}
                                             </AlertDialogAction>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
@@ -410,7 +411,7 @@ function IngredientFields({ nestIndex, control }: {nestIndex:number, control:Con
                         render={({ field }) => (
                             <FormItem className='flex-1'>
                                 <FormControl>
-                                    <Input placeholder='Quantity' {...field} />
+                                    <Input placeholder={text.quantity} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -422,7 +423,7 @@ function IngredientFields({ nestIndex, control }: {nestIndex:number, control:Con
                         render={({ field }) => (
                             <FormItem className='flex-1'>
                                 <FormControl>
-                                    <Input placeholder='Ingredient' {...field} />
+                                    <Input placeholder={text.ingredient} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -435,7 +436,7 @@ function IngredientFields({ nestIndex, control }: {nestIndex:number, control:Con
             ))}
             <Button type='button' variant='outline' onClick={() => append({ quantity: '', ingredient: '' })} className='mt-2 cursor-pointer'>
                 <Plus className='h-4 w-4 mr-2' />
-                Add Ingredient
+                {text.addIngredient}
             </Button>
         </div>
     )

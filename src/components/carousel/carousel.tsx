@@ -11,9 +11,10 @@ import {
     CarouselPrevious,
 } from '@/components/ui/carousel'
 import LoadImage from '@/components/img/img'
-
 import { recipeTypes } from '@parent/constants'
 import { BadgePlus, Clock, Shapes } from 'lucide-react'
+import { carousel as text } from '@text'
+import { timeToString } from '@utils/timeFormater'
 
 type CarouselProp = {
     data: RecipeProps[]
@@ -45,14 +46,14 @@ export default function CarouselComponent({data}:CarouselProp) {
                                             {recipe.date_created && Math.abs(new Date(recipe.date_created).getTime() - now.getTime())<=30*24*60*60*1000 &&
                                                 <div className='flex flex-row items-center gap-[0.2rem]'>
                                                     <BadgePlus className='h-[1rem] w-auto text-[#599459]'/>
-                                                    <p className='flex flex-row gap-[0.2rem] text-[#599459]'>Ny</p>
+                                                    <p className='flex flex-row gap-[0.2rem] text-[#599459]'>{text.new}</p>
                                                 </div>
                                             }
                                             {recipe.category &&
                                                 <div className='flex flex-row items-center gap-[0.2rem]'>
                                                     <Shapes className='h-[1rem] w-auto'/>
                                                     <p className='flex flex-row gap-[0.2rem] capitalize'>
-                                                        <span className='hidden 6xl:block'>Kategori: </span>
+                                                        <span className='hidden 6xl:block'>{text.category}: </span>
                                                         {recipeTypes[recipe.category]}
                                                     </p>
                                                 </div>
@@ -61,8 +62,8 @@ export default function CarouselComponent({data}:CarouselProp) {
                                                 <div className='flex flex-row items-center gap-[0.2rem]'>
                                                     <Clock className='h-[1rem] w-auto'/>
                                                     <p className='flex flex-row gap-[0.2rem]'>
-                                                        <span className='hidden 6xl:block'>Tid: </span> 
-                                                        {Math.floor(recipe.duration/60) !== 0 ? Math.floor(recipe.duration/60)+'t' : ''} {recipe.duration%60 !== 0 ? recipe.duration%60+'min' : ''}
+                                                        <span className='hidden 6xl:block'>{text.time}: </span> 
+                                                        {timeToString(recipe.duration)}
                                                     </p>
                                                 </div>
                                             }

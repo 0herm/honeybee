@@ -7,6 +7,7 @@ import { getRecipeById, searchRecipes } from '@/utils/api'
 import { Search } from 'lucide-react'
 import Form from 'next/form'
 import Link from 'next/link'
+import { managementPanel as text } from '@text'
 
 export default async function Page({ params, searchParams }: { params: Promise<{ id?: string[] }>, searchParams: Promise<{ [key: string]: string | undefined }> }) {
 
@@ -30,7 +31,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
 
             return (<EditPage isNew={false} values={values} id={Number(id)} />)
         }
-        return <div className='p-5'>Feil ved henting av data</div>
+        return <div className='p-5'>{text.edit.errorFetching}</div>
     }
 
     const param = await searchParams
@@ -39,13 +40,13 @@ export default async function Page({ params, searchParams }: { params: Promise<{
     const recipes = await searchRecipes(search, 8, 0, true, {})
 
     if(typeof recipes === 'string'){
-        <div className='p-5'>Feil: ingen oppskrifter lik {`'${search}'`}</div>
+        <div className='p-5'>{`${text.edit.errorSearch} '${search}'`}</div>
     }
 
     return(
         <div className='flex flex-col w-full'>
             <Button className='w-[4rem] mb-[2rem]' variant='outline' asChild>
-                <Link href='/protected'>Back</Link>
+                <Link href='/protected'>{text.back}</Link>
             </Button>
 
             <div className='w-full flex items-center flex-col'>
@@ -79,7 +80,7 @@ function RecipesInput({search}:{search: string}){
                 <Input 
                     type='search'
                     name='q' 
-                    placeholder='Søk'
+                    placeholder={text.edit.search}
                     defaultValue={search}
                     className='pr-10'
                 />

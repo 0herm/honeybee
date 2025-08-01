@@ -6,6 +6,7 @@ import Form from 'next/form'
 import { Search } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { searchPlaceholder } from '@text'
 
 export default function SearchForm() {
     const router = useRouter()
@@ -35,7 +36,7 @@ export default function SearchForm() {
                     <Input 
                         type='search'
                         name='q' 
-                        placeholder='Søk'
+                        placeholder={searchPlaceholder}
                         className='pr-10 focus-visible:ring-0'
                     />
                     <div className='absolute top-0 right-0 flex items-center'>

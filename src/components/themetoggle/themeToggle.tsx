@@ -5,11 +5,11 @@ import { getCookie, setCookie } from '@/utils/cookies'
 import { Moon, Sun } from 'lucide-react'
 
 export default function ThemeSwitch() {
-    const [theme, setTheme] = useState<'dark' | 'light'>('dark')
+    const [theme, setTheme] = useState<Theme>('dark')
 
     useEffect(() => {
         const el = document.documentElement
-        const savedTheme = getCookie('theme') as 'dark' | 'light'
+        const savedTheme = getCookie('theme') as Theme
         if (savedTheme) {
             setTheme(savedTheme)
         }

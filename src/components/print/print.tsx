@@ -6,6 +6,8 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, Dialog
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '../ui/select'
 import { Label } from '../ui/label'
 import { Button } from '../ui/button'
+import { print as text, recipe as recipeText } from '@text'
+import { timeToString } from '@/utils/timeFormater'
 
 type OptionsProps = {
     font: string
@@ -19,10 +21,10 @@ function RecipeContent({ recipe, options }: { recipe: RecipeProps; options: Opti
     return (
         <div className={`${options.font !== 'none' ? options.font : ''} pl-[5rem] pt-[2.5rem] pr-[2.5rem] leading-relaxed break-inside-avoid`}>
             <h1 className='text-2xl font-bold mb-[0.5rem] capitalize'>{recipe.title}</h1>
-            <p className='text-gray-600'>Porsjoner: {recipe.quantity}</p>
-            <p className='text-gray-600'>Total tid: {recipe.duration} minutter</p>
+            <p className='text-gray-600'>{recipeText.porsions}: {recipe.quantity}</p>
+            <p className='text-gray-600'>{recipeText.totalTime}: {timeToString(recipe.duration, 'long')}</p>
             <hr className='my-[1.25rem] border-t-[0.1rem] border-gray-300' />
-            <h2 className='text-base font-semibold'>Ingredienser:</h2>
+            <h2 className='text-base font-semibold'>{recipeText.ingredients}:</h2>
             <div className={`flex ${options.listDirection === 'row' ? 'flex-row gap-[2rem]' : 'flex-col gap-[0.5rem]'}`}>
                 {recipe.ingredients.map((part, index) => (
                     <div key={index} className='break-inside-avoid'>
@@ -47,38 +49,38 @@ function RecipeContent({ recipe, options }: { recipe: RecipeProps; options: Opti
 export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
     const availableOptions = {
         font: {
-            name: 'Skrifttype',
+            name: text.option.fontFamily.name,
             items: [
-                { value: 'none', label: 'Standard' },
-                { value: 'font-sans', label: 'Sans' },
+                { value: 'none', label: text.option.fontFamily.standard },
+                { value: 'font-sans', label: text.option.fontFamily.sans },
             ],
         },
         listStyle: {
-            name: 'Listeformat',
+            name: text.option.listStyle.name,
             items: [
-                { value: 'none', label: 'Ingen' },
-                { value: 'list-disc', label: 'Punktliste' },
+                { value: 'none', label: text.option.listStyle.none },
+                { value: 'list-disc', label: text.option.listStyle.disc },
             ],
         },
         listDirection: {
-            name: 'Listeretning',
+            name: text.option.listDirection.name,
             items: [
-                { value: 'col', label: 'Vertikalt' },
-                { value: 'row', label: 'Horisontalt' },
+                { value: 'col', label: text.option.listDirection.col },
+                { value: 'row', label: text.option.listDirection.row },
             ],
         },
         instructionStyle: {
-            name: 'Instruksjonsformat',
+            name: text.option.instructionFormat.name,
             items: [
-                { value: 'none', label: 'Ingen' },
-                { value: 'decimal', label: 'Nummerert' },
+                { value: 'none', label: text.option.instructionFormat.none },
+                { value: 'decimal', label: text.option.instructionFormat.decimal },
             ],
         },
         instructionPosition: {
-            name: 'Instruksjonsposisjon',
+            name: text.option.instructionPosition.name,
             items: [
-                { value: 'bottom', label: 'Bunn' },
-                { value: 'right', label: 'Høyre' },
+                { value: 'bottom', label: text.option.instructionPosition.bottom },
+                { value: 'right', label: text.option.instructionPosition.right },
             ],
         },
     }
@@ -102,13 +104,13 @@ export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
             <Dialog>
                 <DialogTrigger asChild>
                     <Button className='cursor-pointer px-[1rem] py-[0.5rem] bg-green-700/70 text-white rounded-md hover:bg-green-900'>
-                        Print Oppskrift
+                        {text.printButton}
                     </Button>
                 </DialogTrigger>
                 <DialogContent className='sm:max-w-[calc(100%-2rem)] sm:w-auto overflow-y-auto'> 
                     <DialogHeader>
-                        <DialogTitle>Print Valg</DialogTitle>
-                        <DialogDescription>Tilpass hvordan oppskriften din vil se ut når den skrives ut.</DialogDescription>
+                        <DialogTitle>{text.title}</DialogTitle>
+                        <DialogDescription>{text.description}</DialogDescription>
                     </DialogHeader>
                     <div className='flex flex-col gap-4 py-4'>
                         {Object.entries(availableOptions).map(([key, { name, items }]) => (
@@ -124,7 +126,7 @@ export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
                                         }
                                     >
                                         <SelectTrigger className='cursor-pointer'>
-                                            <SelectValue placeholder={`Select ${name}`} />
+                                            <SelectValue placeholder={`${text.select} ${name}`} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             {items.map((item) => (
@@ -143,7 +145,7 @@ export default function PrintButton({ recipe }: { recipe: RecipeProps }) {
                             onClick={reactToPrintFn}
                             className='cursor-pointer px-[1rem] py-[0.5rem] bg-green-700/70 text-white rounded-md hover:bg-green-900'
                         >
-                            Print
+                            {text.printSubmit}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

@@ -6,10 +6,10 @@ import {
     PaginationEllipsis,
     PaginationItem,
     PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
 } from '@/components/ui/pagination'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { usePathname, useSearchParams } from 'next/navigation'
+import { recipes as text } from '@text'
 
 export default function PageOverview({current,pages}:{current:number,pages:number}) {
     const pathname = usePathname()
@@ -32,7 +32,10 @@ export default function PageOverview({current,pages}:{current:number,pages:numbe
         <Pagination className='pt-[2rem]'>
             <PaginationContent>
                 <PaginationItem>
-                    <PaginationPrevious href={pathname+'?'+trigger(current === 1 ? 1 : current-1)} />
+                    <PaginationLink className='w-fit gap-1 px-2.5 sm:pl-2.5 mr-2' href={pathname+'?'+trigger(current === 1 ? 1 : current-1)}>
+                        <ChevronLeftIcon />
+                        {text.previous}
+                    </PaginationLink>
                 </PaginationItem>
                 {pages > 0 &&
                 <PaginationItem>
@@ -65,7 +68,10 @@ export default function PageOverview({current,pages}:{current:number,pages:numbe
                 </PaginationItem>
                 }
                 <PaginationItem>
-                    <PaginationNext href={pathname+'?'+trigger(current === pageNumberEnd ? pageNumberEnd : current+1)} />
+                    <PaginationLink className='w-fit gap-1 px-2.5 sm:pl-2.5 ml-2' href={pathname+'?'+trigger(current === pageNumberEnd ? pageNumberEnd : current+1)} >
+                        {text.next}
+                        <ChevronRightIcon />
+                    </PaginationLink>
                 </PaginationItem>
             </PaginationContent>
         </Pagination>

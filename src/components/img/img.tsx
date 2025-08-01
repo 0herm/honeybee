@@ -18,7 +18,7 @@ export default async function LoadImage({data,style}: LoadImageProps){
             {imageSrc ? (
                 <Image
                     src={imageSrc}
-                    alt='bilde'
+                    alt='Image'
                     fill={true}
                     sizes='100%'
                     priority

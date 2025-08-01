@@ -8,6 +8,8 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Search } from 'lucide-react'
+import { timeToString } from '@/utils/timeFormater'
+import { searchPlaceholder, filter as text } from '@text'
 
 export default function Filters() {
     const router = useRouter()
@@ -50,12 +52,12 @@ export default function Filters() {
     return (
         <div className='flex flex-col gap-[1rem]'>
             <div>
-                <h2 className='pb-[0.5rem]'>Søk</h2>
+                <h2 className='pb-[0.5rem]'>{text.search}</h2>
                 <div className='relative'>
                     <Input 
                         type='search'
                         name='q' 
-                        placeholder='Søk oppskrifter...'
+                        placeholder={searchPlaceholder}
                         value={search}
                         className='pr-[2.5rem]'
                         onChange={(e) => setSearch(e.target.value)}
@@ -77,7 +79,7 @@ export default function Filters() {
                 </div>
             </div>
             <div>
-                <h2 className='pb-[0.5rem]'>Kategori</h2>
+                <h2 className='pb-[0.5rem]'>{text.category}</h2>
                 {recipeTypes && Object.entries(recipeTypes).map(([category, label]) => (
                     <div key={category} className='flex items-center space-x-2 mb-2'>
                         <Checkbox
@@ -99,10 +101,10 @@ export default function Filters() {
                 ))}
             </div>
             <div>
-                <h2>Total tid</h2>
+                <h2>{text.totalTime}</h2>
                 <div className='w-full flex flex-col gap-[0.5rem] space-x-2 mb-2'>
                     <label className='text-sm'>
-                        {(timeFilter) === maxTime ? 'Ingen grense' : `Maks: ${Math.floor(timeFilter/60) !== 0 ? Math.floor(timeFilter/60)+'t' : ''} ${timeFilter%60 !== 0 ? timeFilter%60+'min' : ''}`}
+                        {(timeFilter) === maxTime ? 'Ingen grense' : `Maks: ${timeToString(timeFilter)}`}
                     </label>
                     <Slider
                         className='w-full [&_[data-slot=slider-range]]:bg-green-700/70 cursor-pointer'

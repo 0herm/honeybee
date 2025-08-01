@@ -5,10 +5,12 @@ import NavBar from '@/components/nav/nav'
 import Footer from '@/components/footer/footer'
 import { Toaster } from '@/components/ui/sonner'
 import { cookies } from 'next/headers'
+import { siteName, siteDescription, siteKeywords } from '@text'
 
 export const metadata: Metadata = {
-    title: 'Herbivorene',
-    description: 'A vegan recipe website',
+    title: siteName,
+    description: siteDescription,
+    keywords: siteKeywords
 }
 
 export default async function RootLayout({ children }: Readonly<{children: React.ReactNode}>) {

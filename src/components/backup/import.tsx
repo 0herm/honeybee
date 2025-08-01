@@ -15,6 +15,7 @@ import Form from 'next/form'
 import { importBackup } from './actions'
 import { useActionState, useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { managementPanel as text } from '@text'
 
 const initialState: FormStateImport = {
     success: null,
@@ -37,25 +38,25 @@ export default function ImportButton() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button className='w-full cursor-pointer'>
-                    Import Backup
+                    {text.import.title}
                 </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Are you sure?</DialogTitle>
+                    <DialogTitle>{text.import.dialogTitle}</DialogTitle>
                     <DialogDescription>
-                        This action will import a backup into your database, overwriting any existing data. This action cannot be undone. Please create a backup before proceeding.
+                        {text.import.dialogDescription}
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                     <DialogClose asChild>
                         <Button variant='outline' className='cursor-pointer'>
-                            Cancel
+                            {text.import.dialogCancel}
                         </Button>
                     </DialogClose>
                     <Form action={formAction}>
                         <Button type='submit' className='cursor-pointer' disabled={isPending}>
-                            {isPending ? 'Importing...' : 'Import'}
+                            {isPending ? `${text.import.dialogImporting}...` : text.import.dialogImport}
                         </Button>
                     </Form>
                 </DialogFooter>

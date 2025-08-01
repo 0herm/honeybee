@@ -11,6 +11,8 @@ import { BadgePlus, Clock, Filter, Shapes } from 'lucide-react'
 import { recipeTypes } from '@parent/constants'
 import Filters from '@/components/filters/filters'
 import { searchRecipes } from '@/utils/api'
+import { timeToString } from '@/utils/timeFormater'
+import { recipes as text } from '@text'
 
 export default async function Page({searchParams}: {searchParams: Promise<{ [key: string]: string | undefined }>}) {
     const paramsSearch = await searchParams
@@ -32,7 +34,7 @@ export default async function Page({searchParams}: {searchParams: Promise<{ [key
                     <div className='sticky top-[5rem] bg-card rounded-xl border p-[1.25rem] shadow-sm'>
                         <h1 className='text-xl font-semibold mb-[1rem] flex items-center gap-[0.5rem]'>
                             <Filter className='size-[1.25rem] text-green-600/70' />
-                            Filtre
+                            {text.filters}
                         </h1>
                         <div className='space-y-[1rem]'>
                             <Filters />
@@ -43,7 +45,7 @@ export default async function Page({searchParams}: {searchParams: Promise<{ [key
                 <div className='flex-1'>
                     {typeof data === 'string' ? (
                         <div className='flex items-center justify-center h-[15rem] bg-muted/20 rounded-lg'>
-                            <p className='text-lg text-muted-foreground'>Ingen oppskrifter funnet</p>
+                            <p className='text-lg text-muted-foreground'>{text.noRecipes}</p>
                         </div>
                     ) : (
                         <div className='space-y-[1.5rem]'>
@@ -67,7 +69,7 @@ function RecipeGrid({recipes}: {recipes: RecipeProps[]}) {
     if (!recipes || recipes.length === 0) {
         return (
             <div className='flex items-center justify-center h-[15rem] bg-muted/20 rounded-lg'>
-                <p className='text-lg text-muted-foreground'>Ingen oppskrifter funnet</p>
+                <p className='text-lg text-muted-foreground'>{text.noRecipes}</p>
             </div>
         )
     }
@@ -93,7 +95,7 @@ function RecipeCard({recipe}: {recipe: RecipeProps}) {
                     {isNew && (
                         <div className='absolute top-[0.5rem] left-[0.5rem] bg-green-950/70 py-[0.25rem] px-[0.5rem] rounded-md flex items-center gap-[0.25rem]'>
                             <BadgePlus className='h-[0.75rem] w-[0.75rem] text-green-400' />
-                            <span className='text-xs font-medium text-green-400'>Ny</span>
+                            <span className='text-xs font-medium text-green-400'>{text.new}</span>
                         </div>
                     )}
                 </div>
@@ -115,8 +117,7 @@ function RecipeCard({recipe}: {recipe: RecipeProps}) {
                             <div className='flex items-center gap-[0.25rem]'>
                                 <Clock className='h-[0.75rem] w-[0.75rem]' />
                                 <span>
-                                    {Math.floor(recipe.duration/60) > 0 && `${Math.floor(recipe.duration/60)}t `}
-                                    {recipe.duration % 60 > 0 && `${recipe.duration % 60}min`}
+                                    {timeToString(recipe.duration)}
                                 </span>
                             </div>
                         )}

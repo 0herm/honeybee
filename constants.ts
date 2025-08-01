@@ -1,14 +1,16 @@
+import { types as text } from '@text'
+
 export const recipeTypes: Record<string, string> = {
-    dinner: 'middag',
-    baking: 'bakst',
-    drink: 'drikke',
-    dessert: 'dessert'
+    dinner: text.categories.dinner,
+    baking: text.categories.baking,
+    drink: text.categories.drink,
+    dessert: text.categories.dessert
 }
 
 export const recipeDifficulty: Record<string, string> = {
-    'easy'   : 'lett',
-    'medium' : 'middels',
-    'hard'   : 'vanskelig'
+    'easy'   : text.difficulty.easy,
+    'medium' : text.difficulty.medium,
+    'hard'   : text.difficulty.hard
 }
 
 const config = {

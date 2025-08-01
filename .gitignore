@@ -9,3 +9,6 @@
 
 # typescript
 next-env.d.ts
+
+# text
+/public/text.json

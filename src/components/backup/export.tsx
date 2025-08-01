@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { toast } from 'sonner'
+import { managementPanel as text } from '@text'
 
 async function backup() {
     try {
@@ -46,7 +47,7 @@ export default function ExportButton() {
 
     return (
         <Button onClick={handleBackup} disabled={loading} className='w-full cursor-pointer'>
-            {loading ? 'Downloading...' : 'Export Database'}
+            {loading ? `${text.export.downloading}...` : text.export.title}
         </Button>
     )
 }
