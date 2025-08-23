@@ -38,7 +38,7 @@ export default function CarouselComponent({data}:CarouselProp) {
                             <div className='p-1'>
                                 <Card className='flex flex-row relative w-full h-[10rem] py-[0.5rem] gap-[0.5rem]'>
                                     <div className='relative h-full w-auto aspect-1/1'>
-                                        <LoadImage data={recipe.image} style='flex' /> 
+                                        <LoadImage id={recipe.id} style='flex' /> 
                                     </div>
                                     <div className='w-full h-full'>
                                         <CardTitle className='text-left text-base capitalize py-[1rem] px-[0.4rem]'>{recipe.title}</CardTitle>

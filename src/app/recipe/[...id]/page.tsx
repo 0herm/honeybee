@@ -22,7 +22,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id?: st
             <div className='w-full max-w-[65rem] sm:px-[2rem]'>
                 <h1 className='w-full text-center capitalize text-2xl font-semibold'>{recipe.title}</h1>
                 <div className='relative flex items-start w-full h-[12rem] sm:h-[14rem] mt-[1rem] print:hidden'>
-                    <LoadImage data={recipe.image} />
+                    <LoadImage id={recipe.id} />
                 </div>
                 <div className='flex flex-col md:flex-row justify-center items-center gap-[1rem] md:gap-[3rem] pt-[2rem] md:pt-[3rem]'>
                     <div className='flex flex-row items-center gap-[1rem] w-[15rem] p-[1rem] rounded-lg bg-green-950/10 border border-green-900/40'>

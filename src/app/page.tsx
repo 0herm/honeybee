@@ -38,7 +38,7 @@ export default async function Home() {
             </div>
 
 
-            <div className='flex flex-col gap-[10rem]'>
+            <div className='w-full flex flex-col gap-[10rem]'>
                 <div className='flex flex-col items-center gap-10 px-0 sm:px-[5rem] w-full'>
                     <ContentType limit={6} />
                 </div>
@@ -85,10 +85,10 @@ async function ContentType({limit}:{limit:number}){
     }
 
     return (
-        <div className={`flex flex-col gap-4 w-[18rem] sm:w-[20rem] ${recipes.length>=2?'md:w-[40rem]':''} ${recipes.length>=3?'6xl:w-[65rem]':''}`}>
+        <div className={`flex flex-col gap-4 w-[18rem] sm:w-[20rem] items-center ${recipes.length>=2?'md:w-[40rem]':''} ${recipes.length>=3?'6xl:w-[65rem]':''}`}>
             <h1 className='capitalize text-center text-xl font-semibold'>{text.newestRecipes}</h1>
             <CarouselComponent data={recipes}/>
-            <Link href={'/recipes/'} className='flex flex-row justify-center items-center gap-1'>
+            <Link href={'/recipes/'} className='w-fit flex flex-row justify-center items-center gap-1'>
                 <Button variant='outline' className='cursor-pointer'>
                     {text.viewAll}
                 </Button>

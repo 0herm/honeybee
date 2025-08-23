@@ -35,7 +35,8 @@ sub vcl_hash {
 }
 
 sub vcl_backend_response {
-    set beresp.ttl = 7d;
+    set beresp.ttl = 30d;
+    set beresp.http.Cache-Control = "public, max-age=86400";
     return (deliver);
 }
 

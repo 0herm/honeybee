@@ -41,15 +41,14 @@ export async function importData(tableName: string, data: Array<Record<string, s
     return typeof result === 'string' ? 'Error importing data' : 'Data imported successfully'
 }
 
-
 export async function getRecipeById(id: number): Promise<RecipeProps | string> {
-    const query = 'SELECT * FROM recipes WHERE id = $1'
+    const query = 'SELECT id, title, date_created, date_updated, category, duration, difficulty, quantity, ingredients, instructions, published FROM recipes WHERE id = $1'
     const result = await dbWrapper(query, [id])
     return typeof result === 'string' ? 'Recipe not found' : result[0]
 }
 
 export async function getRecipes(limit: number = 10): Promise<RecipeProps[] | string> {
-    const query = 'SELECT * FROM recipes WHERE published = true ORDER BY date_created DESC LIMIT $1'
+    const query = 'SELECT id, title, date_created, date_updated, category, duration, difficulty, published FROM recipes WHERE published = true ORDER BY date_created DESC LIMIT $1'
     const result = await dbWrapper(query, [limit])
     return typeof result === 'string' ? 'No recipes found' : result
 }
@@ -72,8 +71,8 @@ export async function searchRecipes(
 
     const params = [`%${keyword}%`, ...filterKeys.map(key => filters[key as keyof typeof filters]), limit, offset*limit]
 
-    const query = `SELECT * FROM recipes WHERE ${showUnpublished ? '' : 'published = true AND'} title LIKE $1${filtersQuery} ORDER BY date_created DESC LIMIT $${params.length - 1} OFFSET $${params.length}`
-    const countQuery = `SELECT COUNT(*) FROM recipes WHERE ${showUnpublished ? '' : 'published = true AND'} title LIKE $1${filtersQuery}`
+    const query = `SELECT id, title, date_created, date_updated, category, duration, difficulty, published FROM recipes WHERE ${showUnpublished ? '' : 'published = true AND'} title LIKE $1${filtersQuery} ORDER BY date_created DESC LIMIT $${params.length - 1} OFFSET $${params.length}`
+    const countQuery = `SELECT COUNT(id) FROM recipes WHERE ${showUnpublished ? '' : 'published = true AND'} title LIKE $1${filtersQuery}`
 
     const [result, countResult] = await Promise.all([
         dbWrapper(query, params),
