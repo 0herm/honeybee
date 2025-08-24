@@ -21,6 +21,9 @@ const config = {
         USER: process.env.POSTGRES_USER             || 'admin',
         DB: process.env.POSTGRES_DB                 || 'honeybee',
         PASSWORD: process.env.POSTGRES_PASSWORD
+    },
+    auth: {
+        BETTER_AUTH_URL: process.env.BETTER_AUTH_URL || 'http://localhost:8080'
     }
 }
 

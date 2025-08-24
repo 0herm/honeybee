@@ -79,6 +79,13 @@
             "dialogImporting": "Importing"
         }
     },
+    "auth": {
+        "login": "Login",
+        "logout": "Logout",
+        "loginDescription": "Enter your email below to log in to your account",
+        "email": "Email",
+        "password": "Password"
+    },
     "navigation": {
         "recipes": "Recipes",
         "all": "All",

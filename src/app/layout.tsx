@@ -22,13 +22,13 @@ export default async function RootLayout({ children }: Readonly<{children: React
             <html lang='en' className={`${theme}`}>
                 <head/>
                 <body className='w-screen h-screen bg-background text-foreground flex flex-col m-0 p-0 font-[family-name:Inter] antialiased align-middle break-words leading-[1.5] tracking-normal'>
-                    <nav className='fixed top-[-10px] pt-[10px] h-[var(--h-navbar)] w-full border-solid border-b border-accent backdrop-blur z-50 print:hidden'>
+                    <nav className='fixed h-[var(--h-navbar)] w-full border-solid border-b border-accent backdrop-blur z-50 print:hidden'>
                         <NavBar />
                     </nav>
-                    <main className='w-full flex grow p-5 pt-[calc(1rem+var(--h-navbar))] print:pt-0'>
+                    <main className='w-full flex grow pt-[var(--h-navbar)] print:pt-0'>
                         {children}
                     </main>
-                    <footer className='mt-10 border-solid border-t border-accent print:hidden'>
+                    <footer className='border-solid border-t border-accent print:hidden'>
                         <Footer />
                     </footer>
                     <Toaster 

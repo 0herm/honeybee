@@ -8,8 +8,18 @@ import { Search } from 'lucide-react'
 import Form from 'next/form'
 import Link from 'next/link'
 import { managementPanel as text } from '@text'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { auth } from '@utils/auth'
 
 export default async function Page({ params, searchParams }: { params: Promise<{ id?: string[] }>, searchParams: Promise<{ [key: string]: string | undefined }> }) {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+
+    if(!session) {
+        redirect('/login')
+    }
 
     const { id } = await params
     const recipeId = id?.[0] ? id[0] : undefined
