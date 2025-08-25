@@ -25,12 +25,9 @@ NextJS, TypeScript, React, Tailwind, PostgreSQL and better-auth.
 
 | Name                      | Notes                                                                                |
 |---------------------------|--------------------------------------------------------------------------------------|
-| BETTER_AUTH_SECRET        | The secret for the better-auth service                                               |
-| BETTER_AUTH_URL           | URL for the better-auth service                                                      |
-| BETTER_AUTH_TELEMETRY     | To enable telemetry for better-auth                                                  |
-
-| Name                      | Notes                                                                                |
-|---------------------------|--------------------------------------------------------------------------------------|
+| AUTH_SECRET               | The secret for the auth service                                                      |
+| AUTH_URL                  | URL for the auth service, default `http://localhost:8080`                            |
+| AUTH_TELEMETRY            | To enable telemetry for auth, default `false`                                        |
 | AUTH_EMAIL                | Email for authentication                                                             |
 | AUTH_PASSWORD             | Password for authentication                                                          |
 | AUTH_NAME                 | Name for authentication                                                              |

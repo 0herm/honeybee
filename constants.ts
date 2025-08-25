@@ -23,7 +23,9 @@ const config = {
         PASSWORD: process.env.POSTGRES_PASSWORD
     },
     auth: {
-        BETTER_AUTH_URL: process.env.BETTER_AUTH_URL || 'http://localhost:8080'
+        AUTH_URL: process.env.AUTH_URL || 'http://localhost:8080',
+        AUTH_SECRET: process.env.AUTH_SECRET,
+        AUTH_TELEMETRY: process.env.AUTH_TELEMETRY === 'true'
     }
 }
 

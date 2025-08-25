@@ -11,7 +11,7 @@ const {
 } = config.database
 
 const {
-    BETTER_AUTH_URL
+    AUTH_URL
 } = config.auth
 
 export const auth = betterAuth({
@@ -25,5 +25,7 @@ export const auth = betterAuth({
     emailAndPassword: { 
         enabled: true, 
     },
-    trustedOrigins: [BETTER_AUTH_URL],
+    trustedOrigins: [AUTH_URL],
+    secret: config.auth.AUTH_SECRET,
+    telemetry: { enabled: config.auth.AUTH_TELEMETRY },
 })
