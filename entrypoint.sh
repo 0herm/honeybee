@@ -1,14 +1,14 @@
 #!/bin/sh
 
 # Starts varnish
-varnishd -a :8080 -f /etc/varnish/default.vcl -s malloc,512m &
+varnishd -a :8080 -f /etc/varnish/default.vcl -s malloc,1g &
 
 
-echo "-------------------- NOTE --------------------"
+echo "----------------------------------------------"
 echo ""
 echo "SERVING CACHED PROJECT ON http://localhost:8080."
 echo ""
-echo "-------------------- NOTE --------------------"
+echo "----------------------------------------------"
 
-# Starts API
+# Starts Website
 npm start
