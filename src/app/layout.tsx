@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 import NavBar from '@/components/nav/nav'
@@ -7,10 +7,21 @@ import { Toaster } from '@/components/ui/sonner'
 import { cookies } from 'next/headers'
 import { siteName, siteDescription, siteKeywords } from '@text'
 
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    viewportFit: 'cover',
+    userScalable: false
+}
+
 export const metadata: Metadata = {
     title: siteName,
     description: siteDescription,
-    keywords: siteKeywords
+    keywords: siteKeywords,
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: 'black-translucent'
+    }
 }
 
 export default async function RootLayout({ children }: Readonly<{children: React.ReactNode}>) {
@@ -20,9 +31,8 @@ export default async function RootLayout({ children }: Readonly<{children: React
     return (
         <>
             <html lang='en' className={`${theme}`}>
-                <head/>
-                <body className='w-screen h-screen bg-background text-foreground flex flex-col m-0 p-0 font-[family-name:Inter] antialiased align-middle break-words leading-[1.5] tracking-normal'>
-                    <nav className='fixed h-[var(--h-navbar)] w-full border-solid border-b border-accent backdrop-blur z-50 print:hidden'>
+                <body className='w-screen h-screen bg-background text-foreground flex flex-col m-0 p-0 font-[family-name:Inter] antialiased align-middle break-words leading-[1.5] tracking-normal pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]'>
+                    <nav className='fixed top-0 left-0 right-0 w-full border-solid border-b border-accent backdrop-blur z-50 print:hidden pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]'>
                         <NavBar />
                     </nav>
                     <main className='w-full flex grow pt-[var(--h-navbar)] print:pt-0'>

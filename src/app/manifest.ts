@@ -5,7 +5,6 @@ export default async function manifest(): Promise<MetadataRoute.Manifest> {
     return {
         name: siteName,
         short_name: siteNameShort,
-        theme_color: '#0A0A0A',
         description: siteDescription,
         start_url: '/',
         display: 'standalone',

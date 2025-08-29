@@ -15,11 +15,10 @@ import { siteName, navigation as text } from '@text'
 
 export default function NavBar() {
     return (
-        <div className='flex flex-row justify-between items-center w-full h-full pr-1'>
-                
+        <div className='flex flex-row justify-between items-center w-full h-full pr-2'>
             <div className='flex flex-row h-full items-center'>
                 <Link href={'/'} className='h-full'> 
-                    <Leaf className='h-full w-auto p-4 px-2 text-[#599459]' />
+                    <Leaf className='h-full w-auto p-4 px-4 text-[#599459]' />
                 </Link>
                 <h1 className='hidden md:block'>{siteName}</h1>
             </div>
