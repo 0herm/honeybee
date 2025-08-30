@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { recipeCategorieswithIcons } from '@parent/constants'
+import { recipeCategories } from '@parent/constants'
 import { Button } from '@/components/ui/button'
 import { getRecentAdditions, getStats } from '@/utils/api'
 import { homepage as text } from '@text'
@@ -92,31 +92,30 @@ export default async function Home() {
                         </div>
                         <div className='flex gap-6 overflow-x-auto pb-4 scroll'>
                             {typeof favoriteRecipes !== 'string' ? favoriteRecipes.map((recipe) => (
-                                <Card
-                                    key={recipe.id}
-                                    className='flex-shrink-0 w-50 sm:w-60 group bg-card border-border pt-0'
-                                >
-                                    <div className='relative overflow-hidden flex items-center justify-center bg-muted/30 rounded-md px-8 py-4 pt-10'>
-                                        <div className='aspect-[3/2] overflow-hidden w-full relative'>
-                                            <LoadImage id={recipe.id} />
-                                        </div>
-                                    </div>
-                                    <CardContent className='flex flex-col gap-2 py-2'>
-                                        <h3 className='font-bold text-lg pt-2 text-card-foreground capitalize truncate'>
-                                            {recipe.title}
-                                        </h3>
-                                        <div className='flex items-center justify-between text-sm text-muted-foreground'>
-                                            <div className='flex items-center gap-1'>
-                                                <Clock className='h-4 w-4' />
-                                                <span>{timeToString(90)}</span>
-                                            </div>
-                                            <div className='flex items-center gap-1'>
-                                                <Users className='h-4 w-4' />
-                                                <span>{3}</span>
+                                <Link key={recipe.id} href={`/recipe/${recipe.id}`}>
+                                    <Card className='flex-shrink-0 w-50 sm:w-60 group bg-card border-border pt-0'>
+                                        <div className='relative overflow-hidden flex items-center justify-center bg-muted/30 rounded-md px-8 py-4 pt-10'>
+                                            <div className='aspect-[3/2] overflow-hidden w-full relative'>
+                                                <LoadImage id={recipe.id} />
                                             </div>
                                         </div>
-                                    </CardContent>
-                                </Card>
+                                        <CardContent className='flex flex-col gap-2 py-2'>
+                                            <h3 className='font-bold text-lg pt-2 text-card-foreground capitalize truncate'>
+                                                {recipe.title}
+                                            </h3>
+                                            <div className='flex items-center justify-between text-sm text-muted-foreground'>
+                                                <div className='flex items-center gap-1'>
+                                                    <Clock className='h-4 w-4' />
+                                                    <span>{timeToString(90)}</span>
+                                                </div>
+                                                <div className='flex items-center gap-1'>
+                                                    <Users className='h-4 w-4' />
+                                                    <span>{3}</span>
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             )): 
                                 <div className='col-span-full text-center'>
                                     {text.errorFetchingRecipes}
@@ -145,17 +144,19 @@ export default async function Home() {
                             {text.categoriesDescription}
                         </h4>
                         <div className='grid grid-cols-2 xs:px-10 sm:grid-cols-4 gap-4 justify-items-center mx-auto max-w-3xl pt-10'>
-                            {recipeCategorieswithIcons.slice(0, 4).map((category) => (
-                                <Card key={category.name} className='hover:shadow-md transition-shadow cursor-pointer group w-full'>
-                                    <CardContent className='p-2 xs:p-6 text-center'>
-                                        <div className='text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform'>
-                                            {category.icon}
-                                        </div>
-                                        <h4 className='font-semibold text-card-foreground capitalize'>
-                                            {category.name}
-                                        </h4>
-                                    </CardContent>
-                                </Card>
+                            {recipeCategories.slice(0, 4).map((category) => (
+                                <Link href={`/recipes?category=${category.name_en}`} key={category.name_en} className='w-full'>
+                                    <Card className='hover:shadow-md transition-shadow cursor-pointer group w-full'>
+                                        <CardContent className='p-2 xs:p-6 text-center'>
+                                            <div className='text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform'>
+                                                {category.icon}
+                                            </div>
+                                            <h4 className='font-semibold text-card-foreground capitalize'>
+                                                {category.name}
+                                            </h4>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             ))}
                         </div>
                         <p className='text-center text-muted-foreground mt-6'>
