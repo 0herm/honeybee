@@ -91,7 +91,7 @@ function RecipeCard({recipe}: {recipe: RecipeProps}) {
         <Link href={`../recipe/${recipe.id}`}>
             <Card className='h-[17.5rem] w-full overflow-hidden transition-all hover:shadow-md'>
                 <div className='relative h-[10rem] w-full overflow-hidden flex items-center justify-center'>
-                    <LoadImage id={recipe.id} style='w-full h-auto max-h-[10rem] object-contain' />
+                    <LoadImage id={recipe.id} className='w-full h-auto max-h-[10rem] object-contain' />
                     {isNew && (
                         <div className='absolute top-[0.5rem] left-[0.5rem] bg-green-950/70 py-[0.25rem] px-[0.5rem] rounded-md flex items-center gap-[0.25rem]'>
                             <BadgePlus className='h-[0.75rem] w-[0.75rem] text-green-400' />

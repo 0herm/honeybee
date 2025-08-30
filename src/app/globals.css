@@ -180,3 +180,10 @@
     @apply bg-background text-foreground;
     }
 }
+
+@utility scroll {
+  scrollbar-color: gray transparent;
+  &::-webkit-scrollbar {
+      background-color: transparent;
+  }
+}

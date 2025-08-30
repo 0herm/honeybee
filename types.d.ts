@@ -1,4 +1,4 @@
-type Theme = 'dark' | 'light';
+type Theme = 'dark' | 'light'
 
 type IngredientProps = {
     ingredient: string
@@ -23,6 +23,13 @@ type RecipeProps = {
     instructions: string[]
     published: boolean
     image: Uint8Array | null
+}
+
+type GetRecentAddition = {
+    id: number
+    title: string
+    date_created: string
+    category: string
 }
 
 type FormStateImport = {

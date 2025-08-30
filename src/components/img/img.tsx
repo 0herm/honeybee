@@ -4,10 +4,10 @@ import Image from 'next/image'
 
 type LoadImageProps = {
     id: number
-    style?: string
+    className?: string
 }
 
-export default async function LoadImage({ id, style }: LoadImageProps) {
+export default async function LoadImage({ id, className }: LoadImageProps) {
     const fallbackImage = '/images/fallback.svg'
     const imageApi = `/api/image/${id}`
 
@@ -18,7 +18,7 @@ export default async function LoadImage({ id, style }: LoadImageProps) {
             fill={true}
             sizes='100%'
             priority
-            className={`object-contain ${style}`}
+            className={`object-contain ${className || ''}`}
         />
     )
 }

@@ -7,6 +7,13 @@ export const recipeTypes: Record<string, string> = {
     dessert: text.categories.dessert
 }
 
+export const recipeCategorieswithIcons: {name:string, icon:string}[] = [
+    { name: recipeTypes.dinner, icon: '🍛' },
+    { name: recipeTypes.baking, icon: '🍞' },
+    { name: recipeTypes.drink, icon: '🍪' },
+    { name: recipeTypes.dessert, icon: '🥤' }
+]
+
 export const recipeDifficulty: Record<string, string> = {
     'easy'   : text.difficulty.easy,
     'medium' : text.difficulty.medium,

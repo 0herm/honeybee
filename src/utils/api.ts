@@ -53,6 +53,35 @@ export async function getRecipes(limit: number = 10): Promise<RecipeProps[] | st
     return typeof result === 'string' ? 'No recipes found' : result
 }
 
+export async function getRecentAdditions(limit: number = 4): Promise<GetRecentAddition[] | string> {
+    const query = 'SELECT id, title, date_created, category FROM recipes WHERE published = true ORDER BY date_created DESC LIMIT $1'
+    const result = await dbWrapper(query, [limit])
+    return typeof result === 'string' ? 'No recent additions found' : result
+}
+
+export async function getStats(): Promise<{ totalRecipes: number, totalCategories: number, firstYear: number } | string> {
+    const query = `SELECT 
+        (SELECT COUNT(id) FROM recipes WHERE published = true) AS total_recipes, 
+        (SELECT COUNT(DISTINCT category) FROM recipes WHERE published = true) AS total_categories,
+        (SELECT MIN(date_created) FROM recipes WHERE published = true) AS first_recipe_date`
+
+    const result = await dbWrapper(query)
+
+    let firstYear = 0
+    if (typeof result !== 'string') {
+        const minDate = result[0]?.first_recipe_date
+        if (minDate) {
+            firstYear = new Date(minDate).getFullYear()
+        }
+    }
+
+    return typeof result === 'string' ? 'Error fetching stats' : { 
+        totalRecipes: parseInt(result[0]?.total_recipes || '0'), 
+        totalCategories: parseInt(result[0]?.total_categories || '0'),
+        firstYear: firstYear
+    }
+}
+
 export async function searchRecipes(
     keyword: string,
     limit: number = 8,
