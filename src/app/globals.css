@@ -187,3 +187,11 @@
       background-color: transparent;
   }
 }
+
+@utility noscroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+      display: none;
+  }
+}
